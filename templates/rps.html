@@ -13,15 +13,15 @@
 	</section>
 	  	<div id=buttons class='row'>
 			<div class='column' style='float: center'>
-				<input alt='The image is failing to load' type='image' onclick="userChoice='rock'; runAllFunctions()" src='/static/images/rock.png' id='rockButton' style='width: 80%'> 
+				<input alt='The image is failing to load' type='image' onclick="userChoice='rock'; runAllFunctions()" src='/static/images/rock.png' id='rockButton' style='width: 100%'> 
 			</div>
 
 			<div class='column'>
-				<input alt='The image is failing to load' type='image' onclick="userChoice='paper'; runAllFunctions()" src=/static/images/paper.png id=paperButton style='width: 80%'/>
+				<input alt='The image is failing to load' type='image' onclick="userChoice='paper'; runAllFunctions()" src=/static/images/paper.png id=paperButton style='width: 100%'/>
 			</div>
 
 			<div class='column'>
-				<input alt='The image is failing to load' type='image' onclick="userChoice='scissors'; runAllFunctions()" src='/static/images/scissors.png' id='scissorsButton' style='width: 80%'/>
+				<input alt='The image is failing to load' type='image' onclick="userChoice='scissors'; runAllFunctions()" src='/static/images/scissors.png' id='scissorsButton' style='width: 100%'/>
 			</div>
 		</div> 
 		<div id='main'>	
@@ -81,10 +81,11 @@ function getWinner(userChoice, compChoice){
 			document.getElementById('p1').innerHTML = "You Won!";
 		}
 	}
+	console.log(compChoice); // debugging
 }
 //function for halting js as needed 
 function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
+	return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 // executes all functions
@@ -94,10 +95,10 @@ function runAllFunctions(){
 		drumroll.play();
 		drumroll.currentTime=0;
 		sleep(500).then(() => {
-			afterDrumRoll()
+		
 		})
 	}
-
+	playDrumroll();
 	function afterDrumroll(){
 		getComputerChoice()
 		getWinner(userChoice, compChoice);
