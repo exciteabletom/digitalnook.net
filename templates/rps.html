@@ -32,10 +32,11 @@
 		<br class='rps'/>		
 		<p id='p2' class=rps></p>
 		<p id='p3' class=rps></p>
-		<br class='rps'/>			
-		<a href='/games/rps'><p class=link>Play Again?</p></a>
 		<br/>
 		<a href='/games'><p class=link>Back to Games</p></a>
+		<br/>
+		<br/>
+		<p class=italicsP>Note: Sound effects may not work properly with mobile.</p>
 	</div>
 
 <script>
@@ -94,17 +95,19 @@ function runAllFunctions(){
 		let drumroll = new Audio('/static/audio/drumroll.mp3');
 		drumroll.play();
 		drumroll.currentTime=0;
-		sleep(500).then(() => {
-		
-		})
 	}
+	// plays drumroll, waits, finds results and plays appropriate sfx
+
 	playDrumroll();
+	sleep(4000).then(() => {
+		afterDrumroll()		
+	})
 	function afterDrumroll(){
 		getComputerChoice()
 		getWinner(userChoice, compChoice);
 		document.getElementById('p3').innerHTML = `The Computers choice was ${compChoice}.`;
 		document.getElementById('p2').innerHTML = `Your choice was ${userChoice.toLowerCase()}.`;
-		if (document.getElementById('p1').innerHTML[0] =  "Sorry, you lost"){
+		if (document.getElementById('p1').innerHTML[0] === "S"){
 			let loserSound = new Audio('/static/audio/lose.mp3');
 			loserSound.play();
 			loserSound.currentTime=0;
