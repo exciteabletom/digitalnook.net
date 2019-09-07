@@ -7,31 +7,31 @@
 	<link href='/static/styles1.css' type='text/css' rel='stylesheet'/>
 	<link rel="shortcut icon" href="/static/favicon.ico"/>
 </head>
-<body>
+<body style='height 100vh'>
 	<section>	
 		<h1 id=mainHeader> Rock Paper Scissors! </h1>
 	</section>
 	  	<div id=buttons class='row'>
-			<div class='column' style='float: center'>
-				<input alt='The image is failing to load' type='image' onclick="userChoice='rock'; runAllFunctions()" src='/static/images/rock.png' id='rockButton' style='width: 100%'> 
+			<div class='column' style='float:center;'>
+				<input alt='The image is failing to load' type='image' onclick="this.disabled=true; userChoice='rock'; runAllFunctions()" src='/static/images/rock.png' id='rockButton' style='width: 100%'> 
+			</div>
+
+			<div class='column'> 
+				<input alt='The image is failing to load' type='image' onclick="this.disabled=true;userChoice='paper'; runAllFunctions()" src=/static/images/paper.png id=paperButton style='width: 100%'/>
 			</div>
 
 			<div class='column'>
-				<input alt='The image is failing to load' type='image' onclick="userChoice='paper'; runAllFunctions()" src=/static/images/paper.png id=paperButton style='width: 100%'/>
-			</div>
-
-			<div class='column'>
-				<input alt='The image is failing to load' type='image' onclick="userChoice='scissors'; runAllFunctions()" src='/static/images/scissors.png' id='scissorsButton' style='width: 100%'/>
+				<input alt='The image is failing to load' type='image' onclick="this.disabled=true; userChoice='scissors'; runAllFunctions();" src='/static/images/scissors.png' id='scissorsButton' style='width: 100%'/>
 			</div>
 		</div> 
 		<div id='main'>	
 		<h2 id=resultsHeader> Results </h2>	
 		<div id='errors'>
 		</div>	
-		<p id='p1' class=rps></p>
+		<p id='p1'></p>
 		<br class='rps'/>		
-		<p id='p2' class=rps></p>
-		<p id='p3' class=rps></p>
+		<p id='p2'></p>
+		<p id='p3'></p>
 		<br/>
 		<a href='/games'><p class=link>Back to Games</p></a>
 		<br/>
@@ -89,8 +89,13 @@ function sleep (time) {
 	return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-// executes all functions
+// executes all functions if it is not already running
 function runAllFunctions(){
+	// Stops button spamming
+	document.getElementById('p1').innerHTML = ""
+	document.getElementById('p2').innerHTML = ""
+	document.getElementById('p3').innerHTML = ""
+	// init for drumroll audio
 	function playDrumroll(){
 		let drumroll = new Audio('/static/audio/drumroll.mp3');
 		drumroll.play();
@@ -99,8 +104,8 @@ function runAllFunctions(){
 	// plays drumroll, waits, finds results and plays appropriate sfx
 
 	playDrumroll();
-	sleep(4000).then(() => {
-		afterDrumroll()		
+	sleep(4500).then(() => {
+		afterDrumroll();		
 	})
 	function afterDrumroll(){
 		getComputerChoice()
@@ -111,11 +116,20 @@ function runAllFunctions(){
 			let loserSound = new Audio('/static/audio/lose.mp3');
 			loserSound.play();
 			loserSound.currentTime=0;
-		}else{
+		}else if (document.getElementById('p1').innerHTML[0] === "Y"){
 			let winnerSound= new Audio('/static/audio/win.mp3');
 			winnerSound.play();
 			winnerSound.currentTime=0;
+		}else {
+			let tieSound = new Audio('/static/audio/tie.mp3');
+			tieSound.play();
+			tieSound.currentTime=0;
 		}
+		sleep(2000).then(() => { // waits 2 seconds then enables buttons
+		document.getElementById('rockButton').disabled = false;
+		document.getElementById('scissorsButton').disabled = false;
+		document.getElementById('paperButton').disabled = false;
+		})
 	}
 }
 </script>
