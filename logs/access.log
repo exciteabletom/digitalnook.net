@@ -1,0 +1,4 @@
+192.168.20.37 - - [30/Aug/2019:10:03:23 +0000] "GET / HTTP/1.1" 502 182 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"
+192.168.20.37 - - [30/Aug/2019:10:03:24 +0000] "GET / HTTP/1.1" 502 182 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"
+192.168.20.37 - - [30/Aug/2019:10:03:35 +0000] "GET / HTTP/1.1" 502 182 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"
+192.168.20.37 - - [30/Aug/2019:10:16:56 +0000] "GET / HTTP/1.1" 502 182 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"

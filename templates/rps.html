@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang=en>
+<!-- Rock Paper Scissors by Tommy Dougiamas -->
+	
+<head>
+	<title>Rock, Paper, Scissors!</title>
+	<link href='/static/styles1.css' type='text/css' rel='stylesheet'/>
+	<link rel="shortcut icon" href="/static/favicon.ico"/>
+</head>
+<body>
+	<section>	
+		<h1 id=mainHeader> Rock Paper Scissors! </h1>
+	</section>
+	  	<div id=buttons class='row'>
+			<div class='column' style='float: center'>
+				<input alt='The image is failing to load' type='image' onclick="userChoice='rock'; runAllFunctions()" src='/static/images/rock.png' id='rockButton' style='width: 80%'> 
+			</div>
+
+			<div class='column'>
+				<input alt='The image is failing to load' type='image' onclick="userChoice='paper'; runAllFunctions()" src=/static/images/paper.png id=paperButton style='width: 80%'/>
+			</div>
+
+			<div class='column'>
+				<input alt='The image is failing to load' type='image' onclick="userChoice='scissors'; runAllFunctions()" src='/static/images/scissors.png' id='scissorsButton' style='width: 80%'/>
+			</div>
+		</div> 
+		<div id='main'>	
+		<h2 id=resultsHeader> Results </h2>	
+		<div id='errors'>
+		</div>	
+		<p id='p1' class=rps></p>
+		<br class='rps'/>		
+		<p id='p2' class=rps></p>
+		<p id='p3' class=rps></p>
+		<br class='rps'/>			
+		<a href='/games/rps'><p class=link>Play Again?</p></a>
+		<br/>
+		<a href='/games'><p class=link>Back to Games</p></a>
+	</div>
+
+<script>
+// Makes variable accessable to the DOM
+var userChoice;
+// Gets computer random choice
+let computerChoice
+function getComputerChoice(){
+	const random = Math.floor((Math.random() * 3)+1);
+	switch(random){
+		case 1:
+			compChoice = "rock";
+			break;
+		case 2:
+			compChoice = "paper";
+			break;
+		case 3:
+			compChoice ="scissors";
+			break;
+	}
+}
+
+function getWinner(userChoice, compChoice){
+	if (userChoice === compChoice) {
+		document.getElementById('p1').innerHTML = "The game was a tie.";
+		
+	}else if (userChoice === 'rock'){
+		if (compChoice === 'paper'){
+			document.getElementById('p1').innerHTML = "Sorry, you lost";
+		}else {
+			document.getElementById('p1').innerHTML = "You Won!";
+		}
+	}else if (userChoice === 'paper'){
+		if (compChoice === 'scissors'){
+			document.getElementById('p1').innerHTML = "Sorry, you lost";
+		}else {
+			document.getElementById('p1').innerHTML = "You Won!";
+		}
+	}else if (userChoice === 'scissors'){
+		if (compChoice === 'rock'){
+			document.getElementById('p1').innerHTML = "Sorry, you lost";
+		}else {
+			document.getElementById('p1').innerHTML = "You Won!";
+		}
+	}
+}
+//function for halting js as needed 
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+// executes all functions
+function runAllFunctions(){
+	function playDrumroll(){
+		let drumroll = new Audio('/static/audio/drumroll.mp3');
+		drumroll.play();
+		drumroll.currentTime=0;
+		sleep(500).then(() => {
+			afterDrumRoll()
+		})
+	}
+
+	function afterDrumroll(){
+		getComputerChoice()
+		getWinner(userChoice, compChoice);
+		document.getElementById('p3').innerHTML = `The Computers choice was ${compChoice}.`;
+		document.getElementById('p2').innerHTML = `Your choice was ${userChoice.toLowerCase()}.`;
+		if (document.getElementById('p1').innerHTML[0] =  "Sorry, you lost"){
+			let loserSound = new Audio('/static/audio/lose.mp3');
+			loserSound.play();
+			loserSound.currentTime=0;
+		}else{
+			let winnerSound= new Audio('/static/audio/win.mp3');
+			winnerSound.play();
+			winnerSound.currentTime=0;
+		}
+	}
+}
+</script>
+<noscript>
+	<p class='italicsP'>Your browser does not support JavaScript, Please enable it to view this page...</p>
+</noscript>
+</body>
+</html>
