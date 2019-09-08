@@ -32,6 +32,11 @@ def rps():
 def bomb():
     return render_template('bomb.html')
 
+# reaction speed game
+@application.route('/games/reaction', host='digitalnook.net')
+def reaction():
+    return render_template('reaction.html')
+
 # Handles 404 errors
 @application.errorhandler(404)
 

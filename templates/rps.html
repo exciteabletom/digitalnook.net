@@ -11,33 +11,35 @@
 	<section>	
 		<h1 id=mainHeader> Rock Paper Scissors! </h1>
 	</section>
-	  	<div id=buttons class='row'>
+	  	<div id=buttons class='row' style>
 			<div class='column' style='float:center;'>
-				<input alt='The image is failing to load' type='image' onclick="this.disabled=true; userChoice='rock'; runAllFunctions()" src='/static/images/rock.png' id='rockButton' style='width: 100%'> 
+				<input alt='image of rock' type='image' onclick="this.disabled=true; userChoice='rock'; runAllFunctions()" src='/static/images/rock.png' id='rockButton' style='width: 100%'> 
 			</div>
 
 			<div class='column'> 
-				<input alt='The image is failing to load' type='image' onclick="this.disabled=true;userChoice='paper'; runAllFunctions()" src=/static/images/paper.png id=paperButton style='width: 100%'/>
+				<input alt='image of paper' type='image' onclick="this.disabled=true;userChoice='paper'; runAllFunctions()" src=/static/images/paper.png id=paperButton style='width: 100%'/>
 			</div>
 
 			<div class='column'>
-				<input alt='The image is failing to load' type='image' onclick="this.disabled=true; userChoice='scissors'; runAllFunctions();" src='/static/images/scissors.png' id='scissorsButton' style='width: 100%'/>
+				<input alt='image of scissors' type='image' onclick="this.disabled=true; userChoice='scissors'; runAllFunctions();" src='/static/images/scissors.png' id='scissorsButton' style='width: 100%'/>
 			</div>
+
 		</div> 
+		<div id='popup' class='overlay'>
+			<img src='/static/images/win.png' alt='winner popup'/>
+		</div>
 		<div id='main'>	
-		<h2 id=resultsHeader> Results </h2>	
-		<div id='errors'>
-		</div>	
-		<p id='p1'></p>
-		<br class='rps'/>		
-		<p id='p2'></p>
-		<p id='p3'></p>
-		<br/>
-		<a href='/games'><p class=link>Back to Games</p></a>
-		<br/>
-		<br/>
-		<p class=italicsP>Note: Sound effects may not work properly with mobile.</p>
-	</div>
+			<h2> Results </h2>	
+			<p id='p1'></p>
+		      <br/>		
+			<p id='p2'></p>
+			<p id='p3'></p>
+		      <br/>
+			<a href='/games'><p class=link>Back to Games</p></a>
+	              <br/>
+		      <br/>
+			<p class=italicsP>Note: Sound effects may not work properly with mobile.</p>
+		</div>
 
 <script>
 // Makes variable accessable to the DOM
@@ -82,7 +84,7 @@ function getWinner(userChoice, compChoice){
 			document.getElementById('p1').innerHTML = "You Won!";
 		}
 	}
-	console.log(compChoice); // debugging
+	console.log(`comps choice: ${compChoice}`);console.log(`users choice: ${userChoice}`) // debugging
 }
 //function for halting js as needed 
 function sleep (time) {
@@ -118,6 +120,7 @@ function runAllFunctions(){
 			loserSound.currentTime=0;
 		}else if (document.getElementById('p1').innerHTML[0] === "Y"){
 			let winnerSound= new Audio('/static/audio/win.mp3');
+			document.getElementById('popup').style.display = "block"
 			winnerSound.play();
 			winnerSound.currentTime=0;
 		}else {
@@ -125,7 +128,8 @@ function runAllFunctions(){
 			tieSound.play();
 			tieSound.currentTime=0;
 		}
-		sleep(2000).then(() => { // waits 2 seconds then enables buttons
+		sleep(1900).then(() => { // waits 1.9 seconds then enables buttons
+		document.getElementById('popup').style.display = "none"
 		document.getElementById('rockButton').disabled = false;
 		document.getElementById('scissorsButton').disabled = false;
 		document.getElementById('paperButton').disabled = false;
