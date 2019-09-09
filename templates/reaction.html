@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test your reactions! | DigitalNook</title>
+		<link href="/static/favicon.ico" rel="icon" type="icon"/>
+		<link href="/static/styles1.css" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+		<header>
+			<h1>Test your reactions!</h1>
+		</header>
+		<br/>
+		<!-- All buttons for game and start button -->
+		
+		<div id='start'>
+			<button type="button" text='start' id="startButton" style="position:fixed;x-index:10" onclick="timer();startGame()"/>
+		</div>
+		<div id="game" style="height:100%; width:100%">
+			<input type="image" href="/static/images/dot" id="topLeft" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="topCenter" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="topRight" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="middleLeft" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="middleRight" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="middleCenter" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="bottomCenter" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="bottomLeft" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="bottomRight" class="reactionButton" onclick="buttonPress()"/>
+		</div>
+	<!-- TIMER FUNCTION -->
+	<script>
+// counts time
+let currentTime;
+function timer() {
+	
+	while (stopTimer === false) { // when timer needs to be stopped change var to true
+		sleep(250).then(() => {// waits 0.5 sec then adds to timer
+			currentTime += 250
+			console.log(`Current time is now ${currentTime}`)
+			finalTime = currentTime / 100
+		})
+	}
+}
+window.onload(currentTime)
+	</script>
+
+	<script>
+// Aliases for DOM elements
+const game = document.getElementById('game');
+const buttons = document.getElementsByClassName('reactionButton');
+
+// randomNum=1-9  randomWaitNum=1000-10000
+let randomNum;
+let randomWaitNum;
+// for debugging	
+console.log(buttons);
+console.log(topLeft);
+// pauses execution
+function sleep (time) {
+	return new Promise((resolve) => setTimeout(resolve, time));
+}
+// variables where reaction time is stored
+let finalTime;
+// bool to stop timer
+let stopTimer = false;
+
+function startGame() {
+	start.hidden = true;
+	randomNum = Math.floor((Math.random * 9) + 1);
+	randomWaitNum = Math.floor((Math.random * 10000) + 1000);
+	
+	sleep(randomWaitNum).then(() => {
+		switch (randomNum) {
+			case 1:
+				game.getElementById("topLeft").hidden = false;
+				break;
+			case 2:
+				game.getElementById("topCenter").hidden = false;
+				break;
+			case 3:	
+				game.getElementById("topRight").hidden = false;
+				break;
+			case 4:
+				game.getElementById("middleLeft").hidden = false;
+				break;
+			case 5:
+				game.getElementById("middleCenter").hidden = false;
+				break;
+			case 6:
+				game.getElementById("middleLeft").hidden = false;
+				break;
+			case 7:
+				game.getElementById("bottomLeft").hidden = false;
+				break;
+			case 8:
+				game.getElementById("bottomCenter").hidden = false;
+				break;
+			case 9:
+				game.getElementById("bottomRight").hidden = false;
+				break;
+		}		
+	})
+}
+
+function buttonPress() {
+	stopTimer = true;
+	game.hidden = true;
+	console.log(`Your reaction time is ${finalTime}`) // IMPORTANT: ADD RESULTS SECTION FOR THIS 
+}
+
+	</script>
+	<noscript>
+		JavaScript is not working...
+	</noscript>
+</html>
