@@ -13,9 +13,9 @@
 		<!-- All buttons for game and start button -->
 		
 		<div id='start'>
-			<button type="button" text='start' id="startButton" style="position:fixed;x-index:10" onclick="timer();startGame()"/>
+			<button type="button" text='start' id="startButton" style="z-index:10" onclick="timer();startGame()">Start</button>
 		</div>
-		<div id="game" style="height:100%; width:100%">
+		<div id="game" style="height:100%; width:auto">
 			<input type="image" href="/static/images/dot" id="topLeft" class="reactionButton" onclick="buttonPress()"/>
 			<input type="image" href="/static/images/dot" id="topCenter" class="reactionButton" onclick="buttonPress()"/>
 			<input type="image" href="/static/images/dot" id="topRight" class="reactionButton" onclick="buttonPress()"/>
@@ -39,11 +39,8 @@ function timer() {
 			finalTime = currentTime / 100
 		})
 	}
-}
-window.onload(currentTime)
-	</script>
 
-	<script>
+}
 // Aliases for DOM elements
 const game = document.getElementById('game');
 const buttons = document.getElementsByClassName('reactionButton');
@@ -66,8 +63,8 @@ let stopTimer = false;
 function startGame() {
 	start.hidden = true;
 	randomNum = Math.floor((Math.random * 9) + 1);
-	randomWaitNum = Math.floor((Math.random * 10000) + 1000);
-	
+	randomWaitNum = Math.floor((Math.random * 10000));
+	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)	
 	sleep(randomWaitNum).then(() => {
 		switch (randomNum) {
 			case 1:

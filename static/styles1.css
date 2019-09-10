@@ -97,7 +97,29 @@ h1, .mainPageHeader {
 	bottom:0;
 	left:0;
 	right:500px;
-	
+}.reactionButton {
+	position: fixed;
+	display: none;
 
-
+}.startButton {
+        background-color:#44c767;
+	-moz-border-radius:31px;
+	-webkit-border-radius:31px;
+	border-radius:31px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:23px;
+	font-weight:bold;
+	padding:16px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.startButton:hover {
+	background-color:#5cbf2a;
+}.startButton:active {
+	position:relative;
+	top:1px;
 }
