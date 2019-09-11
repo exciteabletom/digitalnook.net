@@ -19,7 +19,6 @@
 		<br/>
 		<!-- All buttons for game and start button -->
 		<div id='start'>
-<<<<<<< HEAD
 			<button type="button" id="startButton" style="" onclick="this.style.visibility = 'hidden'; startGame()">Start</button>
 		</div>
 		<br/>
@@ -57,7 +56,6 @@
 			<a href="/games">Back To Games</a>
 		</div>
 	<script>
-=======
 			<button type="button" text='start' id="startButton" style="z-index:10" onclick="timer();startGame()">Start</button>
 		</div>
 		<div id="game" style="height:100%; width:auto">
@@ -86,7 +84,6 @@ function timer() {
 	}
 
 }
->>>>>>> d4a5b525e2658af799002963dbf9b84f181bd076
 // Aliases for DOM elements
 const game = document.getElementById('game');
 const finalTime = document.getElementById('finalTime');
@@ -106,7 +103,6 @@ function sleep (ms) {
 // holds button appearance time and button click time
 let startTime, endTime;
 
-<<<<<<< HEAD
 function startTimer() {
 	startTime = new Date();
 	console.log("timer Started");
@@ -137,13 +133,11 @@ function startGame() {// runs when start button is pressed
 	randomNum = Math.floor((Math.random() * 9) + 1);
 	randomWaitNum = Math.floor((Math.random() * 6000)+1000);
 	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)// for debugging	
-=======
 function startGame() {
 	start.hidden = true;
 	randomNum = Math.floor((Math.random * 9) + 1);
 	randomWaitNum = Math.floor((Math.random * 10000));
 	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)	
->>>>>>> d4a5b525e2658af799002963dbf9b84f181bd076
 	sleep(randomWaitNum).then(() => {
 		switch (randomNum) {
 			case 1:
