@@ -98,23 +98,40 @@ h1, .mainPageHeader {
 	left:0;
 	right:500px;
 }.reactionButton {
+<<<<<<< HEAD
 	position: relative;
 	display: none;
 
 }#startButton {
 	background-color:#44c767;
+=======
+	position: fixed;
+	display: none;
+
+}.startButton {
+        background-color:#44c767;
+>>>>>>> d4a5b525e2658af799002963dbf9b84f181bd076
 	-moz-border-radius:31px;
 	-webkit-border-radius:31px;
 	border-radius:31px;
 	border:1px solid #18ab29;
+<<<<<<< HEAD
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;
 	font-size:50px;
+=======
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:23px;
+>>>>>>> d4a5b525e2658af799002963dbf9b84f181bd076
 	font-weight:bold;
 	padding:16px 31px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #2f6627;
+<<<<<<< HEAD
 	width: 15%;
 	margin-left: 42.5%;
 	margin-right: 42.5%;
@@ -156,4 +173,12 @@ h1, .mainPageHeader {
 	margin-bottom: 20px;
 }#results {
 	display: block;
+=======
+}
+.startButton:hover {
+	background-color:#5cbf2a;
+}.startButton:active {
+	position:relative;
+	top:1px;
+>>>>>>> d4a5b525e2658af799002963dbf9b84f181bd076
 }

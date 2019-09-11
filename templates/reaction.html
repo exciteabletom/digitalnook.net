@@ -19,6 +19,7 @@
 		<br/>
 		<!-- All buttons for game and start button -->
 		<div id='start'>
+<<<<<<< HEAD
 			<button type="button" id="startButton" style="" onclick="this.style.visibility = 'hidden'; startGame()">Start</button>
 		</div>
 		<br/>
@@ -56,6 +57,36 @@
 			<a href="/games">Back To Games</a>
 		</div>
 	<script>
+=======
+			<button type="button" text='start' id="startButton" style="z-index:10" onclick="timer();startGame()">Start</button>
+		</div>
+		<div id="game" style="height:100%; width:auto">
+			<input type="image" href="/static/images/dot" id="topLeft" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="topCenter" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="topRight" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="middleLeft" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="middleRight" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="middleCenter" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="bottomCenter" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="bottomLeft" class="reactionButton" onclick="buttonPress()"/>
+			<input type="image" href="/static/images/dot" id="bottomRight" class="reactionButton" onclick="buttonPress()"/>
+		</div>
+	<!-- TIMER FUNCTION -->
+	<script>
+// counts time
+let currentTime;
+function timer() {
+	
+	while (stopTimer === false) { // when timer needs to be stopped change var to true
+		sleep(250).then(() => {// waits 0.5 sec then adds to timer
+			currentTime += 250
+			console.log(`Current time is now ${currentTime}`)
+			finalTime = currentTime / 100
+		})
+	}
+
+}
+>>>>>>> d4a5b525e2658af799002963dbf9b84f181bd076
 // Aliases for DOM elements
 const game = document.getElementById('game');
 const finalTime = document.getElementById('finalTime');
@@ -75,6 +106,7 @@ function sleep (ms) {
 // holds button appearance time and button click time
 let startTime, endTime;
 
+<<<<<<< HEAD
 function startTimer() {
 	startTime = new Date();
 	console.log("timer Started");
@@ -105,6 +137,13 @@ function startGame() {// runs when start button is pressed
 	randomNum = Math.floor((Math.random() * 9) + 1);
 	randomWaitNum = Math.floor((Math.random() * 6000)+1000);
 	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)// for debugging	
+=======
+function startGame() {
+	start.hidden = true;
+	randomNum = Math.floor((Math.random * 9) + 1);
+	randomWaitNum = Math.floor((Math.random * 10000));
+	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)	
+>>>>>>> d4a5b525e2658af799002963dbf9b84f181bd076
 	sleep(randomWaitNum).then(() => {
 		switch (randomNum) {
 			case 1:
