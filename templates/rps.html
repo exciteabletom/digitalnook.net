@@ -38,7 +38,7 @@
 			<a href='/games'><p class=link>Back to Games</p></a>
 	              <br/>
 		      <br/>
-			<p class=italicsP>Note: Sound effects may not work properly with mobile.</p>
+			<p class=italicsP>Note: Sound effects may not work properly on mobile devices.</p>
 		</div>
 
 <script>
@@ -121,6 +121,7 @@ function runAllFunctions(){
 		}else if (document.getElementById('p1').innerHTML[0] === "Y"){
 			let winnerSound= new Audio('/static/audio/win.mp3');
 			document.getElementById('popup').style.display = "block"
+			winnerSound.play();
 			winnerSound.play();
 			winnerSound.currentTime=0;
 		}else {

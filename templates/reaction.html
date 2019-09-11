@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
+<!-- reaction time game by Tommy Dougiamas
+	TODO: LeaderBoard,-->
 	<head>
 		<title>Test your reactions! | DigitalNook</title>
-		<link href="/static/favicon.ico" rel="icon" type="icon"/>
-		<link href="/static/styles1.css" rel="stylesheet" type="text/css"/>
+		<link href="/static/favicon.ico" rel="icon" type="icon/ico"/>
+		<link href="/static/styles1.css" rel="stylesheet"/>
+		<!-- fits images inside divs -->
+		<style>
+		input {margin: 5px;height: 60px; width: 60px;}
+		</style>
+
 	</head>
 	<body>
 		<header>
@@ -11,98 +18,127 @@
 		</header>
 		<br/>
 		<!-- All buttons for game and start button -->
-		
 		<div id='start'>
-			<button type="button" text='start' id="startButton" style="z-index:10" onclick="timer();startGame()">Start</button>
+			<button type="button" id="startButton" style="" onclick="this.style.visibility = 'hidden'; startGame()">Start</button>
 		</div>
-		<div id="game" style="height:100%; width:auto">
-			<input type="image" href="/static/images/dot" id="topLeft" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="topCenter" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="topRight" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="middleLeft" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="middleRight" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="middleCenter" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="bottomCenter" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="bottomLeft" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="bottomRight" class="reactionButton" onclick="buttonPress()"/>
+		<br/>
+		<div id="game" style="height: 200px; width: 35%; margin-left: 32.5%;margin-right: 32.5%; border: 5px solid black;">
+			<!-- sections the page into three vertical stacks, buttons floated left/right -->
+			<div id="top" style="height:33%">
+				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="topLeft" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="topCenter" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="topRight" class="rightButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+			</div>
+			<div id="middle" style="height:33%;">
+				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="middleLeft" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="middleRight" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="middleCenter" class="rightButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+			</div>
+			<div id="bottom" style="height:33%;">
+				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="bottomCenter" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="bottomLeft" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="bottomRight" class="rightButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+			</div>
 		</div>
-	<!-- TIMER FUNCTION -->
+		<br/>
+		<div id="results" style="position: relative; margin: none; height: 100%; width:100%">
+				<h2>Results</h2>
+				<p id="firstTime"></p>
+				<p id="secondTime"></p>
+				<p id="thirdTime"></p>
+				<br/>
+				<p id="finalTime"></p>
+				<br/>
+				<button type="button" id='submitButton' style="width:30%; margin-left: 35%; margin-left: 35%;" onclick="alert('This feature is not yet available')">Submit score to Leaderboard</button>
+		</div>
+		<br/>
+		<div id="footer" style="margin-top: 20px; position:relative;"> 
+			<a href="/games">Back To Games</a>
+		</div>
 	<script>
-// counts time
-let currentTime;
-function timer() {
-	
-	while (stopTimer === false) { // when timer needs to be stopped change var to true
-		sleep(250).then(() => {// waits 0.5 sec then adds to timer
-			currentTime += 250
-			console.log(`Current time is now ${currentTime}`)
-			finalTime = currentTime / 100
-		})
-	}
-
-}
 // Aliases for DOM elements
 const game = document.getElementById('game');
-const buttons = document.getElementsByClassName('reactionButton');
-
-// randomNum=1-9  randomWaitNum=1000-10000
-let randomNum;
-let randomWaitNum;
-// for debugging	
-console.log(buttons);
-console.log(topLeft);
-// pauses execution
-function sleep (time) {
-	return new Promise((resolve) => setTimeout(resolve, time));
+const finalTime = document.getElementById('finalTime');
+const results = document.getElementById('results');
+const firstTime = document.getElementById('firstTime');
+const secondTime = document.getElementById('secondTime');
+const thirdTime = document.getElementById('thirdTime');
+const startButton = document.getElementById('startButton');
+// stores user's reaction time
+let reactionTime = 0;
+// var for stopping while loop
+let count = 0;
+// pauses execution in milliseconds
+function sleep (ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
 }
-// variables where reaction time is stored
-let finalTime;
-// bool to stop timer
-let stopTimer = false;
+// holds button appearance time and button click time
+let startTime, endTime;
 
-function startGame() {
-	start.hidden = true;
-	randomNum = Math.floor((Math.random * 9) + 1);
-	randomWaitNum = Math.floor((Math.random * 10000));
-	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)	
+function startTimer() {
+	startTime = new Date();
+	console.log("timer Started");
+};
+
+function endTimer() {
+	endTime = new Date();
+	console.log("reaction time: " + (endTime - startTime));
+	reactionTime += endTime - startTime;
+	if (count === 1){
+		firstTime.innerHTML = endTime - startTime + "ms";
+		startGame();
+	} else if (count === 2) {
+		secondTime.innerHTML = endTime - startTime + "ms";
+		startGame();
+	} else if (count === 3) {	
+		startButton.style.visibility = "visible";
+		thirdTime.innerHTML = endTime - startTime + "ms";
+		finalTime.innerHTML = `Your average reaction time was ${Math.round(reactionTime/3)}ms or ${((reactionTime/3)/1000).toFixed(2)} seconds!`;
+	}else {
+		startGame();
+	}
+}
+function startGame() {// runs when start button is pressed
+	let randomNum, randomWaitNum; //variables for waiting/randomizing button
+	count += 1
+	start.style.visibility = "hidden"
+	randomNum = Math.floor((Math.random() * 9) + 1);
+	randomWaitNum = Math.floor((Math.random() * 6000)+1000);
+	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)// for debugging	
 	sleep(randomWaitNum).then(() => {
 		switch (randomNum) {
 			case 1:
-				game.getElementById("topLeft").hidden = false;
+				document.getElementById("topLeft").style.visibility = "visible";
 				break;
 			case 2:
-				game.getElementById("topCenter").hidden = false;
+				document.getElementById("topCenter").style.visibility = "visible";
 				break;
 			case 3:	
-				game.getElementById("topRight").hidden = false;
+				document.getElementById("topRight").style.visibility = "visible";
 				break;
 			case 4:
-				game.getElementById("middleLeft").hidden = false;
+				document.getElementById("middleLeft").style.visibility = "visible";
 				break;
 			case 5:
-				game.getElementById("middleCenter").hidden = false;
+				document.getElementById("middleCenter").style.visibility = "visible";
 				break;
 			case 6:
-				game.getElementById("middleLeft").hidden = false;
+				document.getElementById("middleRight").style.visibility = "visible";
 				break;
 			case 7:
-				game.getElementById("bottomLeft").hidden = false;
+				document.getElementById("bottomLeft").style.visibility = "visible";
 				break;
 			case 8:
-				game.getElementById("bottomCenter").hidden = false;
+				document.getElementById("bottomCenter").style.visibility = "visible";
 				break;
 			case 9:
-				game.getElementById("bottomRight").hidden = false;
+				document.getElementById("bottomRight").style.visibility = "visible";
 				break;
-		}		
-	})
+		} startTimer();
+	
+	}); 
 }
 
-function buttonPress() {
-	stopTimer = true;
-	game.hidden = true;
-	console.log(`Your reaction time is ${finalTime}`) // IMPORTANT: ADD RESULTS SECTION FOR THIS 
-}
 
 	</script>
 	<noscript>
