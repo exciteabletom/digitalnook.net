@@ -102,11 +102,6 @@ h1, .mainPageHeader {
 	display: none;
 
 }#startButton {
-	background-color:#44c767;
-	position: fixed;
-	display: none;
-
-}.startButton {
         background-color:#44c767;
 	-moz-border-radius:31px;
 	-webkit-border-radius:31px;
@@ -116,7 +111,6 @@ h1, .mainPageHeader {
 	color:#ffffff;
 	font-family:Arial;
 	font-size:50px;
-	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;
@@ -166,10 +160,4 @@ h1, .mainPageHeader {
 	margin-bottom: 20px;
 }#results {
 	display: block;
-}
-.startButton:hover {
-	background-color:#5cbf2a;
-}.startButton:active {
-	position:relative;
-	top:1px;
 }

@@ -16,10 +16,9 @@
 		<header>
 			<h1>Test your reactions!</h1>
 		</header>
-		<br/>
 		<!-- All buttons for game and start button -->
 		<div id='start'>
-			<button type="button" id="startButton" style="" onclick="this.style.visibility = 'hidden'; startGame()">Start</button>
+			<button type="button" id="startButton" style="visibilty: visible;" onclick="resetVars(); this.style.visibility = 'hidden'; startGame()">Start</button>
 		</div>
 		<br/>
 		<div id="game" style="height: 200px; width: 35%; margin-left: 32.5%;margin-right: 32.5%; border: 5px solid black;">
@@ -31,7 +30,7 @@
 			</div>
 			<div id="middle" style="height:33%;">
 				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="middleLeft" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
-				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="middleRight" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" style="margin-right: 50px"id="middleRight" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
 				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="middleCenter" class="rightButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
 			</div>
 			<div id="bottom" style="height:33%;">
@@ -55,35 +54,8 @@
 		<div id="footer" style="margin-top: 20px; position:relative;"> 
 			<a href="/games">Back To Games</a>
 		</div>
+		<br/>
 	<script>
-			<button type="button" text='start' id="startButton" style="z-index:10" onclick="timer();startGame()">Start</button>
-		</div>
-		<div id="game" style="height:100%; width:auto">
-			<input type="image" href="/static/images/dot" id="topLeft" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="topCenter" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="topRight" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="middleLeft" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="middleRight" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="middleCenter" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="bottomCenter" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="bottomLeft" class="reactionButton" onclick="buttonPress()"/>
-			<input type="image" href="/static/images/dot" id="bottomRight" class="reactionButton" onclick="buttonPress()"/>
-		</div>
-	<!-- TIMER FUNCTION -->
-	<script>
-// counts time
-let currentTime;
-function timer() {
-	
-	while (stopTimer === false) { // when timer needs to be stopped change var to true
-		sleep(250).then(() => {// waits 0.5 sec then adds to timer
-			currentTime += 250
-			console.log(`Current time is now ${currentTime}`)
-			finalTime = currentTime / 100
-		})
-	}
-
-}
 // Aliases for DOM elements
 const game = document.getElementById('game');
 const finalTime = document.getElementById('finalTime');
@@ -99,6 +71,16 @@ let count = 0;
 // pauses execution in milliseconds
 function sleep (ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+// resets variables for new game
+function resetVars() {
+	firstTime.innerHTML = "";
+	secondTime.innerHTML = "";
+	thirdTime.innerHTML = "";
+	finalTime.innerHTML = "";
+	count = 0;
+	reactionTime = 0;
+	
 }
 // holds button appearance time and button click time
 let startTime, endTime;
@@ -116,7 +98,7 @@ function endTimer() {
 		firstTime.innerHTML = endTime - startTime + "ms";
 		startGame();
 	} else if (count === 2) {
-		secondTime.innerHTML = endTime - startTime + "ms";
+		secondTime.innerHTML =endTime - startTime + "ms";
 		startGame();
 	} else if (count === 3) {	
 		startButton.style.visibility = "visible";
@@ -129,15 +111,10 @@ function endTimer() {
 function startGame() {// runs when start button is pressed
 	let randomNum, randomWaitNum; //variables for waiting/randomizing button
 	count += 1
-	start.style.visibility = "hidden"
+	startButton.style.visibility = "hidden"
 	randomNum = Math.floor((Math.random() * 9) + 1);
 	randomWaitNum = Math.floor((Math.random() * 6000)+1000);
 	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)// for debugging	
-function startGame() {
-	start.hidden = true;
-	randomNum = Math.floor((Math.random * 9) + 1);
-	randomWaitNum = Math.floor((Math.random * 10000));
-	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)	
 	sleep(randomWaitNum).then(() => {
 		switch (randomNum) {
 			case 1:
