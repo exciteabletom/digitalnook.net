@@ -134,6 +134,7 @@ h1, .mainPageHeader {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	visibility: hidden;
+	margin-right:50%;
 }.leftButton {
 	position: relative;
 	float: left;
@@ -160,4 +161,7 @@ h1, .mainPageHeader {
 	margin-bottom: 20px;
 }#results {
 	display: block;
+}.bottomCenter {
+	margin-right: 70%;
+	float: left;
 }
