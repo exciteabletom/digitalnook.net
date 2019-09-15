@@ -93,7 +93,9 @@ function sleep (time) {
 
 // executes all functions if it is not already running
 function runAllFunctions(){
-	// Stops button spamming
+	document.getElementById('rockButton').disabled = true;
+	document.getElementById('scissorsButton').disabled = true;
+	document.getElementById('paperButton').disabled = true;
 	document.getElementById('p1').innerHTML = ""
 	document.getElementById('p2').innerHTML = ""
 	document.getElementById('p3').innerHTML = ""
