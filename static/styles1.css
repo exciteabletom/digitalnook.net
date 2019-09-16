@@ -19,21 +19,13 @@ h1, .mainPageHeader {
 	font-style: italic;
 	display: block;
 	
-}html{	
+}body{	
 	background: #FF6F00;
+	border: 20px orange groove;
+	margin: 0px;
+	box-sizing: border-box; min-height: 100vh; 
 
-}/*
-FIX THIS LATER, remember to add fullPage div to all pages
-#fullPage{
-	border: 50px black ridge;
-	width: 95%;
-	height: 95%;
-	z-index: 10;
-	position:fixed;
-	margin: 0;
-}*
-}*/
-.blueP{
+}.blueP{
 	color: blue;
 	font-size: 30px;
 	font-family: sans-serif;
