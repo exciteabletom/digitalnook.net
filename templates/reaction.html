@@ -49,7 +49,7 @@
 				<br/>
 				<p id="finalTime"></p>
 				<br/>
-				<button type="button" id='submitButton' style="width:30%; margin-left: 35%; margin-left: 35%;" onclick="alert('This feature is not yet available')">Submit score to Leaderboard</button>
+				<button type="button" id='submitButton' class='greenButton' style="width:30%; margin-left: 35%; margin-left: 35%;" onclick="alert('This feature is not yet available')">Submit score to Leaderboard</button>
 		</div>
 		<br/>
 		<div id="footer" style="margin-top: 20px; position:relative;"> 
@@ -66,9 +66,14 @@
 				<input type='submit' value='Submit'>
 			</fieldset>
 		</form>
-			
+		<div id='tutorialPopup' class='overlay' style="display:block; background:#FF6F00;">
+			<h1>How to Play</h1>
+			<br/>
+			<p>Click on the 3 dots as they appear. Try to get a good score!</p>
+			<button class='greenButton' id="tutorialClose" style="margin-right:40%;margin-left:40%;width:20%;"onclick='document.getElementById("tutorialPopup").style.display = "none"'>Let's Play!</button>
+		</div>
 	<script>
-// Aliases for DOM elements
+// Variables for easy access of DOM elements
 const game = document.getElementById('game');
 const finalTime = document.getElementById('finalTime');
 const results = document.getElementById('results');
@@ -79,6 +84,7 @@ const startButton = document.getElementById('startButton');
 const tutorial = document.getElementById('tutorial');
 const leaderboardScore = document.getElementById('leaderboardScore');
 const submitToLeaderboard = document.getElementById('submitToLeaderboard');
+const tutorialPopup = document.getElementByid('tutorialPopup');
 // stores user's reaction time
 let reactionTime = 0;
 // var for stopping while loop
