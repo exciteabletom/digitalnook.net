@@ -7,7 +7,7 @@
 	<link href='/static/styles1.css' type='text/css' rel='stylesheet'/>
 	<link rel="shortcut icon" href="/static/favicon.ico"/>
 </head>
-<body style='height 100vh'>
+<body> 
 	<section>	
 		<h1 id=mainHeader> Rock Paper Scissors! </h1>
 	</section>
@@ -28,6 +28,14 @@
 		<div id='popup' class='overlay'>
 			<img src='/static/images/win.png' alt='winner popup'/>
 		</div>
+		<div id='tutorialPopup' class='overlay' style='margin:0;border: 20px orange groove; background: #ff6f00; display:block;'>
+			<h1>Tutorial</h1>	
+			<br/>
+			<br/>
+			<p> Click on Rock, Paper or scissors to make your choice. Wait for the computer to choose to see if you won!</p>
+			<br/>
+			<button id='startButton' type='button' onclick="document.getElementById('tutorialPopup').style.display = 'none'">I am ready to start!</button>
+		</div>
 		<div id='main'>	
 			<h2> Results </h2>	
 			<p id='p1'></p>
@@ -42,7 +50,8 @@
 		</div>
 
 <script>
-// Makes variable accessable to the DOM
+
+	// Makes variable accessable to the DOM
 var userChoice;
 // Gets computer random choice
 let computerChoice
