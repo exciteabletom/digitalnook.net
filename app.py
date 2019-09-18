@@ -11,6 +11,11 @@ def pie():
 @app.route('/',host='digitalnook.net')
 def index():
     return render_template('index.html')
+# About page
+@app.route('/about',host='digitalnook.net')
+def about():
+    return render_template('about.html')
+
 # bruh
 @app.route('/bruh', host='digitalnook.net')
 def bruh():

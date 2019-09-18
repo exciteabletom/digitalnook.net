@@ -19,7 +19,6 @@
 		<!-- All buttons for game and start button -->
 		<div id='start'>
 			<button type="button" id="startButton" style="visibility: visible;" onclick="resetVars(); this.style.visibility = 'hidden'; startGame()">Start</button>
-			<p class="italicsP" id="tutorial">3 buttons will appear in the box, click them as fast as you can!</p>
 		</div>
 		<br/>
 		<div id="game" style="background: white; height: 200px; width: 20%; margin-left: 40%; margin-right: 40%; border: 5px solid black;">
@@ -84,7 +83,7 @@ const startButton = document.getElementById('startButton');
 const tutorial = document.getElementById('tutorial');
 const leaderboardScore = document.getElementById('leaderboardScore');
 const submitToLeaderboard = document.getElementById('submitToLeaderboard');
-const tutorialPopup = document.getElementByid('tutorialPopup');
+const tutorialPopup = document.getElementById('tutorialPopup');
 // stores user's reaction time
 let reactionTime = 0;
 // var for stopping while loop
@@ -129,7 +128,6 @@ function endTimer() {
 	}
 }
 function startGame() {// runs when start button is pressed
-	tutorial.style.display = "none"
 	let randomNum, randomWaitNum; //variables for waiting/randomizing button
 	count += 1
 	startButton.style.visibility = "hidden"

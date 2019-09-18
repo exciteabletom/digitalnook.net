@@ -144,10 +144,9 @@ h1, .mainPageHeader {
 }.centerButton { 
 	position: relative;
 	top: 50%;
-	left: 50%;
+	left: 32.5%;
 	transform: translate(-50%, -50%);
 	visibility: hidden;
-	margin-right:50%;
 }.leftButton {
 	position: relative;
 	float: left;
