@@ -51,7 +51,7 @@
 				<button type="button" id='submitButton' class='greenButton' style="width:30%; margin-left: 35%; margin-left: 35%;" onclick="alert('This feature is not yet available')">Submit score to Leaderboard</button>
 		</div>
 		<br/>
-		<div id="footer" style="margin-top: 20px; position:relative;"> 
+		<div id="footer" style="margin-top: 20px; position:relative;">
 			<a href="/games">Back To Games</a>
 		</div>
 		<br/>
@@ -69,7 +69,14 @@
 			<h1>How to Play</h1>
 			<br/>
 			<p>Click on the 3 dots as they appear. Try to get a good score!</p>
-			<button class='greenButton' id="tutorialClose" style="margin-right:40%;margin-left:40%;width:20%;"onclick='document.getElementById("tutorialPopup").style.display = "none"'>Let's Play!</button>
+			<button class='greenButton' id="tutorialClose" style="margin-right:40%;margin-left:40%;width:20%;"onclick='tutorialPopup.style.display = "none"'>Let's Play!</button>
+		</div>
+		<div id='lowTimePopup' class='overlay' style="display:none; background:#FF6F00;">
+			<h1>Nice Job! that is a very low time!</h1>
+			<br/>
+			<p id="lowTime"></p>
+			<br/>
+			<button class="greenButton" id="lowTimeClose" onclick="lowTimePopup.style.display = 'none';">Back to Game</button>
 		</div>
 	<script>
 // Variables for easy access of DOM elements
@@ -84,10 +91,12 @@ const tutorial = document.getElementById('tutorial');
 const leaderboardScore = document.getElementById('leaderboardScore');
 const submitToLeaderboard = document.getElementById('submitToLeaderboard');
 const tutorialPopup = document.getElementById('tutorialPopup');
+const lowTimePopup = document.getElementById('lowTimePopup');
+const lowTime = document.getElementById('lowTime');
+// defines pop sound so that it is not delayed on button press
+const popSound = new Audio('/static/audio/pop.mp3');
 // stores user's reaction time
 let reactionTime = 0;
-// var for stopping while loop
-let count = 0;
 // pauses execution in milliseconds
 function sleep (ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
@@ -100,7 +109,7 @@ function resetVars() {
 	finalTime.innerHTML = "";
 	count = 0;
 	reactionTime = 0;
-	
+
 }
 // holds button appearance time and button click time
 let startTime, endTime;
@@ -108,21 +117,56 @@ function startTimer() {
 	startTime = new Date();
 	console.log("timer Started");
 };
+// stores the fastest time
+let bestReactionTime = 0;
 function endTimer() {
+	//pop audio on button press
+	popSound.play();
+	popSound.currentTime = 0;
+
+	// adds reaction time to total for averages
 	endTime = new Date();
 	console.log("reaction time: " + (endTime - startTime));
 	reactionTime += endTime - startTime;
+	if ((endTime - startTime) < bestReactionTime) {
+		bestReactionTime = endTime - startTime;
+	}
+	// displays times to users
 	if (count === 1){
 		firstTime.innerHTML = endTime - startTime + "ms";
+		bestReactionTime = endTime - startTime;
 		startGame();
 	} else if (count === 2) {
 		secondTime.innerHTML =endTime - startTime + "ms";
 		startGame();
-	} else if (count === 3) {	
+	} else if (count === 3) {
 		startButton.style.visibility = "visible";
 		thirdTime.innerHTML = endTime - startTime + "ms";
 		finalTime.innerHTML = `Your average reaction time was ${Math.round(reactionTime/3)}ms or ${((reactionTime/3)/1000).toFixed(2)} seconds!`;
 		leaderboardScore.value = Math.round(reactionTime/3);
+		if ((reactionTime/3) <= 600) {
+				lowTime.innerHTML = "Nice! <br/><br/> Average Reaction Time: " +  (reactionTime/3) + "ms<br/> Best Reaction Time: " + Math.round(bestReactionTime) + "ms";
+		lowTimePopup.style.display = "block";	
+			lowTimePopup.style.background = "red";
+			sleep(400).then(() =>{
+				lowTimePopup.style.background = "#FF6F00";
+				sleep(400).then(() =>{
+					lowTimePopup.style.background = "green";
+						
+						sleep(400).then(() =>{
+							lowTimePopup.style.background = "yellow";
+						
+								sleep(400).then(() =>{
+									lowTimePopup.style.background = "blue";
+								
+										sleep(400).then(() =>{
+											lowTimePopup.style.background = "#FF6F00";
+										});
+								});
+						});
+				});
+			});
+		}
 	}else {
 		startGame();
 	}
@@ -133,7 +177,7 @@ function startGame() {// runs when start button is pressed
 	startButton.style.visibility = "hidden"
 	randomNum = Math.floor((Math.random() * 9) + 1);
 	randomWaitNum = Math.floor((Math.random() * 4000)+1000);
-	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)// for debugging	
+	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)// for debugging
 	sleep(randomWaitNum).then(() => {
 		switch (randomNum) {
 			case 1:
@@ -142,7 +186,7 @@ function startGame() {// runs when start button is pressed
 			case 2:
 				document.getElementById("topCenter").style.visibility = "visible";
 				break;
-			case 3:	
+			case 3:
 				document.getElementById("topRight").style.visibility = "visible";
 				break;
 			case 4:
@@ -164,8 +208,8 @@ function startGame() {// runs when start button is pressed
 				document.getElementById("bottomRight").style.visibility = "visible";
 				break;
 		} startTimer();
-	
-	}); 
+
+	});
 }
 
 
