@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang='en'>
 <!-- reaction time game by Tommy Dougiamas
-	TODO: LeaderBoard, buttons not centering check docs maybe-->
+	TODO: LeaderBoard-->
 	<head>
 		<title>Test your reactions! | DigitalNook</title>
-		<link href="/static/favicon.ico" rel="icon" type="icon/ico"/>
+		<link href="/static/favicon.ico/" rel="icon" type="icon/ico"/>
 		<link href="/static/styles1.css" rel="stylesheet"/>
-		<!-- fits images inside divs -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>	
+		<script src="/static/scripts/jquery-csv/src/jquery.csv.js/" type='text/javascript'></script>
+		<!-- fits red-dot images inside divs -->
 		<style>
 		.leftButton, .rightButton, .centerButton {margin: 5px;height: 45px; width: 45px;}
+		#submitToLeaderboard{margin:0;left:0;right:0;top:0;background: #FF6F00;}
 		</style>
-
+		<!-- this script is for adding scores to the leaderboard -->
+		<script src="/static/scripts/passToPython.js"></script> 
 	</head>
 	<body>
 		<header>
 			<h1>Test your reactions!</h1>
 		</header>
 		<!-- All buttons for game and start button -->
-		<div id='start'>
-			<button type="button" id="startButton" style="visibility: visible;" onclick="resetVars(); this.style.visibility = 'hidden'; startGame()">Start</button>
-		</div>
-		<br/>
 		<div id="game" style="background: white; height: 200px; width: 20%; margin-left: 40%; margin-right: 40%; border: 5px solid black;">
+			<div id='start'>
+				<button type="button" id="startButton" style="visibility: visible;position:relative;" onclick="resetVars(); this.style.display = 'none'; submitButton.style.display = 'none'; startGame()">Start</button>
+			</div>
 			<!-- sections the page into three vertical stacks, buttons floated left/right -->
 			<div id="top" style="height:33%">
 				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="topLeft" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
@@ -48,27 +51,30 @@
 				<br/>
 				<p id="finalTime"></p>
 				<br/>
-				<button type="button" id='submitButton' class='greenButton' style="width:30%; margin-left: 35%; margin-left: 35%;" onclick="alert('This feature is not yet available')">Submit score to Leaderboard</button>
+				<button type="button" id='submitButton' class='greenButton' style="width:30%; margin-left: 35%; margin-left: 35%; display: none;" onclick="submitToLeaderboard.style.display = 'block'">Submit score to Leaderboard</button>
 		</div>
 		<br/>
 		<div id="footer" style="margin-top: 20px; position:relative;">
 			<a href="/games">Back To Games</a>
 		</div>
 		<br/>
-		<form id='submitToLeaderboard' style="position:fixed;top:0;bottom:0;left:0;right:0;fixed; display: none; z-index: 3; text-align: center;">
-			<fieldset style="background:white;width:100%;height:100%;">
-				<legend>Send score to leaderboards</legend>
-				Name: <br/>
-				<input type='text' name='Username' value='Enter Username'><br/>
-				<input type='text' id='leaderboardScore' name='Score' value='please finish a game before submitting' disabled='true'> <br/>
-				<br/>
-				<input type='submit' value='Submit'>
-			</fieldset>
+		<form id='submitToLeaderboard' action="/games/reaction" method="post" style="position:fixed; height: 100vh; width: 100vw; display: none; z-index: 3; text-align: center; visiblity">
+			<legend><h1>Send score to leaderboards</h1></legend>
+			<p>Name:</p> <br/>
+			<input style='height:10vh; width: 30vw; margin-left:35vw;margin-right:35vw;'id='nameInput' type='text' name='username' value='Enter Username'><br/>
+			<p>Score:</p> <br/>
+			<input style='height:10vh; width: 30vw; margin-left:35vw;margin-right:35vw;' type='text' id='scoreInput' name='score' value='please finish a game before submitting' readonly='readonly'> <br/>
+			<br/>
+			<input type='submit' value='Submit'>
 		</form>
 		<div id='tutorialPopup' class='overlay' style="display:block; background:#FF6F00;">
 			<h1>How to Play</h1>
 			<br/>
-			<p>Click on the 3 dots as they appear. Try to get a good score!</p>
+			<p>
+			Click on the 3 dots as they appear. Try to get a good score! 
+			<br/><br/>
+			Get under 600ms average to be a champion!
+			</p>
 			<button class='greenButton' id="tutorialClose" style="margin-right:40%;margin-left:40%;width:20%;"onclick='tutorialPopup.style.display = "none"'>Let's Play!</button>
 		</div>
 		<div id='lowTimePopup' class='overlay' style="display:none; background:#FF6F00;">
@@ -88,11 +94,13 @@ const secondTime = document.getElementById('secondTime');
 const thirdTime = document.getElementById('thirdTime');
 const startButton = document.getElementById('startButton');
 const tutorial = document.getElementById('tutorial');
-const leaderboardScore = document.getElementById('leaderboardScore');
 const submitToLeaderboard = document.getElementById('submitToLeaderboard');
 const tutorialPopup = document.getElementById('tutorialPopup');
 const lowTimePopup = document.getElementById('lowTimePopup');
 const lowTime = document.getElementById('lowTime');
+const nameInput = document.getElementById('nameInput');
+const scoreInput = document.getElementById('scoreInput');
+const submitButton = document.getElementById('submitButton');
 // defines pop sound so that it is not delayed on button press
 const popSound = new Audio('/static/audio/pop.mp3');
 // stores user's reaction time
@@ -140,30 +148,29 @@ function endTimer() {
 		secondTime.innerHTML =endTime - startTime + "ms";
 		startGame();
 	} else if (count === 3) {
-		startButton.style.visibility = "visible";
+		count = 0;
+		submitButton.style.display = "block"
+		startButton.style.display = "inline";	
 		thirdTime.innerHTML = endTime - startTime + "ms";
 		finalTime.innerHTML = `Your average reaction time was ${Math.round(reactionTime/3)}ms or ${((reactionTime/3)/1000).toFixed(2)} seconds!`;
-		leaderboardScore.value = Math.round(reactionTime/3);
+		scoreInput.value = Math.round(reactionTime/3);
 		if ((reactionTime/3) <= 600) {
-				lowTime.innerHTML = "Nice! <br/><br/> Average Reaction Time: " +  (reactionTime/3) + "ms<br/> Best Reaction Time: " + Math.round(bestReactionTime) + "ms";
+				lowTime.innerHTML = `Nice! <br/><br/> Average Reaction Time: ${Math.round(reactionTime/3)} ms <br/> Best Reaction Time: ${Math.round(bestReactionTime)} ms`;
 		lowTimePopup.style.display = "block";	
 			lowTimePopup.style.background = "red";
 			sleep(400).then(() =>{
-				lowTimePopup.style.background = "#FF6F00";
+				lowTimePopup.style.background = "purple";
 				sleep(400).then(() =>{
 					lowTimePopup.style.background = "green";
-						
+					sleep(400).then(() =>{
+						lowTimePopup.style.background = "yellow";
 						sleep(400).then(() =>{
-							lowTimePopup.style.background = "yellow";
-						
-								sleep(400).then(() =>{
-									lowTimePopup.style.background = "blue";
-								
-										sleep(400).then(() =>{
-											lowTimePopup.style.background = "#FF6F00";
-										});
-								});
+							lowTimePopup.style.background = "blue";
+							sleep(400).then(() =>{
+									lowTimePopup.style.background = "#FF6F00";
+							});
 						});
+					});
 				});
 			});
 		}
@@ -174,7 +181,6 @@ function endTimer() {
 function startGame() {// runs when start button is pressed
 	let randomNum, randomWaitNum; //variables for waiting/randomizing button
 	count += 1
-	startButton.style.visibility = "hidden"
 	randomNum = Math.floor((Math.random() * 9) + 1);
 	randomWaitNum = Math.floor((Math.random() * 4000)+1000);
 	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)// for debugging
