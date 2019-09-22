@@ -6,15 +6,10 @@
 		<title>Test your reactions! | DigitalNook</title>
 		<link href="/static/favicon.ico/" rel="icon" type="icon/ico"/>
 		<link href="/static/styles1.css" rel="stylesheet"/>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>	
-		<script src="/static/scripts/jquery-csv/src/jquery.csv.js/" type='text/javascript'></script>
-		<!-- fits red-dot images inside divs -->
 		<style>
-		.leftButton, .rightButton, .centerButton {margin: 5px;height: 45px; width: 45px;}
-		#submitToLeaderboard{margin:0;left:0;right:0;top:0;background: #FF6F00;}
+		.leftButton, .rightButton, .centerButton {margin: 5px;height: 45px; width: 45px;} /*fits red dots inside of div without overflow*/
+		#submitToLeaderboard{margin:0;background: #FF6F00;} /*formatting for leaderboard form */
 		</style>
-		<!-- this script is for adding scores to the leaderboard -->
-		<script src="/static/scripts/passToPython.js"></script> 
 	</head>
 	<body>
 		<header>
@@ -61,7 +56,7 @@
 		<form id='submitToLeaderboard' action="/games/reaction" method="post" style="position:fixed; height: 100vh; width: 100vw; display: none; z-index: 3; text-align: center; visiblity">
 			<legend><h1>Send score to leaderboards</h1></legend>
 			<p>Name:</p> <br/>
-			<input style='height:10vh; width: 30vw; margin-left:35vw;margin-right:35vw;'id='nameInput' type='text' name='username' value='Enter Username'><br/>
+			<input style='height:10vh; width: 30vw; margin-left:35vw;margin-right:35vw;'id='nameInput' type='text' name='username' placeholder='Enter Username'><br/>
 			<p>Score:</p> <br/>
 			<input style='height:10vh; width: 30vw; margin-left:35vw;margin-right:35vw;' type='text' id='scoreInput' name='score' value='please finish a game before submitting' readonly='readonly'> <br/>
 			<br/>
