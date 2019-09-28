@@ -6,6 +6,8 @@
 	<title>Rock, Paper, Scissors! | DigitalNook</title>
 	<link href='/static/styles1.css' type='text/css' rel='stylesheet'/>
 	<link rel="shortcut icon" href="/static/favicon.ico"/>
+	<!--sleep function-->
+	<script src="/static/scripts/sleep.js"></script>
 </head>
 <body> 
 	<section>	
@@ -95,11 +97,6 @@ function getWinner(userChoice, compChoice){
 	}
 	console.log(`comps choice: ${compChoice}`);console.log(`users choice: ${userChoice}`) // debugging
 }
-//function for halting js as needed 
-function sleep (time) {
-	return new Promise((resolve) => setTimeout(resolve, time));
-}
-
 // executes all functions if it is not already running
 function runAllFunctions(){
 	document.getElementById('rockButton').disabled = true;
@@ -118,7 +115,7 @@ function runAllFunctions(){
 
 	playDrumroll();
 	sleep(5000).then(() => {
-		afterDrumroll();		
+		afterDrumroll()
 	})
 	function afterDrumroll(){
 		getComputerChoice()
@@ -140,12 +137,12 @@ function runAllFunctions(){
 			tieSound.play();
 			tieSound.currentTime=0;
 		}
-		sleep(1900).then(() => { // waits 1.9 seconds then enables buttons
-		document.getElementById('popup').style.display = "none"
-		document.getElementById('rockButton').disabled = false;
-		document.getElementById('scissorsButton').disabled = false;
-		document.getElementById('paperButton').disabled = false;
-		})
+			sleep(1900).then(() => { // waits 1.9 seconds then enables buttons
+			document.getElementById('popup').style.display = "none"
+			document.getElementById('rockButton').disabled = false;
+			document.getElementById('scissorsButton').disabled = false;
+			document.getElementById('paperButton').disabled = false;
+			})
 	}
 }
 </script>

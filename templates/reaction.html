@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang='en'>
 <!-- reaction time game by Tommy Dougiamas
-	TODO: LeaderBoard-->
+	TODO: -->
 	<head>
 		<title>Test your reactions! | DigitalNook</title>
 		<link href="/static/favicon.ico/" rel="icon" type="icon/ico"/>
 		<link href="/static/styles1.css" rel="stylesheet"/>
+		<!--sleep function-->
+		<script src="/static/scripts/sleep.js"></script>
 		<style>
 		.leftButton, .rightButton, .centerButton {margin: 5px;height: 45px; width: 45px;} /*fits red dots inside of div without overflow*/
-		#submitToLeaderboard{margin:0;background: #FF6F00;} /*formatting for leaderboard form */
+		#submitToLeaderboard{margin:0;background: #FF6F00;left:0;right:0;bottom:0;top:0;} /*formatting for leaderboard form */
 		</style>
 	</head>
 	<body>
@@ -53,7 +55,7 @@
 			<a href="/games">Back To Games</a>
 		</div>
 		<br/>
-		<form id='submitToLeaderboard' action="/games/reaction" method="post" style="position:fixed; height: 100vh; width: 100vw; display: none; z-index: 3; text-align: center; visiblity">
+		<form id='submitToLeaderboard' action="/games/reaction/" method="post" style="position:fixed; height: 100vh; width: 100vw; display: none; z-index: 3; text-align: center; visiblity">
 			<legend><h1>Send score to leaderboards</h1></legend>
 			<p>Name:</p> <br/>
 			<input style='height:10vh; width: 30vw; margin-left:35vw;margin-right:35vw;'id='nameInput' type='text' name='username' placeholder='Enter Username'><br/>
@@ -80,6 +82,7 @@
 			<button class="greenButton" id="lowTimeClose" onclick="lowTimePopup.style.display = 'none';">Back to Game</button>
 		</div>
 	<script>
+alert("Try out the new leaderboard feature!")
 // Variables for easy access of DOM elements
 const game = document.getElementById('game');
 const finalTime = document.getElementById('finalTime');
@@ -100,10 +103,6 @@ const submitButton = document.getElementById('submitButton');
 const popSound = new Audio('/static/audio/pop.mp3');
 // stores user's reaction time
 let reactionTime = 0;
-// pauses execution in milliseconds
-function sleep (ms) {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-}
 // resets variables for new game
 function resetVars() {
 	firstTime.innerHTML = "";

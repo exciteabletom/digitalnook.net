@@ -185,3 +185,11 @@ h1, .mainPageHeader {
 	margin-right: 70%;
 	float: left;
 }
+/* TABLE STYLING */
+#leaderboard, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+}th, td {
+	width: 50%;
+	height: 16.6%;
+}

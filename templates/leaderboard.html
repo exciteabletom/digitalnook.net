@@ -1,16 +1,45 @@
 <!DOCTYPE html>
 <html>
-<!-- leaderboard@digitalnook.net by Tommy Dougiamas -->
+<!-- leaderboard at digitalnook.net by Tommy Dougiamas 
+			TODO: Figure out how to append to json in python to prevent csv to json conversion and speed up page -->
 <head>
-	<link href="/static/styles1.css" type="text/css"/>
+	<title>Leaderboard | DigitalNook</title>
+	<link href="/static/styles1.css" type="text/css" rel="stylesheet"/>
 	<link href="/static/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
 	<!-- jquery for ajax reqs-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="/static/scripts/jquery-csv/src/jquery.csv.js"></script>
+	<!-- csvJSON function -->
+	<script src="/static/scripts/csvToJson.js"></script>
+	<!-- jquery library for json to table conversion -->
+	<script src="/static/scripts/jsonToTable.js"></script>
+	<style>table{border-collapse: collapse;width: 80%;margin-left: 10%;margin-right: 10%;}th, td{border-collapse: collapse;height: 75px;width: auto;text-align: center;padding: 5px;border-bottom: 1px solid #ddd;}tr:nth-child(even) {background-color: #f2f2f2;}tr:nth-child(odd) {background-color: #FFF;}</style>
 </head>
 <body>
-
+	<h1>Leaderboard for reaction time game</h1> <br/>
+	<p>I'm working on making the leaderboard sort stay tuned</p>
+	<div id="leaderboard"></div>
 <script>
+$.ajax({
+	type: "GET",
+	url: "/static/leaderboard.csv",
+	dataType: "text",
+	success: function(csv) {
+		console.log(csv);
+
+		const data = csvJSON(csv); //csv --> Json
+		console.log(data);
+
+		const strData = data.toString(); // json --> string
+		console.log(strData);
+
+		const finalData = JSON.parse(data); // string --> json in separate objects
+		console.log(finalData);
+		
+		$("#leaderboard").createTable(finalData); // creates table without any styling see [https://www.jqueryscript.net/table/jQuery-JSON-To-Table-Plugin.html] for info
+	}
+})
 </script>
-<noscript> Your Browser does not support/disabled Javascript. </noscript>	
+<noscript><h1>Your Browser does not support or has disabled Javascript</h1> <br/> <p>Either upgrade your browser or enable javascript to view this page</p> </noscript>	
 </body>
 </html>

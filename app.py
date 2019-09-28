@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, url_for, redirect, flash
+from flask import Flask, render_template, url_for, request 
+import os
+import json
 app = Flask(__name__, static_url_path="/static")
 
 # pie
@@ -41,15 +43,14 @@ def reaction():
 	if request.method == "POST":
 		username = request.form.get("username")
 		score = request.form.get("score")
-		if username != "Enter Name":
-			leaderboard = open("static/leaderboard.csv", "a")
-			leaderboard.write(str(username) + "," + str(score))
-			leaderboard.close()	
+		with open("static/leaderboard.csv", "a") as leaderboard:
+			leaderboard.write("\"" + str(username)+ "\"" + "," + score + "\n")
 
 	return render_template("reaction.html")
+
 @app.route("/games/leaderboard", host="digitalnook.net")
 def leaderboard():	
-	render_template("leaderboard.html")
+	return render_template("leaderboard.html")
 
 # Handles 404 errors
 @app.errorhandler(404)
