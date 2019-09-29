@@ -1,7 +1,15 @@
-from flask import Flask, render_template, url_for, request 
+from flask import Flask, render_template, url_for, request, redirect, flash
 import os
 import json
-app = Flask(__name__, static_url_path="/static")
+from nocache import nocache
+
+app = Flask(__name__, static_url_path="/static/")
+
+# stops caching of leaderboard
+@app.route("/static/leaderboard.json", host="digitalnook.net")
+@nocache
+def staticLeaderboard():
+	return app.send_static_file("leaderboard.json")
 
 # pie
 @app.route("/pie/", host="digitalnook.net")
@@ -38,17 +46,33 @@ def bomb():
     return render_template("bomb.html")
 
 # reaction speed game
-@app.route("/games/reaction/", methods=["GET", "POST"], host="digitalnook.net")
+@app.route("/games/reaction/", host="digitalnook.net")
 def reaction():
-	if request.method == "POST":
-		username = request.form.get("username")
-		score = request.form.get("score")
-		with open("static/leaderboard.csv", "a") as leaderboard:
-			leaderboard.write("\"" + str(username)+ "\"" + "," + score + "\n")
-
 	return render_template("reaction.html")
 
-@app.route("/games/leaderboard", host="digitalnook.net")
+# handles leaderboard requests
+@app.route("/games/leaderboardsubmission/", methods=["GET", "POST"], host="digitalnook.net")
+@nocache
+def submission():	
+	if request.method == "POST":
+		username = request.form.get("username")
+		time = request.form.get("score")
+		nameScoreDict = {"name": username, "time": time}
+	
+		with open("static/leaderboard.json", "r") as leaderboard: # get data from file
+			leaderboardData = leaderboard.read()
+			newLeaderboard = leaderboardData[:-2]
+		with open("static/leaderboard.json", "w") as leaderboard: #replace file with old contents + new
+			dictToJson = json.dumps(nameScoreDict)
+			leaderboard.write(newLeaderboard + "," + dictToJson + "]\n") # appends to leaderboard.json
+		
+		#flash("Your score has been submitted")
+		return redirect(("/games/leaderboard"), code="302")
+	
+	return "looks like you might have the wrong link..."
+
+@app.route("/games/leaderboard/", methods=["GET"], host="digitalnook.net")
+@nocache
 def leaderboard():	
 	return render_template("leaderboard.html")
 
@@ -56,6 +80,7 @@ def leaderboard():
 @app.errorhandler(404)
 def not_found(e):
 	render_template("404.html")
+
 if __name__ == "__main__":
     app.run(host="10.1.1.50", port="80")
 

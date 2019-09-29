@@ -97,6 +97,13 @@ function getWinner(userChoice, compChoice){
 	}
 	console.log(`comps choice: ${compChoice}`);console.log(`users choice: ${userChoice}`) // debugging
 }
+
+//defines all audio to avoid lag
+const drumroll = new Audio('/static/audio/drumroll.mp3');
+const loserSound = new Audio('/static/audio/lose.mp3');
+const winnerSound= new Audio('/static/audio/win.mp3');
+const tieSound = new Audio('/static/audio/tie.mp3');
+
 // executes all functions if it is not already running
 function runAllFunctions(){
 	document.getElementById('rockButton').disabled = true;
@@ -107,7 +114,6 @@ function runAllFunctions(){
 	document.getElementById('p3').innerHTML = ""
 	// init for drumroll audio
 	function playDrumroll(){
-		let drumroll = new Audio('/static/audio/drumroll.mp3');
 		drumroll.play();
 		drumroll.currentTime=0;
 	}
@@ -123,17 +129,14 @@ function runAllFunctions(){
 		document.getElementById('p3').innerHTML = `The Computers choice was ${compChoice}.`;
 		document.getElementById('p2').innerHTML = `Your choice was ${userChoice.toLowerCase()}.`;
 		if (document.getElementById('p1').innerHTML[0] === "S"){
-			const loserSound = new Audio('/static/audio/lose.mp3');
 			loserSound.play();
 			loserSound.currentTime=0;
 		}else if (document.getElementById('p1').innerHTML[0] === "Y"){
-			const winnerSound= new Audio('/static/audio/win.mp3');
 			document.getElementById('popup').style.display = "block"
 			winnerSound.play();
 			winnerSound.play();
 			winnerSound.currentTime=0;
 		}else {
-			const tieSound = new Audio('/static/audio/tie.mp3');
 			tieSound.play();
 			tieSound.currentTime=0;
 		}

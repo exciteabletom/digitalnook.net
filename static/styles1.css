@@ -109,7 +109,8 @@ h1, .mainPageHeader {
 	top:0;
 	bottom:0;
 	left:0;
-	right:500px;	
+	right:500px;
+	margin: 20px orange groove;
 }.reactionButton {
 	position: relative;
 	display: none;
@@ -184,12 +185,4 @@ h1, .mainPageHeader {
 }.bottomCenter {
 	margin-right: 70%;
 	float: left;
-}
-/* TABLE STYLING */
-#leaderboard, th, td {
-	border: 1px solid black;
-	border-collapse: collapse;
-}th, td {
-	width: 50%;
-	height: 16.6%;
 }

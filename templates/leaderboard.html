@@ -1,44 +1,49 @@
 <!DOCTYPE html>
 <html>
-<!-- leaderboard at digitalnook.net by Tommy Dougiamas 
-			TODO: Figure out how to append to json in python to prevent csv to json conversion and speed up page -->
+<!-- leaderboard at digitalnook.net by Tommy Dougiamas --> 
 <head>
 	<title>Leaderboard | DigitalNook</title>
 	<link href="/static/styles1.css" type="text/css" rel="stylesheet"/>
 	<link href="/static/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
 	<!-- jquery for ajax reqs-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="/static/scripts/jquery-csv/src/jquery.csv.js"></script>
-	<!-- csvJSON function -->
-	<script src="/static/scripts/csvToJson.js"></script>
 	<!-- jquery library for json to table conversion -->
-	<script src="/static/scripts/jsonToTable.js"></script>
-	<style>table{border-collapse: collapse;width: 80%;margin-left: 10%;margin-right: 10%;}th, td{border-collapse: collapse;height: 75px;width: auto;text-align: center;padding: 5px;border-bottom: 1px solid #ddd;}tr:nth-child(even) {background-color: #f2f2f2;}tr:nth-child(odd) {background-color: #FFF;}</style>
+	<script src="/static/scripts/jsonToTable.js"></script>	
+	<!-- forces leaderboard refresh on page reload -->
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+  	<!-- styling for table made by jsonToTable lib -->
+	<style>table{width: 80%;margin-left: 10%;margin-right: 10%;border: black 1px solid; border-collapse: collapse;}
+	th, td{font-size: 17px;height: 75px;width: auto;text-align: center;bottom-border: 2px black solid;}
+	th {background: red;}
+	tr:nth-child(even) {background-color: #f2f2f2;}
+	tr:nth-child(odd) {background-color: #FFF;}*/</style>
 </head>
 <body>
 	<h1>Leaderboard for reaction time game</h1> <br/>
-	<p>I'm working on making the leaderboard sort stay tuned</p>
+	<p>This page displays all the top times for the reaction time game</p>
+	<br/>
 	<div id="leaderboard"></div>
+	<br/><br/>
+	<a href="/games">Back to Games</a>
+	<br/><br/>
 <script>
 $.ajax({
 	type: "GET",
-	url: "/static/leaderboard.csv",
+	url: "/static/leaderboard.json",
 	dataType: "text",
-	success: function(csv) {
-		console.log(csv);
-
-		const data = csvJSON(csv); //csv --> Json
-		console.log(data);
-
-		const strData = data.toString(); // json --> string
-		console.log(strData);
-
-		const finalData = JSON.parse(data); // string --> json in separate objects
-		console.log(finalData);
-		
-		$("#leaderboard").createTable(finalData); // creates table without any styling see [https://www.jqueryscript.net/table/jQuery-JSON-To-Table-Plugin.html] for info
+	success: function(json) {
+		console.log(json);
+		const leaderboard = JSON.parse(json);
+		console.log(leaderboard);
+		const sortedLeaderboard = leaderboard.sort(function(a, b){
+			    return a.time - b.time;
+		});
+		$("#leaderboard").createTable(leaderboard);
 	}
 })
+
 </script>
 <noscript><h1>Your Browser does not support or has disabled Javascript</h1> <br/> <p>Either upgrade your browser or enable javascript to view this page</p> </noscript>	
 </body>

@@ -8,12 +8,13 @@
 		<link href="/static/styles1.css" rel="stylesheet"/>
 		<!--sleep function-->
 		<script src="/static/scripts/sleep.js"></script>
+		
 		<style>
 		.leftButton, .rightButton, .centerButton {margin: 5px;height: 45px; width: 45px;} /*fits red dots inside of div without overflow*/
 		#submitToLeaderboard{margin:0;background: #FF6F00;left:0;right:0;bottom:0;top:0;} /*formatting for leaderboard form */
 		</style>
 	</head>
-	<body>
+	<body onload="submitToLeaderboard.reset()">
 		<header>
 			<h1>Test your reactions!</h1>
 		</header>
@@ -55,14 +56,14 @@
 			<a href="/games">Back To Games</a>
 		</div>
 		<br/>
-		<form id='submitToLeaderboard' action="/games/reaction/" method="post" style="position:fixed; height: 100vh; width: 100vw; display: none; z-index: 3; text-align: center; visiblity">
+		<form id='submitToLeaderboard' autocomplete="off" action="/games/leaderboardsubmission/" method="post" style="position:fixed; height: 100vh; width: 100vw; display: none; z-index: 3; text-align: center; visiblity">
 			<legend><h1>Send score to leaderboards</h1></legend>
 			<p>Name:</p> <br/>
 			<input style='height:10vh; width: 30vw; margin-left:35vw;margin-right:35vw;'id='nameInput' type='text' name='username' placeholder='Enter Username'><br/>
 			<p>Score:</p> <br/>
 			<input style='height:10vh; width: 30vw; margin-left:35vw;margin-right:35vw;' type='text' id='scoreInput' name='score' value='please finish a game before submitting' readonly='readonly'> <br/>
 			<br/>
-			<input type='submit' value='Submit'>
+			<input class="greenButton" type='submit' value='Submit'>
 		</form>
 		<div id='tutorialPopup' class='overlay' style="display:block; background:#FF6F00;">
 			<h1>How to Play</h1>
@@ -82,7 +83,6 @@
 			<button class="greenButton" id="lowTimeClose" onclick="lowTimePopup.style.display = 'none';">Back to Game</button>
 		</div>
 	<script>
-alert("Try out the new leaderboard feature!")
 // Variables for easy access of DOM elements
 const game = document.getElementById('game');
 const finalTime = document.getElementById('finalTime');
@@ -99,6 +99,10 @@ const lowTime = document.getElementById('lowTime');
 const nameInput = document.getElementById('nameInput');
 const scoreInput = document.getElementById('scoreInput');
 const submitButton = document.getElementById('submitButton');
+
+window.onload = function () {
+	submitToLeaderboard.reset();	
+}
 // defines pop sound so that it is not delayed on button press
 const popSound = new Audio('/static/audio/pop.mp3');
 // stores user's reaction time
@@ -211,8 +215,6 @@ function startGame() {// runs when start button is pressed
 
 	});
 }
-
-
 	</script>
 	<noscript>
 		JavaScript is not working...
