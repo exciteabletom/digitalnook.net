@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for, request, redirect, flash
 import os
 import json
 from nocache import nocache
+import operator
 
 app = Flask(__name__, static_url_path="/static/")
 
@@ -55,24 +56,33 @@ def reaction():
 @nocache
 def submission():	
 	if request.method == "POST":
-		username = request.form.get("username")
-		time = request.form.get("score")
-		nameScoreDict = {"name": username, "time": time}
-	
-		with open("static/leaderboard.json", "r") as leaderboard: # get data from file
-			leaderboardData = leaderboard.read()
-			newLeaderboard = leaderboardData[:-2]
-		with open("static/leaderboard.json", "w") as leaderboard: #replace file with old contents + new
-			dictToJson = json.dumps(nameScoreDict)
-			leaderboard.write(newLeaderboard + "," + dictToJson + "]\n") # appends to leaderboard.json
 		
-		#flash("Your score has been submitted")
+		
+		username = request.form.get("username")
+		if username.replace(" ", "") == "":
+			return "ERROR: Please enter a username"
+		
+		time = request.form.get("score")
+		
+		try: 
+			nameScoreDict = {"name": str(username), "time": int(time)}
+		except(ValueError):
+			return "ERROR: You cannot enter the same score twice..."
+			
+		with open("static/leaderboard.json", "r") as leaderboard: # get data from file
+			leaderboardData = json.load(leaderboard) # loads json as list of dicts
+			leaderboardData.append(nameScoreDict) # adds new dict to list
+			leaderboardData.sort(key=operator.itemgetter('time')) # sorts data lowest to highest time
+		
+		with open("static/leaderboard.json", "w") as leaderboard: # open leaderboard for writing
+			finalData = json.dumps(leaderboardData) # dump json to string
+			leaderboard.write(finalData) #replaces leaderboard.json with new values
+
 		return redirect(("/games/leaderboard"), code="302")
 	
-	return "looks like you might have the wrong link..."
+	return render_template("404.html")
 
 @app.route("/games/leaderboard/", methods=["GET"], host="digitalnook.net")
-@nocache
 def leaderboard():	
 	return render_template("leaderboard.html")
 
@@ -82,5 +92,5 @@ def not_found(e):
 	render_template("404.html")
 
 if __name__ == "__main__":
-    app.run(host="10.1.1.50", port="80")
+    app.run(host="10.1.1.50", port="80", debug=True)
 

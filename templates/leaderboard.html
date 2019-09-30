@@ -9,10 +9,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<!-- jquery library for json to table conversion -->
 	<script src="/static/scripts/jsonToTable.js"></script>	
-	<!-- forces leaderboard refresh on page reload -->
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-	<meta http-equiv="Pragma" content="no-cache">
-	<meta http-equiv="Expires" content="0">
   	<!-- styling for table made by jsonToTable lib -->
 	<style>table{width: 80%;margin-left: 10%;margin-right: 10%;border: black 1px solid; border-collapse: collapse;}
 	th, td{font-size: 17px;height: 75px;width: auto;text-align: center;bottom-border: 2px black solid;}
@@ -22,7 +18,7 @@
 </head>
 <body>
 	<h1>Leaderboard for reaction time game</h1> <br/>
-	<p>This page displays all the top times for the reaction time game</p>
+	<p>This page displays all the best average times for the reaction time game! <br/><br/> Try to beat your friends!</p>
 	<br/>
 	<div id="leaderboard"></div>
 	<br/><br/>
@@ -37,9 +33,6 @@ $.ajax({
 		console.log(json);
 		const leaderboard = JSON.parse(json);
 		console.log(leaderboard);
-		const sortedLeaderboard = leaderboard.sort(function(a, b){
-			    return a.time - b.time;
-		});
 		$("#leaderboard").createTable(leaderboard);
 	}
 })

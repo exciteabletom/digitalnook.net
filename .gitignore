@@ -1,8 +1,12 @@
+#tom custom
+jquery
+errors.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
+*.pyc
 # C extensions
 *.so
 
@@ -103,4 +107,3 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-/static/scripts/jquery-csv
