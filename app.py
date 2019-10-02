@@ -36,6 +36,10 @@ def bruh():
 def games():
     return render_template("games.html")
 
+# tennis game
+@app.route("/games/tennis", host="digitalnook.net")
+def tennis():
+	return render_template("tennis.html")
 # Rock paper scissors
 @app.route("/games/rps/", host="digitalnook.net")
 def rps():
