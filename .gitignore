@@ -1,11 +1,6 @@
 #tom custom
 
-jquery-3.4.1.js
-jquery-3.4.1.min.js
-jquery/
 errors.txt
-phaser.js
-phaser.min.js
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
