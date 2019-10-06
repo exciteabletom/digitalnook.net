@@ -9,12 +9,41 @@
 	<script src="/static/scripts/jquery-3.4.1.js"></script>
 	<!-- Phaser Game Framework -->
 	<script src="/static/scripts/phaser.js"></script>
-	</head> 
+</head> 
+
 <body> 
 	<header>
 		<h1>Tennis</h1>
 	</header>
 <script>
+const config = {
+	type: Phaser.AUTO,
+	width: 1000,
+	height: 600,
+	scene: {
+		preload: preload,
+		create: create,
+		update: update
+	}
+};
+
+function preload(){
+
+};
+
+function create() {
+	playerBat = this.add.rectangle(100, 400, 50, 200, 0x000);
+	compBat = this.add.rectangle(100, 400, 50, 200, 0xFFF);
+	bg = this.add.background();
+	cursors = this.input.keyboard.createCursorKeys();
+	playerBat.setInteractive();
+};
+
+function update() {
+	if (this.cursors.down.onClick){
+		playerBat.posi
+	};
+};
 
 </script>
 <noscript></noscript>
