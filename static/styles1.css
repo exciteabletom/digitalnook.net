@@ -1,3 +1,12 @@
+.splitList {
+	padding: 20px; 
+	border-top: 2px black dashed;
+}
+.splitListBottom {
+	padding: 20px; 
+	border-top: 2px black dashed;
+	border-bottom: 2px black dashed;
+}
 h1, .mainPageHeader {
 	color: black;
 	font-size:50px;
