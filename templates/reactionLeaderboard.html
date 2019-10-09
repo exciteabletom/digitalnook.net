@@ -2,7 +2,7 @@
 <html>
 <!-- leaderboard at digitalnook.net by Tommy Dougiamas --> 
 <head>
-	<title>Leaderboard | DigitalNook</title>
+	<title>Reaction Leaderboard | DigitalNook</title>
 	<link href="/static/styles1.css" type="text/css" rel="stylesheet"/>
 	<link href="/static/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
 	<!-- jquery for ajax reqs-->
@@ -27,7 +27,7 @@
 <script>
 $.ajax({
 	type: "GET",
-	url: "/static/leaderboard.json",
+	url: "/static/reactionLeaderboard.json",
 	dataType: "text",
 	success: function(json) {
 		console.log(json);

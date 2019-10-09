@@ -7,10 +7,10 @@ import operator
 app = Flask(__name__, static_url_path="/static/")
 
 # stops caching of leaderboard
-@app.route("/static/leaderboard.json", host="digitalnook.net")
+@app.route("/static/reactionLeaderboard.json", host="digitalnook.net")
 @nocache
 def staticLeaderboard():
-	return app.send_static_file("leaderboard.json")
+	return app.send_static_file("reactionLeaderboard.json")
 
 # pie
 @app.route("/pie/", host="digitalnook.net")
@@ -37,7 +37,7 @@ def games():
     return render_template("games.html")
 
 # tennis game
-@app.route("/games/tennis", host="digitalnook.net")
+@app.route("/games/tennis/", host="digitalnook.net")
 def tennis():
 	return render_template("tennis.html")
 # Rock paper scissors
@@ -84,9 +84,9 @@ def submission():
 	
 	return render_template("404.html")
 
-@app.route("/games/leaderboard/", methods=["GET"], host="digitalnook.net")
+@app.route("/games/reactionleaderboard/", methods=["GET"], host="digitalnook.net")
 def leaderboard():	
-	return render_template("leaderboard.html")
+	return render_template("reactionLeaderboard.html")
 
 # Handles 404 errors
 @app.errorhandler(404)

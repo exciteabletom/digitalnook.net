@@ -7,7 +7,7 @@
 	<link href="/static/favicon.ico" rel="shortcut icon" type="favicon/x-icon"/>
 	<!-- jquery -->
 	<script src="/static/scripts/jquery-3.4.1.js"></script>
-	<!-- Phaser Game Framework -->
+	<!-- Phaser Game Framework ****USE MIN IN RELEASE BUILD****-->
 	<script src="/static/scripts/phaser.js"></script>
 </head> 
 
@@ -16,6 +16,8 @@
 		<h1>Tennis</h1>
 	</header>
 <script>
+let gameState = {};
+
 const config = {
 	type: Phaser.AUTO,
 	width: 1000,
@@ -40,7 +42,7 @@ function create() {
 };
 
 function update() {
-	if (this.cursors.down.onClick){
+	if (this.cursors.dow){
 		playerBat.posi
 	};
 };
