@@ -22,6 +22,7 @@ const config = {
 	type: Phaser.AUTO,
 	width: 1000,
 	height: 600,
+	backgroundColor: 0xffffff,
 	scene: {
 		preload: preload,
 		create: create,
@@ -30,22 +31,36 @@ const config = {
 };
 
 function preload(){
-
+	// for loading images to use in proj
 };
 
 function create() {
-	playerBat = this.add.rectangle(100, 400, 50, 200, 0x000);
-	compBat = this.add.rectangle(100, 400, 50, 200, 0xFFF);
-	bg = this.add.background();
-	cursors = this.input.keyboard.createCursorKeys();
-	playerBat.setInteractive();
+	
+	gameState.playerPaddle = this.add.rectangle(50, 400, 50, 200, 0x000000);
+	gameState.compPaddle = this.add.rectangle(950, 400, 50, 200, 0x000000);
+	
+	gameState.cursors = this.input.keyboard.createCursorKeys();
+	
+	// makes paddles interactive
+	gameState.playerPaddle.setInteractive();
+	gameState.compPaddle.setInteractive();
+	
+	// Should stop the shapes from leaving the screen but doesn't
+	gameState.compPaddle.setCollideWorldBounds(true);
+	gameState.playerPaddle.setCollideWorldBounds(true);
+	
 };
 
 function update() {
-	if (this.cursors.dow){
-		playerBat.posi
-	};
+	if (gameState.cursors.down.isDown){
+		gameState.playerPaddle.y += 10; 
+	}
+	if (gameState.cursors.up.isDown) {
+		gameState.playerPaddle.y -= 10;
+	}
 };
+
+const game = new Phaser.Game(config)
 
 </script>
 <noscript></noscript>
