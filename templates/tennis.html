@@ -8,7 +8,19 @@
 	<!-- jquery -->
 	<script src="/static/scripts/jquery-3.4.1.js"></script>
 	<!-- Phaser Game Framework ****USE MIN IN RELEASE BUILD****-->
-	<script src="/static/scripts/phaser.js"></script>
+	<script src="/static/scripts/phaser.min.js"></script>
+	<!-- my sleep function -->
+	<script src="/static/scripts/sleep.js"></script>
+	
+	<style> 
+	canvas{
+		border: 3px solid blue;
+		width: auto;
+		margin-left: auto;
+		margin-right: auto
+	} 			
+	</style>
+
 </head> 
 
 <body> 
@@ -17,50 +29,126 @@
 	</header>
 <script>
 let gameState = {};
-
 const config = {
 	type: Phaser.AUTO,
 	width: 1000,
 	height: 600,
-	backgroundColor: 0xffffff,
+	backgroundColor: 0xbfbfbf,
+	physics: {
+		default: "arcade",
+		arcade: {
+			gravity: {y: 0},
+//			debug: true,
+		},
+	},
 	scene: {
 		preload: preload,
 		create: create,
 		update: update
-	}
+	},
 };
+//defines phaser game obj from config
+const game = new Phaser.Game(config);
 
 function preload(){
-	// for loading images to use in proj
+	this.load.image("ball","/static/images/ball.png") 
+	this.load.image("playerPaddle", "/static/images/playerPaddle.png");
+	this.load.image("compPaddle", "/static/images/compPaddle.png") 
 };
 
 function create() {
 	
-	gameState.playerPaddle = this.add.rectangle(50, 400, 50, 200, 0x000000);
-	gameState.compPaddle = this.add.rectangle(950, 400, 50, 200, 0x000000);
+	// Makes sprites using preloaded images
+	gameState.playerPaddle = this.physics.add.sprite(50, 300, "playerPaddle").setScale(0.3);
+	gameState.compPaddle = this.physics.add.sprite(950, 300, "compPaddle").setScale(0.3);
+	gameState.ball = this.physics.add.sprite(500, 300, "ball").setScale(0.1);
+
 	
+	this.paddles = this.physics.add.group();
+	this.paddles.add(gameState.playerPaddle);
+	this.paddles.add(gameState.compPaddle);
+	
+	this.physics.add.collider(this.paddles, gameState.ball, function() {
+		num = Math.random()
+		if (num <= 0.5){
+			gameState.ball.setVelocityY(Math.floor(Math.random() * 500))
+		} else if (num > 0.5) {
+			gameState.ball.setVelocityY(Math.floor(Math.random() * -500))
+		}
+	});
+
+	gameState.ball.setBounce(1);
+	gameState.ball.setVelocityX(-1000);
+	
+	//
+	//gameState.playerPaddle.enableBody = true;
+	//gameState.compPaddle.enableBody = true;
+	gameState.playerPaddle.body.immovable = true;
+	gameState.compPaddle.body.immovable = true;
+	
+
+	// creates default keyboard inputs
 	gameState.cursors = this.input.keyboard.createCursorKeys();
 	
-	// makes paddles interactive
+	// makes sprites interactive
 	gameState.playerPaddle.setInteractive();
 	gameState.compPaddle.setInteractive();
 	
-	// Should stop the shapes from leaving the screen but doesn't
+	// ensures sprites never leave game
 	gameState.compPaddle.setCollideWorldBounds(true);
 	gameState.playerPaddle.setCollideWorldBounds(true);
+	gameState.ball.setCollideWorldBounds(true);
 	
+};
+let player = {
+	score: 0,	
+};
+let comp = {
+	score: 0,	
 };
 
 function update() {
+	
 	if (gameState.cursors.down.isDown){
-		gameState.playerPaddle.y += 10; 
+		gameState.playerPaddle.setVelocityY(800); 
 	}
-	if (gameState.cursors.up.isDown) {
-		gameState.playerPaddle.y -= 10;
+	else if (gameState.cursors.up.isDown) {
+		gameState.playerPaddle.setVelocityY(-800);
 	}
+	else {
+	gameState.playerPaddle.setVelocityY(0);
+	
+	}
+	// resets ball if it goes off screen and assigns points
+	if (gameState.ball.x >= 960){
+		player.score += 1;
+		gameState.ball.x = 500;
+		gameState.ball.y = 300;
+		gameState.ball.setVelocityY(0);
+		gameState.ball.setVelocityX(1000)
+		console.log(player, comp)
+	}
+	else if (gameState.ball.x <= 40) {
+		comp.score += 1
+		gameState.ball.x = 500;
+		gameState.ball.y = 300;
+		gameState.ball.setVelocityY(0);
+		gameState.ball.setVelocityX(-1000)
+		console.log(player, comp)
+	}
+	
+	if (gameState.ball.y > (gameState.compPaddle.y + 50)) {
+		gameState.compPaddle.setVelocityY(380);
+	}
+	else if (gameState.ball.y < (gameState.compPaddle.y - 50)){
+		gameState.compPaddle.setVelocityY(-380);
+	}
+	else {
+		gameState.compPaddle.setVelocityY(0);	
+	}
+
 };
 
-const game = new Phaser.Game(config)
 
 </script>
 <noscript></noscript>

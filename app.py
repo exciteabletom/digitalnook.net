@@ -80,7 +80,7 @@ def submission():
 			finalData = json.dumps(leaderboardData) # dump json to string
 			leaderboard.write(finalData) #replaces leaderboard.json with new values
 
-		return redirect(("/games/reactionleaderboard"), code="302")
+		return redirect(("/games/reactionleaderboard/"), code="302")
 	
 	return render_template("404.html")
 
