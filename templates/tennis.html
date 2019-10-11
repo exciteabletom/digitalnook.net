@@ -5,20 +5,13 @@
 	<title>Tennis | DigitalNook</title>
 	<link href="/static/styles1.css" rel="stylesheet" type="text/css"/>
 	<link href="/static/favicon.ico" rel="shortcut icon" type="favicon/x-icon"/>
-	<!-- jquery -->
-	<script src="/static/scripts/jquery-3.4.1.js"></script>
 	<!-- Phaser Game Framework ****USE MIN IN RELEASE BUILD****-->
 	<script src="/static/scripts/phaser.min.js"></script>
 	<!-- my sleep function -->
 	<script src="/static/scripts/sleep.js"></script>
-	
-	<style> 
-	canvas{
-		border: 3px solid blue;
-		width: auto;
-		margin-left: auto;
-		margin-right: auto
-	} 			
+	<!-- styles phaser game -->
+	<style>
+	canvas{border: 3px solid blue;} 			
 	</style>
 
 </head> 
@@ -27,12 +20,36 @@
 	<header>
 		<h1>Tennis</h1>
 	</header>
+	<div id="main" style="margin: 50px; overflow: hidden;">
+		<div id="game" style="float: left;">
+		</div>
+		
+		<div id="settings" style="float: right; width: 41%">
+			<p style="font-weight: bold;">First to 10</p>
+			<br/>
+			<p id="playerScore"></p>
+			<br/>
+			<p id="compScore"></p>
+		</div>
+	</div>
+	<footer>
+		 <br/>
+		<a href="/games">Back to Games</a>
+		 <br/>
+		 <br/>
+	</footer>
+
 <script>
+// aliases for DOM elements
+const playerScore = document.getElementById("playerScore");
+const compScore = document.getElementById("compScore");
+
 let gameState = {};
 const config = {
 	type: Phaser.AUTO,
 	width: 1000,
 	height: 600,
+	parent: "game",
 	backgroundColor: 0xbfbfbf,
 	physics: {
 		default: "arcade",
@@ -51,38 +68,44 @@ const config = {
 const game = new Phaser.Game(config);
 
 function preload(){
-	this.load.image("ball","/static/images/ball.png") 
+	this.load.image("ball","/static/images/ball.png");
 	this.load.image("playerPaddle", "/static/images/playerPaddle.png");
-	this.load.image("compPaddle", "/static/images/compPaddle.png") 
+	this.load.image("compPaddle", "/static/images/compPaddle.png");
+	this.load.image("winnerPopup", "/static/images/winnerPopup.png");
+	this.load.image("loserPopup", "/static/images/loserPopup.png");
 };
 
 function create() {
 	
 	// Makes sprites using preloaded images
+	gameState.loserPopup = this.add.image(500,300, "loserPopup").setInteractive();
+	gameState.winnerPopup = this.add.image(500,300, "winnerPopup").setInteractive();
+	gameState.loserPopup.setVisible(false)
+	gameState.winnerPopup.setVisible(false);
+
 	gameState.playerPaddle = this.physics.add.sprite(50, 300, "playerPaddle").setScale(0.3);
 	gameState.compPaddle = this.physics.add.sprite(950, 300, "compPaddle").setScale(0.3);
-	gameState.ball = this.physics.add.sprite(500, 300, "ball").setScale(0.1);
-
+	gameState.ball = this.physics.add.sprite(500, 300, "ball").setScale(0.1).setInteractive();
 	
-	this.paddles = this.physics.add.group();
-	this.paddles.add(gameState.playerPaddle);
-	this.paddles.add(gameState.compPaddle);
+	gameState.ball.setAcceleration(200)
 	
-	this.physics.add.collider(this.paddles, gameState.ball, function() {
-		num = Math.random()
-		if (num <= 0.5){
-			gameState.ball.setVelocityY(Math.floor(Math.random() * 500))
+	
+	this.physics.add.collider(gameState.playerPaddle, gameState.ball, function() {
+		gameState.ball.setVelocityY(gameState.playerPaddle.body.velocity.y / 1.5);
+	});
+	
+	this.physics.add.collider(gameState.compPaddle, gameState.ball, function() {
+		num = Math.random();
+		if (num <= 0.5) {
+			gameState.ball.setVelocityY(500 * num);
 		} else if (num > 0.5) {
-			gameState.ball.setVelocityY(Math.floor(Math.random() * -500))
+			gameState.ball.setVelocityY(-500 * num);	
 		}
 	});
 
 	gameState.ball.setBounce(1);
 	gameState.ball.setVelocityX(-1000);
 	
-	//
-	//gameState.playerPaddle.enableBody = true;
-	//gameState.compPaddle.enableBody = true;
 	gameState.playerPaddle.body.immovable = true;
 	gameState.compPaddle.body.immovable = true;
 	
@@ -108,51 +131,83 @@ let comp = {
 };
 
 function update() {
-	
-	if (gameState.cursors.down.isDown){
-		gameState.playerPaddle.setVelocityY(800); 
+	if (player.score < 10 && comp.score < 10){	
+		//player controls
+		if (gameState.cursors.down.isDown){
+			gameState.playerPaddle.setVelocityY(800);
+		}
+		else if (gameState.cursors.up.isDown) {
+			gameState.playerPaddle.setVelocityY(-800);
+		}
+		else {
+			gameState.playerPaddle.setVelocityY(0);
+			accel = 1;
+		}
+		// resets ball if it goes off screen and assigns points to objects
+		if (gameState.ball.x >= 960){
+			player.score += 1;
+			// resets ball
+			gameState.ball.x = 500;
+			gameState.ball.y = 300;
+			gameState.ball.setVelocityY(0);
+			gameState.ball.setVelocityX(1000); 
+			// sets results
+			compScore.innerHTML = `Computer's score: ${comp.score}`;
+			playerScore.innerHTML = `Your Score: ${player.score}`;
+		}
+		else if (gameState.ball.x <= 40) {
+			comp.score += 1
+			//resets ball
+			gameState.ball.x = 500;
+			gameState.ball.y = 300;
+			gameState.ball.setVelocityY(0);
+			gameState.ball.setVelocityX(1000)
+			// sets results
+			compScore.innerHTML = `Computer's score: ${comp.score}`;
+			playerScore.innerHTML = `Your Score: ${player.score}`;
+		}
+		// computer paddle AI
+		if (gameState.ball.y > (gameState.compPaddle.y + 40)) {
+			gameState.compPaddle.setVelocityY(550);
+		}
+		else if (gameState.ball.y < (gameState.compPaddle.y - 40)){
+			gameState.compPaddle.setVelocityY(-550);
+		}
+		else {
+			// makes the computer look more natural by adding slight movement when idle
+			num = Math.random();
+			if (num > 0.5) {
+				gameState.compPaddle.setVelocityY(20);	
+			} else {
+				gameState.compPaddle.setVelocityY(-20)	
+			}
+		}
 	}
-	else if (gameState.cursors.up.isDown) {
-		gameState.playerPaddle.setVelocityY(-800);
+	else { // runs when game is over
+		//sets result values
+		playerScore.innerHTML = `Your Score: ${player.score}`;
+		compScore.innerHTML = `Computer's score: ${comp.score}`;
+		
+		// makes game invisible
+		gameState.ball.setVisible(false);
+		gameState.playerPaddle.setVisible(false);
+		gameState.compPaddle.setVisible(false);
+		// displays appropriate popup
+		if(player.score === 10) {
+			gameState.winnerPopup.setVisible(true);
+		} else {
+			gameState.loserPopup.setVisible(true);
+		}
+			
 	}
-	else {
-	gameState.playerPaddle.setVelocityY(0);
-	
-	}
-	// resets ball if it goes off screen and assigns points
-	if (gameState.ball.x >= 960){
-		player.score += 1;
-		gameState.ball.x = 500;
-		gameState.ball.y = 300;
-		gameState.ball.setVelocityY(0);
-		gameState.ball.setVelocityX(1000)
-		console.log(player, comp)
-	}
-	else if (gameState.ball.x <= 40) {
-		comp.score += 1
-		gameState.ball.x = 500;
-		gameState.ball.y = 300;
-		gameState.ball.setVelocityY(0);
-		gameState.ball.setVelocityX(-1000)
-		console.log(player, comp)
-	}
-	
-	if (gameState.ball.y > (gameState.compPaddle.y + 50)) {
-		gameState.compPaddle.setVelocityY(380);
-	}
-	else if (gameState.ball.y < (gameState.compPaddle.y - 50)){
-		gameState.compPaddle.setVelocityY(-380);
-	}
-	else {
-		gameState.compPaddle.setVelocityY(0);	
-	}
+}
 
-};
 
 
 </script>
-<noscript></noscript>
-
+<noscript>
+This webpage depends on JavaScript... Please enable Javascript in your browser (enable-javascript.com) or download firefox (mozilla.org/firefox/)
+</noscript>
 </body>
 </html>
 
