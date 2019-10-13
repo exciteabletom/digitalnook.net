@@ -1,5 +1,8 @@
 #tom custom
-
+.swo/
+.swp/
+.idea/
+*.pyc
 errors.txt
 # Byte-compiled / optimized / DLL files
 __pycache__/
