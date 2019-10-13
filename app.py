@@ -94,5 +94,5 @@ def not_found(e):
 	render_template("404.html")
 
 if __name__ == "__main__":
-    app.run(host="10.1.1.50", port="80")
+    app.run(host="0.0.0.0", port="80")
 

@@ -11,9 +11,7 @@
 	<!-- my sleep function -->
 	<script src="/static/scripts/sleep.js"></script>
 	<!-- styles phaser canvas -->
-	<style>
-	canvas{border: 3px solid blue;} 			
-	</style>
+	<style> canvas{border: 3px solid blue;} </style>
 
 </head> 
 
@@ -69,8 +67,8 @@ const config = {
 const game = new Phaser.Game(config);
 
 // Variables to keep sprite position consistent on resize 
-const width = game.config.width;
-const height = game.config.height;
+let width = game.config.width;
+let height = game.config.height;
 const halfHeight = height / 2;
 const halfWidth = width / 2;
 const width20 = width / 20; 
@@ -87,7 +85,7 @@ function create() {
 	// Makes sprites using preloaded images
 	gameState.loserPopup = this.add.image(halfWidth, halfHeight, "loserPopup").setInteractive();
 	gameState.winnerPopup = this.add.image(halfWidth, halfHeight, "winnerPopup").setInteractive();
-	gameState.loserPopup.setVisible(false)
+	gameState.loserPopup.setVisible(false);
 	gameState.winnerPopup.setVisible(false);
 
 	gameState.playerPaddle = this.physics.add.sprite(width20, halfHeight, "playerPaddle").setScale(0.3).setInteractive();
@@ -163,18 +161,22 @@ let comp = {
 };
 
 function update() {
-	if (player.score < 10 && comp.score < 10){	
-		
+	let newWidth = window.innerWidth / 60
+	let newHeight = window.innerHeight / 40
+	game.scale.setGameSize(newWidth, newHeight)
+
+	if (player.score < 10 && comp.score < 10){
+
 		// mouse player controls test
 		if (gameState.mobilePointer.y > gameState.playerPaddle.y + 50) {
 			gameState.playerPaddle.setVelocityY(800);
 		} else if (gameState.mobilePointer.y < gameState.playerPaddle.y - 50) {
 			gameState.playerPaddle.setVelocityY(-800)
 		} else {
-			gameState.playerPaddle.setVelocityY(0)	
+			gameState.playerPaddle.setVelocityY(0)
 		}
-		
-		
+
+
 		// desktop player controls
 		if (gameState.cursors.down.isDown){
 			gameState.playerPaddle.setVelocityY(800);
@@ -192,7 +194,7 @@ function update() {
 			gameState.ball.x = halfWidth;
 			gameState.ball.y = halfHeight;
 			gameState.ball.setVelocityY(0);
-			gameState.ball.setVelocityX(1000); 
+			gameState.ball.setVelocityX(1000);
 			// sets results
 			compScore.innerHTML = `Computer's score: ${comp.score}`;
 			playerScore.innerHTML = `Your Score: ${player.score}`;
@@ -220,7 +222,7 @@ function update() {
 		//sets result values
 		playerScore.innerHTML = `Your score: ${player.score}`;
 		compScore.innerHTML = `Computer's score: ${comp.score}`;
-		
+
 		// makes game invisible
 		gameState.ball.setVisible(false);
 		gameState.playerPaddle.setVisible(false);
@@ -231,12 +233,9 @@ function update() {
 		} else {
 			gameState.loserPopup.setVisible(true);
 		}
-			
+
 	}
 }
-
-
-
 </script>
 <noscript>
 This webpage depends on JavaScript... Please enable Javascript in your browser (enable-javascript.com) or download firefox (mozilla.org/firefox/)
