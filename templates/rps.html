@@ -27,7 +27,7 @@
 			</div>
 
 		</div> 
-		<div id='popup' class='overlay' style="width:100vw; height:100vw; margin-left: 22%;">
+		<div id='winnerPopup' class='popup' style="width:100vw; height:100vw; margin-left: 22%;">
 			<img src='/static/images/win.png' alt='winner popup'/>
 		</div>
 		<div id='tutorialPopup' class='overlay' style='background: #ff6f00; display:block;'>
@@ -132,7 +132,7 @@ function runAllFunctions(){
 			loserSound.play();
 			loserSound.currentTime=0;
 		}else if (document.getElementById('p1').innerHTML[0] === "Y"){
-			document.getElementById('popup').style.display = "block"
+			document.getElementById('winnerPopup').style.display = "block"
 			winnerSound.play();
 			winnerSound.play();
 			winnerSound.currentTime=0;
@@ -141,7 +141,7 @@ function runAllFunctions(){
 			tieSound.currentTime=0;
 		}
 			sleep(1900).then(() => { // waits 1.9 seconds then enables buttons
-			document.getElementById('popup').style.display = "none"
+			document.getElementById('winnerPopup').style.display = "none"
 			document.getElementById('rockButton').disabled = false;
 			document.getElementById('scissorsButton').disabled = false;
 			document.getElementById('paperButton').disabled = false;

@@ -5,7 +5,6 @@
 	<title>Tennis | DigitalNook</title>
 	<link href="/static/styles1.css" rel="stylesheet" type="text/css"/>
 	<link href="/static/favicon.ico" rel="shortcut icon" type="favicon/x-icon"/>
-	<!-- should scales all elements to viewport size, fix this later  -->
 	<!-- Phaser Game Framework ****USE MIN IN RELEASE BUILD****-->
 	<script src="/static/scripts/phaser.min.js"></script>
 	<!-- my sleep function -->
@@ -46,9 +45,13 @@ const compScore = document.getElementById("compScore");
 let gameState = {};
 const config = {
 	type: Phaser.AUTO,
-	width: 1000,
-	height: 600,
-	parent: "game",
+	scale: {
+		parent: "game",
+		mode: Phaser.Scale.FIT,
+		width: window.innerWidth / 2,
+		height: window.innerWidth / 3,
+		
+	},
 	backgroundColor: 0xbfbfbf,
 	physics: {
 		default: "arcade",
@@ -161,10 +164,8 @@ let comp = {
 };
 
 function update() {
-	let newWidth = window.innerWidth / 60
-	let newHeight = window.innerHeight / 40
-	game.scale.setGameSize(newWidth, newHeight)
-
+	game.config.width = width;
+	game.config.height = height;
 	if (player.score < 10 && comp.score < 10){
 
 		// mouse player controls test

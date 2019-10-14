@@ -2,6 +2,7 @@
 .swo/
 .swp/
 .idea/
+idea/
 *.pyc
 errors.txt
 # Byte-compiled / optimized / DLL files
