@@ -9,6 +9,7 @@
 		<!--sleep function-->
 		<script src="/static/scripts/sleep.js"></script>
 		
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0"/>
 		<style>
 		.leftButton, .rightButton, .centerButton {margin: 5px;height: 45px; width: 45px;} /*fits red dots inside of div without overflow*/
 		#submitToLeaderboard{margin:0;background: #FF6F00;left:0;right:0;bottom:0;top:0;} /*formatting for leaderboard form */
@@ -21,7 +22,7 @@
 		<!-- All buttons for game and start button -->
 		<div id="game" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center;  background: white; height: 200px; width: 20%; margin-left: 40%; margin-right: 40%; border: 5px solid black;">
 			<div id='start'>
-				<button type="button" id="startButton" style="visibility: visible;position:relative;" onclick="resetVars(); this.style.display = 'none'; submitButton.style.display = 'none'; startGame()">Start</button>
+				<button type="button" id="startButton" style="visibility: visible; " onclick="resetVars(); this.style.display = 'none'; submitButton.style.display = 'none'; startGame()">Start</button>
 			</div>
 			<!-- sections the page into three vertical stacks, buttons floated left/right -->
 			<div id="top" style="height:33%">
