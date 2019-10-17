@@ -5,17 +5,18 @@
 	<title>Tennis | DigitalNook</title>
 	<link href="/static/styles1.css" rel="stylesheet" type="text/css"/>
 	<link href="/static/favicon.ico" rel="shortcut icon" type="favicon/x-icon"/>
-	<!-- Phaser Game Framework ****USE MIN IN RELEASE BUILD****-->
-	<script src="/static/scripts/phaser.min.js"></script>
-	<!-- my sleep function -->
-	<script src="/static/scripts/sleep.js"></script>
+	<!-- Phaser Game Framework -->
+	<script src="/static/js/phaser.min.js"></script>
+	<!-- game index -->
+	<script type="module" src="/static/js/tennis/index.js""
+	<!-- sleep(ms).then function -->
+	<script src="/static/js/sleep.js"></script>
 	<!--SO-->
 	
-	
-<!--	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
-	<!-- styles phaser canvas -->
+	<!-- Dynamic Viewport scaling -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<!-- styles for phaser canvas -->
 	<style> 
 	canvas{
 		border: 3px solid blue; 
@@ -52,9 +53,9 @@
 		 <br/>
 		 <br/>
 	</footer>
-
 <script>
-// aliases for DOM elements
+/*
+	// aliases for DOM elements
 const playerScore = document.getElementById("playerScore");
 const compScore = document.getElementById("compScore");
 
@@ -66,13 +67,13 @@ const config = {
 		mode: Phaser.Scale.FIT,
 		width: 1000,
 		height: 600,
-		
+
 	},
 	backgroundColor: 0xbfbfbf,
 	physics: {
 		default: "arcade",
 		arcade: {
-			gravity: {y: 0},
+		    gravity: {y: 0},
 			debug: true,
 		},
 	},
@@ -85,7 +86,7 @@ const config = {
 //defines phaser game obj from config
 const game = new Phaser.Game(config);
 
-// Variables to allow me to change resolution without changing all my code 
+// Variables to allow me to change resolution without changing all my code
 const height = game.config.height;
 const minusHeight = height * -1;
 const halfHeight = height / 2;
@@ -109,102 +110,107 @@ function preload(){
 	this.load.image("loserPopup", "/static/images/loserPopup.png");
 }
 
-function create() {	
-	// Makes sprites using preloaded images
+function create() {
+	// Makes images using preloaded assets
 	gameState.loserPopup = this.add.image(halfWidth, halfHeight, "loserPopup").setInteractive();
 	gameState.winnerPopup = this.add.image(halfWidth, halfHeight, "winnerPopup").setInteractive();
+
+	// Makes popups invisible so they can be used later
 	gameState.loserPopup.setVisible(false);
 	gameState.winnerPopup.setVisible(false);
 
+	// Creates main game sprites, scales them, makes them interactive
 	gameState.playerPaddle = this.physics.add.sprite(width20, halfHeight, "playerPaddle").setScale(0.3).setInteractive();
 	gameState.compPaddle = this.physics.add.sprite((width - width20), halfHeight, "compPaddle").setScale(0.3).setInteractive();
 	gameState.ball = this.physics.add.sprite(halfWidth, halfHeight, "ball").setScale(0.1).setInteractive();
-	
+
 	// player/ball collision
 	this.physics.add.collider(gameState.playerPaddle, gameState.ball, function() {
-		randNum = Math.random();
+		randNum = Math.random(); // num between 0-1
+
 		// slight randomness in velocity to make game feel more dynamic
 		if(randNum <= 0.5){
 			if (gameState.playerPaddle.body.velocity.y === 0) {
-				gameState.ball.setVelocityY(width10 * -1);		
+				gameState.ball.setVelocityY(width10 * -1);
 			} else {
 				gameState.ball.setVelocityY(gameState.playerPaddle.body.velocity.y / 1.9);
 			}
 		}else if (randNum >= 0.5){
 			if (gameState.playerPaddle.body.velocity.y === 0) {
-				gameState.ball.setVelocityY(width10);		
+				gameState.ball.setVelocityY(width10);
 			} else {
 				gameState.ball.setVelocityY(gameState.playerPaddle.body.velocity.y / 1.7);
 			}
 		}
 	});
-	
+
 	// comp/ball collision
 	this.physics.add.collider(gameState.compPaddle, gameState.ball, function() {
+
 		if (gameState.playerPaddle.y > halfHeight) {
 			gameState.ball.setVelocityY((width10 * -1) * (Math.random() * 5));
-		
-		}else if (gameState.playerPaddle.y < halfHeight) {	
-			gameState.ball.setVelocityY(width10 * (Math.random() * 5));	
-		
+
+		}else if (gameState.playerPaddle.y < halfHeight) {
+			gameState.ball.setVelocityY(width10 * (Math.random() * 5));
+
 		}else if (gameState.playerPaddle.y) {
-			num = Math.random()
-			
+			num = Math.random() // number between 0-1
+
 			if (num >= 0.5) {
-				gameState.ball.setVelocityY(width10 *(Math.random() * 5));	
-			
+				gameState.ball.setVelocityY(width10 *(Math.random() * 5));
+
 			}else {
-				gameState.ball.setVelocityY((width10 * -1) *(Math.random() * 5));	
-			
+				gameState.ball.setVelocityY((width10 * -1) *(Math.random() * 5));
+
 			}
 		}
-		
-	
+
+
 	});
 
+	// makes ball bounce during collisions
 	gameState.ball.setBounce(1);
+	// sets ball to go towards player on first boot
 	gameState.ball.setVelocityX(-1000);
-	
+
 	// makes paddles unaffected by balls force
 	gameState.playerPaddle.body.immovable = true;
 	gameState.compPaddle.body.immovable = true;
-	
+
 
 	// creates default keyboard inputs
 	gameState.cursors = this.input.keyboard.createCursorKeys();
-		
-	// mobile controls
-	gameState.mobilePointer = this.input.activePointer;
 
 	// ensures sprites never leave game
 	gameState.compPaddle.setCollideWorldBounds(true);
 	gameState.playerPaddle.setCollideWorldBounds(true);
 	gameState.ball.setCollideWorldBounds(true);
-	
-};
 
+};
+// Objects for player and computer can be expanded later
 let player = {
-	score: 0,	
+	score: 0,
 };
 
 let comp = {
-	score: 0,	
+	score: 0,
 };
-let screenValues;
-
 function update() {
+	// TODO: why does this not scale when window is minimised then maximised?
+	// anonymous func to set game size every update
 	(function() {
 	gameId = document.getElementById("game");
 	gameId.style.width = '60%';
 	gameId.style.height = '60%';
-  	})();	
-	
+	gameId.style.marginRight = "5%";
+  	})();
+
 	if (player.score < 10 && comp.score < 10){
-		// TODO Mobile compatibility
+		// TODO Mobile compatibility, How will multiplayer work?, swiping gestures or follow finger?
 		// ...
 
 		// desktop player controls
-		
+
 		if (gameState.cursors.down.isDown){
 			gameState.playerPaddle.setVelocityY(800);
 		}
@@ -212,6 +218,7 @@ function update() {
 			gameState.playerPaddle.setVelocityY(-800);
 		}
 		else {
+			// if no keypress dont move
 			gameState.playerPaddle.setVelocityY(0);
 		}
 		// resets ball if it goes off screen and assigns points to objects
@@ -222,7 +229,7 @@ function update() {
 			gameState.ball.y = halfHeight;
 			gameState.ball.setVelocityY(0);
 			gameState.ball.setVelocityX(width);
-			// sets results
+			// sets <p> elements to
 			compScore.innerHTML = `Computer's score: ${comp.score}`;
 			playerScore.innerHTML = `Your Score: ${player.score}`;
 		}
@@ -264,6 +271,7 @@ function update() {
 
 	}
 }
+*/
 </script>
 <noscript>
 This webpage depends on JavaScript... Please enable Javascript in your browser (enable-javascript.com) or download firefox (mozilla.org/firefox/)
