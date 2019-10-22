@@ -21,6 +21,7 @@ def pie():
 @app.route("/",host="digitalnook.net")
 def index():
     return render_template("index.html")
+
 # About page
 @app.route("/about/",host="digitalnook.net")
 def about():
@@ -40,6 +41,7 @@ def games():
 @app.route("/games/tennis/", host="digitalnook.net")
 def tennis():
 	return render_template("tennis.html")
+
 # Rock paper scissors
 @app.route("/games/rps/", host="digitalnook.net")
 def rps():
@@ -91,7 +93,7 @@ def leaderboard():
 # Handles 404 errors
 @app.errorhandler(404)
 def not_found(e):
-	render_template("404.html")
+	return render_template("404.html"), 404
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="80")

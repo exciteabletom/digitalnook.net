@@ -1,9 +1,9 @@
 .splitList {
-	padding: 20px; 
+	padding: 20px;
 	border-top: 2px black dashed;
 }
 .splitListBottom {
-	padding: 20px; 
+	padding: 20px;
 	border-top: 2px black dashed;
 	border-bottom: 2px black dashed;
 }
@@ -27,12 +27,12 @@ h1, .mainPageHeader {
 	text-align: center;
 	font-style: italic;
 	display: block;
-	
-}body{	
+
+}body{
 	background: #FF6F00;
 	border: 20px orange groove;
 	margin: 0px;
-	box-sizing: border-box; min-height: 100vh; 
+	box-sizing: border-box; min-height: 100vh;
 
 }.blueP{
 	color: blue;
@@ -121,7 +121,7 @@ h1, .mainPageHeader {
 	border: 20px orange groove;
 }.popup{
 	position: fixed;
-	
+
 	width: 100vw;
 	height: 100vh;
 	display:none;
@@ -152,15 +152,13 @@ h1, .mainPageHeader {
 	padding:16px 31px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #2f6627;
-	width: 100%;
-	margin-top: 58%;	
 }
 #startButton:hover {
 	background-color:#44c767;
 }#startButton:active {
 	position:relative;
 	top:1px;
-}.centerButton { 
+}.centerButton {
 	position: relative;
 	top: 50%;
 	left: 32.5%;

@@ -19,24 +19,26 @@
 		</header>
 		<!-- All buttons for game and start button -->
 		<div id="game" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center;  background: white; height: 200px; width: 20%; margin-left: 40%; margin-right: 40%; border: 5px solid black;">
-			<div id='start'>
-				<button type="button" id="startButton" style="visibility: visible; " onclick="resetVars(); this.style.display = 'none'; submitButton.style.display = 'none'; startGame()">Start</button>
-			</div>
-			<!-- sections the page into three vertical stacks, buttons floated left/right -->
-			<div id="top" style="height:33%">
-				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="topLeft" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
-				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="topCenter" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
-				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="topRight" class="rightButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
-			</div>
-			<div id="middle" style="height:33%;">
-				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="middleLeft" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
-				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" style="margin-right: 50px" id="middleRight" class="rightButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
-				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="middleCenter" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
-			</div>
-			<div id="bottom" style="height:33%;">
-				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="bottomCenter" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
-				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="bottomLeft" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
-				<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="bottomRight" class="rightButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				<div id='start'>
+					<button type="button" id="startButton" style="visibility: visible; " onclick="resetVars(); this.style.display = 'none'; submitButton.style.display = 'none'; startGame()">Start</button>
+				</div>
+				<!-- sections the page into three vertical stacks, buttons floated left/right -->
+			<div id="mainGame" style="display: none; width: 100%;">
+				<div id="top" style="height:33%">
+					<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="topLeft" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+					<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="topCenter" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+					<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="topRight" class="rightButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				</div>
+				<div id="middle" style="height:33%;">
+					<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="middleLeft" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+					<input type="image" alt="Button is not loading.." src="/static/images/dot.png" style="margin-right: 50px" id="middleRight" class="rightButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+					<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="middleCenter" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				</div>
+				<div id="bottom" style="height:33%;">
+					<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="bottomCenter" class="centerButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+					<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="bottomLeft" class="leftButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+					<input type="image" alt="Button is not loading.." src="/static/images/dot.png" id="bottomRight" class="rightButton" onclick="endTimer(); this.style.visibility = 'hidden'"/>
+				</div>
 			</div>
 		</div>
 		<br/>
@@ -68,7 +70,7 @@
 			<h1>How to Play</h1>
 			<br/>
 			<p>
-			Click on the 3 dots as they appear. Try to get a good score! 
+			Click on the 3 dots as they appear. Try to get a good score!
 			<br/><br/>
 			Get under 600ms average to be a champion!
 			</p>
@@ -100,7 +102,7 @@ const scoreInput = document.getElementById('scoreInput');
 const submitButton = document.getElementById('submitButton');
 
 window.onload = function () {
-	submitToLeaderboard.reset();	
+	submitToLeaderboard.reset();
 }
 // defines pop sound so that it is not delayed on button press
 const popSound = new Audio('/static/audio/pop.mp3');
@@ -146,14 +148,15 @@ function endTimer() {
 		startGame();
 	} else if (count === 3) {
 		count = 0;
+		document.getElementById("mainGame").style.display = "none";
 		submitButton.style.display = "block"
-		startButton.style.display = "inline";	
+		startButton.style.display = "inline";
 		thirdTime.innerHTML = endTime - startTime + "ms";
 		finalTime.innerHTML = `Your average reaction time was ${Math.round(reactionTime/3)}ms or ${((reactionTime/3)/1000).toFixed(2)} seconds!`;
 		scoreInput.value = Math.round(reactionTime/3);
 		if ((reactionTime/3) <= 600) {
 				lowTime.innerHTML = `Nice! <br/><br/> Average Reaction Time: ${Math.round(reactionTime/3)} ms <br/> Best Reaction Time: ${Math.round(bestReactionTime)} ms`;
-		lowTimePopup.style.display = "block";	
+		lowTimePopup.style.display = "block";
 			lowTimePopup.style.background = "red";
 			sleep(400).then(() =>{
 				lowTimePopup.style.background = "purple";
@@ -182,6 +185,7 @@ function startGame() {// runs when start button is pressed
 	randomWaitNum = Math.floor((Math.random() * 4000)+1000);
 	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)// for debugging
 	sleep(randomWaitNum).then(() => {
+		document.getElementById("mainGame").style.display = "block";
 		switch (randomNum) {
 			case 1:
 				document.getElementById("topLeft").style.visibility = "visible";
