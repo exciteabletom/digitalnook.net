@@ -1,5 +1,5 @@
 import "/static/js/phaser.min.js";
-export default class loserScene extends Phaser.Scene {
+export default class LoserScene extends Phaser.Scene {
 	constructor() {
 		super({key: "loser"});
 	}
@@ -9,14 +9,15 @@ export default class loserScene extends Phaser.Scene {
 	}
 
 	create() {
-		const global = this;
-		// cursor image
-		this.input.setDefaultCursor("url(/static/images/cursors/tennis.cur), pointer");
+		const {scene} = this;
+
 		//add image and set interactive
 		const loserPopup = this.add.image(0, 0, "loserPopup").setOrigin(0,0).setInteractive();
+
 		// click event handler
-		loserPopup.on("pointerUp", function() {
-			global.scene.start("singlePlayer");
-		})
+		loserPopup.on("pointerup", () => {
+			scene.start("singlePlayer");
+		});
+
 	}
 }

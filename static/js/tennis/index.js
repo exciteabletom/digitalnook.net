@@ -1,17 +1,20 @@
-import "/static/js/phaser.min.js";
 import SinglePlayerScene from "./singlePlayerRewrite.js";
 import winnerScene from "./winner.js";
-import loserScene from "./loser.js";
+import LoserScene from "./loser.js";
+import MenuScene from "./menu.js";
 
 // Game class for switching between scenes
 class Game extends Phaser.Game {
 	constructor() {
 		super(config); // equiv to Phaser.Game(config);
+
+		this.input.setDefaultCursor("url(/static/images/cursors/tennis.cur), pointer");
 		this.scene.add("singlePlayer", SinglePlayerScene);
 		this.scene.add("winner", winnerScene);
-		this.scene.add("loser", loserScene);
+		this.scene.add("loser", LoserScene);
+		this.scene.add("menu", MenuScene);
 		// TODO: multiplayer
-		this.scene.start("singlePlayer");
+		this.scene.start("menu");
 	}
 }
 

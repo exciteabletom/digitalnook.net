@@ -10,13 +10,13 @@
 h1, .mainPageHeader {
 	color: black;
 	font-size:50px;
-	font-family: impact;
+	font-family: impact, serif;
 	text-align: center;
 	font-weight: bold;
 } h2, .resultsHeader{
 	color: black;
 	font-size:35px;
-	font-family: impact;
+	font-family: impact, serif;
 	text-align: center;
 	font-weight: normal;
 	text-decoration: underline;
@@ -142,12 +142,8 @@ h1, .mainPageHeader {
 	border:1px solid #18ab29;
 	cursor:pointer;
 	color:#ffffff;
-	font-family:Arial;
-	font-size:50px;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:23px;
+	 font-family: Arial, serif;
+	 font-size:23px;
 	font-weight:bold;
 	padding:16px 31px;
 	text-decoration:none;
@@ -181,7 +177,7 @@ h1, .mainPageHeader {
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
-	font-family:Arial;
+	 font-family: Arial, serif;
 	font-size:30px;
 	padding:16px 31px;
 	text-decoration:none;

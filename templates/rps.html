@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang=en charset=utf-8>
 <!-- Rock Paper Scissors by Tommy Dougiamas -->
-	
+
 <head>
 	<title>Rock, Paper, Scissors! | DigitalNook</title>
 	<link href='/static/styles1.css' type='text/css' rel='stylesheet'/>
@@ -9,16 +9,16 @@
 	<!--sleep function-->
 	<script src="/static/js/sleep.js"></script>
 </head>
-<body> 
-	<section>	
+<body>
+	<section>
 		<h1 id=mainHeader> Rock Paper Scissors! </h1>
 	</section>
 	  	<div id=buttons class='row' style>
 			<div class='column' style='float:center;'>
-				<input alt='image of rock' type='image' onclick="this.disabled=true; userChoice='rock'; runAllFunctions()" src='/static/images/rock.png' id='rockButton' style='width: 100%'> 
+				<input alt='image of rock' type='image' onclick="this.disabled=true; userChoice='rock'; runAllFunctions()" src='/static/images/rock.png' id='rockButton' style='width: 100%'>
 			</div>
 
-			<div class='column'> 
+			<div class='column'>
 				<input alt='image of paper' type='image' onclick="this.disabled=true;userChoice='paper'; runAllFunctions()" src=/static/images/paper.png id=paperButton style='width: 100%'/>
 			</div>
 
@@ -26,22 +26,22 @@
 				<input alt='image of scissors' type='image' onclick="this.disabled=true; userChoice='scissors'; runAllFunctions();" src='/static/images/scissors.png' id='scissorsButton' style='width: 100%'/>
 			</div>
 
-		</div> 
+		</div>
 		<div id='winnerPopup' class='popup' style="width:100vw; height:100vw; margin-left: 22%;">
 			<img src='/static/images/win.png' alt='winner popup'/>
 		</div>
 		<div id='tutorialPopup' class='overlay' style='background: #ff6f00; display:block;'>
-			<h1>How to Play</h1>	
+			<h1>How to Play</h1>
 			<br/>
 			<br/>
 			<p> Click on Rock, Paper or scissors to make your choice. Wait for the computer to choose to see if you won!</p>
 			<br/>
 			<button class='greenButton' id='tutorialClose'type='button' onclick="document.getElementById('tutorialPopup').style.display = 'none'">Let's Play!</button>
 		</div>
-		<div id='main'>	
-			<h2> Results </h2>	
+		<div id='main'>
+			<h2> Results </h2>
 			<p id='p1'></p>
-		      <br/>		
+		      <br/>
 			<p id='p2'></p>
 			<p id='p3'></p>
 		      <br/>
@@ -52,11 +52,12 @@
 		</div>
 
 <script>
-
-	// Makes variable accessable to the DOM
+// Makes variable accessable to the DOM
 var userChoice;
+
 // Gets computer random choice
-let computerChoice
+let computerChoice;
+
 function getComputerChoice(){
 	const random = Math.floor((Math.random() * 3)+1);
 	switch(random){
@@ -75,7 +76,7 @@ function getComputerChoice(){
 function getWinner(userChoice, compChoice){
 	if (userChoice === compChoice) {
 		document.getElementById('p1').innerHTML = "The game was a tie.";
-		
+
 	}else if (userChoice === 'rock'){
 		if (compChoice === 'paper'){
 			document.getElementById('p1').innerHTML = "Sorry, you lost";
