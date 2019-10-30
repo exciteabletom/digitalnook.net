@@ -1,10 +1,15 @@
-from flask import Flask, render_template, request, redirect 
+from flask import Flask, render_template, request, redirect, send_from_directory
 import os
 import json
 from nocache import nocache
 import operator
 
 app = Flask(__name__, static_url_path="/static/")
+
+@app.route('/robots.txt')
+@app.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory("", request.path[1:])
 
 # stops caching of leaderboard
 @app.route("/static/reactionLeaderboard.json", host="digitalnook.net")
