@@ -1,8 +1,8 @@
-export default class SinglePlayerScene extends Phaser.Scene {
-
+export default class MultiPlayerScene extends Phaser.Scene {
 	constructor() {
-		super({key: "singlePlayer"});
+		super({key: "multiPlayer"});
 	}
+
 
 	preload() {
 		// preload images for use in create()
@@ -20,14 +20,16 @@ export default class SinglePlayerScene extends Phaser.Scene {
 		// add up arrow and down arrow
 		keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 		keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+
 		// creates sprites
 		this.createSprites();
 
 		// collisions for ball and paddles
 		this.physics.add.collider(sprites.playerP, sprites.ball, () => {
-			const bool = getRandomBool();
-			sprites.ball.setVelocityX(1000);
+			sprites.ball.setVelocityX(900);
+
 			const playerVelocityY = sprites.playerP.body.velocity.y;
+			const bool = getRandomBool();
 
 			if (playerVelocityY !== 0) {
 				if (bool === true) { // slight randomness in y velocity
@@ -43,62 +45,64 @@ export default class SinglePlayerScene extends Phaser.Scene {
 					sprites.ball.setVelocityY(randVelocity * -1);
 				}
 			}
-
 		});
 
-		this.physics.add.collider(sprites.compP, sprites.ball, function () {
-			const randVelocityY = getRandomFloat(200, 500);
-			const randVelocityX = getRandomFloat(-900, -1000);
+		this.physics.add.collider(sprites.compP, sprites.ball, () => {
+			sprites.ball.setVelocityX(-900);
+			const playerVelocityY = sprites.compP.body.velocity.y;
 
-			sprites.ball.setVelocityX(randVelocityX);
-			if (sprites.playerP.y < sprites.compP.y) { // always hits ball far away from player TODO: if hitting ball will bounce into wall immediately do other direction
-				sprites.ball.setVelocityY(randVelocityY);
+			const bool = getRandomBool();
+			if (playerVelocityY !== 0) {
+				if (bool === true) { // slight randomness in y velocity
+					sprites.ball.setVelocityY(playerVelocityY / 1.3);
+				} else {
+					sprites.ball.setVelocityY(playerVelocityY / 1.5);
+				}
 			} else {
-				sprites.ball.setVelocityY(randVelocityY * -1);
+				const randVelocity = getRandomFloat(0.5, 1.5) * 100;
+				if (bool === true) {
+					sprites.ball.setVelocityY(randVelocity);
+				} else {
+					sprites.ball.setVelocityY(randVelocity * -1);
+				}
 			}
 		});
 	}
 
 
 	update() {
-		if (player1.score !== 10 && player2.score !== 10) {
+		if (player2.score !== 10 && player1.score !== 10) {
 			this.checkCursors(); // checks for cursor input
-			this.compAi(); // handles computer movement
 			this.checkScore(); // checks to see if ball needs to be reset and assigns points
 		} else if (player1.score === 10) {
-			player1.score = 0;
-			player2.score = 0;
 			this.scene.stop("scoring");
-			this.scene.start("winner");
+			this.scene.start("player1Win");
 		} else if (player2.score === 10) {
-			player1.score = 0;
-			player2.score = 0;
 			this.scene.stop("scoring");
-			this.scene.start("loser");
+			this.scene.start("player2Win");
 		}
 	}
 
 	checkCursors() {
-		// player movement using keyboard input
-		if (keyDown.isDown || keyS.isDown) {
+		// player1 movement using WASD input
+		if (keyS.isDown) {
 			sprites.playerP.setVelocityY(800);
-		} else if (keyUp.isDown || keyW.isDown) {
+		} else if (keyW.isDown) {
 			sprites.playerP.setVelocityY(-800);
 		} else {
 			sprites.playerP.setVelocityY(0);
 		}
-	}
 
-	compAi() {
-		// computer AI
-		if (sprites.ball.y > sprites.compP.y + 40) {
-			sprites.compP.setVelocityY(480);
-		} else if (sprites.ball.y < sprites.compP.y - 40) {
-			sprites.compP.setVelocityY(-480);
-		} else {
+		// player2 movement using arrow input TODO: why is P2 snappier than P1
+		if (keyDown.isDown) {
+			sprites.compP.setVelocityY(800);
+		} else if (keyUp.isDown) {
+			sprites.compP.setVelocityY(-800);
+		} else /*if (!keyUp.isDown && !keyDown.isDown)*/ {
 			sprites.compP.setVelocityY(0);
 		}
 	}
+
 
 	checkScore(){
 		if (sprites.ball.body.x > 900) {
@@ -124,8 +128,6 @@ export default class SinglePlayerScene extends Phaser.Scene {
 		sprites.compP = this.physics.add.sprite(950, 300, "compPaddle").setScale(0.3).setInteractive();
 		sprites.ball = this.physics.add.sprite(500, 300, "ball").setScale(0.1).setInteractive();
 
-
-
 		sprites.playerP.setCollideWorldBounds(true);
 		sprites.compP.setCollideWorldBounds(true);
 		sprites.ball.setCollideWorldBounds(true);
@@ -134,7 +136,7 @@ export default class SinglePlayerScene extends Phaser.Scene {
 		sprites.compP.body.immovable = true;
 
 		sprites.ball.setBounce(1); // ball bounces off collisions
-		sprites.ball.setVelocityX(-500); // ball slowly goes to player on boot
+		sprites.ball.setVelocityX(-500); // ball slowly goes to player1 on boot
 		sprites.ball.setVelocityY(0);
 	}
 

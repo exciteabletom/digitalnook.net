@@ -41,12 +41,18 @@
 		<div id="game" style="" margin-right="5%">
 		</div>
 
-		<div id="settings">
-			<p style="font-weight: bold;">First to 10</p>
+		<div id="intro" style="max-width: 65%;">
+			<p style="font-weight: bold;">First to 10 wins!</p>
 			<br/>
-			<p id="playerScore"> Your score: 0</p>
+			<p>In Tennis, a game <strong>completely different</strong> to Pong, try to beat your opponent by hitting the ball past them with a paddle to score points.</p>
 			<br/>
-			<p id="compScore">Computer's score: 0</p>
+			<p id="tutorial">
+				Single Player: Use the arrow or W/S keys to move<br/>
+				Multiplayer: Use the arrow keys for the green paddle and W/S keys for the red paddle
+			</p>
+			<br/>
+			<p id="feedback">This game is very new, so feel free to send me some feedback/suggestions at my <a style="display: inline;" href="mailto:admin@digitalnook.net">email</a></p>
+			<br/>
 		</div>
 	</div>
 	<footer>
@@ -55,226 +61,6 @@
 		 <br/>
 		 <br/>
 	</footer>
-<script>
-/*
-	// aliases for DOM elements
-const playerScore = document.getElementById("playerScore");
-const compScore = document.getElementById("compScore");
-
-let gameState = {};
-const config = {
-	type: Phaser.AUTO,
-	scale: {
-		parent: "game",
-		mode: Phaser.Scale.FIT,
-		width: 1000,
-		height: 600,
-
-	},
-	backgroundColor: 0xbfbfbf,
-	physics: {
-		default: "arcade",
-		arcade: {
-		    gravity: {y: 0},
-			debug: true,
-		},
-	},
-	scene: {
-		preload: preload,
-		create: create,
-		update: update,
-	},
-};
-//defines phaser game obj from config
-const game = new Phaser.Game(config);
-
-// Variables to allow me to change resolution without changing all my code
-const height = game.config.height;
-const minusHeight = height * -1;
-const halfHeight = height / 2;
-const height10 = height / 10;
-const height5 = height / 5;
-const height4 = height / 4;
-
-const width = game.config.width;
-const minusWidth = width * -1;
-const halfWidth = width / 2;
-const width20 = width / 20;
-const width10 = width / 10;
-const width5 = width / 5;
-const width4 = width / 4;
-
-function preload(){
-	this.load.image("ball","/static/images/ball.png");
-	this.load.image("playerPaddle", "/static/images/playerPaddle.png");
-	this.load.image("compPaddle", "/static/images/compPaddle.png");
-	this.load.image("winnerPopup", "/static/images/winnerPopup.png");
-	this.load.image("loserPopup", "/static/images/loserPopup.png");
-}
-
-function create() {
-	// Makes images using preloaded assets
-	gameState.loserPopup = this.add.image(halfWidth, halfHeight, "loserPopup").setInteractive();
-	gameState.winnerPopup = this.add.image(halfWidth, halfHeight, "winnerPopup").setInteractive();
-
-	// Makes popups invisible so they can be used later
-	gameState.loserPopup.setVisible(false);
-	gameState.winnerPopup.setVisible(false);
-
-	// Creates main game sprites, scales them, makes them interactive
-	gameState.playerPaddle = this.physics.add.sprite(width20, halfHeight, "playerPaddle").setScale(0.3).setInteractive();
-	gameState.compPaddle = this.physics.add.sprite((width - width20), halfHeight, "compPaddle").setScale(0.3).setInteractive();
-	gameState.ball = this.physics.add.sprite(halfWidth, halfHeight, "ball").setScale(0.1).setInteractive();
-
-	// player/ball collision
-	this.physics.add.collider(gameState.playerPaddle, gameState.ball, function() {
-		randNum = Math.random(); // num between 0-1
-
-		// slight randomness in velocity to make game feel more dynamic
-		if(randNum <= 0.5){
-			if (gameState.playerPaddle.body.velocity.y === 0) {
-				gameState.ball.setVelocityY(width10 * -1);
-			} else {
-				gameState.ball.setVelocityY(gameState.playerPaddle.body.velocity.y / 1.9);
-			}
-		}else if (randNum >= 0.5){
-			if (gameState.playerPaddle.body.velocity.y === 0) {
-				gameState.ball.setVelocityY(width10);
-			} else {
-				gameState.ball.setVelocityY(gameState.playerPaddle.body.velocity.y / 1.7);
-			}
-		}
-	});
-
-	// comp/ball collision
-	this.physics.add.collider(gameState.compPaddle, gameState.ball, function() {
-
-		if (gameState.playerPaddle.y > halfHeight) {
-			gameState.ball.setVelocityY((width10 * -1) * (Math.random() * 5));
-
-		}else if (gameState.playerPaddle.y < halfHeight) {
-			gameState.ball.setVelocityY(width10 * (Math.random() * 5));
-
-		}else if (gameState.playerPaddle.y) {
-			num = Math.random() // number between 0-1
-
-			if (num >= 0.5) {
-				gameState.ball.setVelocityY(width10 *(Math.random() * 5));
-
-			}else {
-				gameState.ball.setVelocityY((width10 * -1) *(Math.random() * 5));
-
-			}
-		}
-
-
-	});
-
-	// makes ball bounce during collisions
-	gameState.ball.setBounce(1);
-	// sets ball to go towards player on first boot
-	gameState.ball.setVelocityX(-1000);
-
-	// makes paddles unaffected by balls force
-	gameState.playerPaddle.body.immovable = true;
-	gameState.compPaddle.body.immovable = true;
-
-
-	// creates default keyboard inputs
-	gameState.cursors = this.input.keyboard.createCursorKeys();
-
-	// ensures sprites never leave game
-	gameState.compPaddle.setCollideWorldBounds(true);
-	gameState.playerPaddle.setCollideWorldBounds(true);
-	gameState.ball.setCollideWorldBounds(true);
-
-};
-// Objects for player and computer can be expanded later
-let player = {
-	score: 0,
-};
-
-let comp = {
-	score: 0,
-};
-function update() {
-	// TODO: why does this not scale when window is minimised then maximised?
-	// anonymous func to set game size every update
-	(function() {
-	gameId = document.getElementById("game");
-	gameId.style.width = '60%';
-	gameId.style.height = '60%';
-	gameId.style.marginRight = "5%";
-  	})();
-
-	if (player.score < 10 && comp.score < 10){
-		// TODO Mobile compatibility, How will multiplayer work?, swiping gestures or follow finger?
-		// ...
-
-		// desktop player controls
-
-		if (gameState.cursors.down.isDown){
-			gameState.playerPaddle.setVelocityY(800);
-		}
-		else if (gameState.cursors.up.isDown) {
-			gameState.playerPaddle.setVelocityY(-800);
-		}
-		else {
-			// if no keypress dont move
-			gameState.playerPaddle.setVelocityY(0);
-		}
-		// resets ball if it goes off screen and assigns points to objects
-		if (gameState.ball.x >= (width - width20)){
-			player.score += 1;
-			// resets ball
-			gameState.ball.x = halfWidth;
-			gameState.ball.y = halfHeight;
-			gameState.ball.setVelocityY(0);
-			gameState.ball.setVelocityX(width);
-			// sets <p> elements to
-			compScore.innerHTML = `Computer's score: ${comp.score}`;
-			playerScore.innerHTML = `Your Score: ${player.score}`;
-		}
-		else if (gameState.ball.x <= width20) {
-			comp.score += 1
-			//resets ball
-			gameState.ball.x = halfWidth;
-			gameState.ball.y = halfHeight;
-			gameState.ball.setVelocityY(0);
-			gameState.ball.setVelocityX(minusWidth)
-			// sets results
-			compScore.innerHTML = `Computer's score: ${comp.score}`;
-			playerScore.innerHTML = `Your Score: ${player.score}`;
-		}
-		// computer paddle AI
-		if (gameState.ball.x >= 300) {
-			if (gameState.ball.y > (gameState.compPaddle.y + 50)) {
-				gameState.compPaddle.setVelocityY(450);
-			}else if (gameState.ball.y < (gameState.compPaddle.y - 50)){
-				gameState.compPaddle.setVelocityY(-450);
-			}
-		}
-	}
-	else { // runs when game is over
-		//sets result values
-		playerScore.innerHTML = `Your score: ${player.score}`;
-		compScore.innerHTML = `Computer's score: ${comp.score}`;
-
-		// makes game invisible
-		gameState.ball.setVisible(false);
-		gameState.playerPaddle.setVisible(false);
-		gameState.compPaddle.setVisible(false);
-		// displays appropriate popup
-		if(player.score === 10) {
-			gameState.winnerPopup.setVisible(true);
-		} else {
-			gameState.loserPopup.setVisible(true);
-		}
-
-	}
-} */
-</script>
-
 <noscript>
 This webpage depends on JavaScript... Please enable Javascript in your browser (enable-javascript.com) or download firefox (mozilla.org/firefox/)
 </noscript>

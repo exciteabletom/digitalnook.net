@@ -14,6 +14,9 @@ export default class MenuScene extends Phaser.Scene {
 		const singlePlayer = this.add.image(500, 300, "singlePlayer").setScale(0.3)
 		const multiPlayer = this.add.image(500, 450, "multiPlayer").setScale(0.3);
 
+		// resets all variables used in games so that it doesn't break the next game that is started, located in "globals.js"
+		resetVars();
+
 		multiPlayer.setInteractive();
 		singlePlayer.setInteractive();
 
@@ -22,7 +25,7 @@ export default class MenuScene extends Phaser.Scene {
 		});
 
 		multiPlayer.on("pointerup", () => {
-			alert("Coming Soon!");
+			scene.start("multiPlayer");
 		})
 
 	}

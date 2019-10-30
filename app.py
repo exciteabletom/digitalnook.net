@@ -60,34 +60,34 @@ def reaction():
 # handles leaderboard requests
 @app.route("/games/leaderboardsubmission/", methods=["GET", "POST"], host="digitalnook.net")
 @nocache
-def submission():	
-	if request.method == "POST":	
+def submission():
+	if request.method == "POST":
 		username = request.form.get("username")
 		if username.replace(" ", "") == "":
 			return "ERROR: Please enter a username"
-		
+
 		time = request.form.get("score")
-		
-		try: 
+
+		try:
 			nameScoreDict = {"name": str(username), "time": int(time)}
 		except(ValueError):
 			return "ERROR: You cannot enter the same score twice..."
-			
+
 		with open("static/reactionLeaderboard.json", "r") as leaderboard: # get data from file
 			leaderboardData = json.load(leaderboard) # loads json as list of dicts
 			leaderboardData.append(nameScoreDict) # adds new dict to list
 			leaderboardData.sort(key=operator.itemgetter('time')) # sorts data lowest to highest time
-		
+
 		with open("static/reactionLeaderboard.json", "w") as leaderboard: # open leaderboard for writing
 			finalData = json.dumps(leaderboardData) # dump json to string
 			leaderboard.write(finalData) #replaces leaderboard.json with new values
 
 		return redirect(("/games/reactionleaderboard/"), code="302")
-	
+
 	return render_template("404.html")
 
 @app.route("/games/reactionleaderboard/", methods=["GET"], host="digitalnook.net")
-def leaderboard():	
+def leaderboard():
 	return render_template("reactionLeaderboard.html")
 
 # Handles 404 errors
@@ -96,5 +96,5 @@ def not_found(e):
 	return render_template("404.html"), 404
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="80")
+    app.run(host="0.0.0.0", port=80)
 
