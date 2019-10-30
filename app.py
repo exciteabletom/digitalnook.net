@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, send_from_directory
+from flask import Flask, render_template, request, redirect, send_from_directory, session
 import os
 import json
 from nocache import nocache
 import operator
 
 app = Flask(__name__, static_url_path="/static/")
+
 
 @app.route('/robots.txt')
 @app.route('/sitemap.xml')
