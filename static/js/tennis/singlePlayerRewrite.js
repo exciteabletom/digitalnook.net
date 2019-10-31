@@ -92,9 +92,9 @@ export default class SinglePlayerScene extends Phaser.Scene {
 	compAi() {
 		// computer AI
 		if (sprites.ball.y > sprites.compP.y + 40) {
-			sprites.compP.setVelocityY(480);
+			sprites.compP.setVelocityY(500);
 		} else if (sprites.ball.y < sprites.compP.y - 40) {
-			sprites.compP.setVelocityY(-480);
+			sprites.compP.setVelocityY(-500);
 		} else {
 			sprites.compP.setVelocityY(0);
 		}
