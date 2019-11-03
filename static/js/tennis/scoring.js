@@ -3,6 +3,8 @@ export default class ScoringScene extends Phaser.Scene {
 		super({key: "scoring"});
 		this.p1Text = null;
 		this.p2Text = null;
+		this.newScore = 0;
+		this.oldScore = null;
 		this.count = 0;
 	}
 
@@ -14,13 +16,14 @@ export default class ScoringScene extends Phaser.Scene {
 
 		// player 2 score text
 		this.p2Text = this.add.text(700, 30, "0", textConfig);
+
+		this.oldScore = player1.score + player2.score;
 	}
 	update() {
-		// saves on execution time
-		this.count++;
-		if (this.count === 10) {
-			this.count = 0;
-
+		this.newScore = player1.score + player2.score;
+		if (this.oldScore !== this.newScore) {
+			this.oldScore = this.newScore
+			// saves on execution time
 			this.updateScores();
 			if (player1.score > player2.score) {
 				this.player1Winning();

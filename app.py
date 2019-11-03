@@ -4,13 +4,13 @@ import json
 from nocache import nocache
 import operator
 
-app = Flask(__name__, static_url_path="/static/")
+app = Flask(__name__)
 
 
-@app.route('/robots.txt')
-@app.route('/sitemap.xml')
-def static_from_root():
-    return send_from_directory("", request.path[1:])
+#@app.route('/robots.txt')
+#@app.route('/sitemap.xml')
+#def static_from_root():
+#    return send_from_directory("", request.path[1:])
 
 # stops caching of leaderboard
 @app.route("/static/reactionLeaderboard.json", host="digitalnook.net")
@@ -102,5 +102,5 @@ def not_found(e):
 	return render_template("404.html"), 404
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="127.0.0.1", port=80)
 

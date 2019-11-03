@@ -12,7 +12,7 @@ export default class SinglePlayerScene extends Phaser.Scene {
 	}
 
 	create() {
-		this.scene.launch("scoring");
+		//this.scene.launch("scoring");
 		// add keys W and S
 		keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 		keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
