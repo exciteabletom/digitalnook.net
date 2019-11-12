@@ -1,4 +1,4 @@
-**APP INFO**
+# APP INFO
 Background colour = #FF6F00
 button green colour = #18ab29
 button hover green colour = #44c767

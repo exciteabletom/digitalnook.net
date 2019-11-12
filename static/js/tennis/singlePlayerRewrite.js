@@ -12,7 +12,7 @@ export default class SinglePlayerScene extends Phaser.Scene {
 	}
 
 	create() {
-		//this.scene.launch("scoring");
+		this.scene.launch("scoring");
 		// add keys W and S
 		keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 		keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
@@ -126,6 +126,7 @@ export default class SinglePlayerScene extends Phaser.Scene {
 
 
 
+
 		sprites.playerP.setCollideWorldBounds(true);
 		sprites.compP.setCollideWorldBounds(true);
 		sprites.ball.setCollideWorldBounds(true);
@@ -136,6 +137,7 @@ export default class SinglePlayerScene extends Phaser.Scene {
 		sprites.ball.setBounce(1); // ball bounces off collisions
 		sprites.ball.setVelocityX(-500); // ball slowly goes to player on boot
 		sprites.ball.setVelocityY(0);
+		sprites.ball.setZ(10);
 	}
 
 

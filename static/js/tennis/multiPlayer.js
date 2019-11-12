@@ -138,6 +138,7 @@ export default class MultiPlayerScene extends Phaser.Scene {
 		sprites.ball.setBounce(1); // ball bounces off collisions
 		sprites.ball.setVelocityX(-500); // ball slowly goes to player1 on boot
 		sprites.ball.setVelocityY(0);
+		sprites.ball.setZ(10);
 	}
 
 

@@ -109,6 +109,7 @@ window.onload = function () {
 const popSound = new Audio('/static/audio/pop.mp3');
 // stores user's reaction time
 let reactionTime = 0;
+let count = 0;
 // resets variables for new game
 function resetVars() {
 	firstTime.innerHTML = "";
@@ -187,7 +188,7 @@ function startGame() {// runs when start button is pressed
 	console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)// for debugging
 	sleep(randomWaitNum).then(() => {
 		document.getElementById("mainGame").style.display = "block";
-		switch (randomNum) {
+		switch (randomNum) { // TODO: reaction time game rewrite?
 			case 1:
 				document.getElementById("topLeft").style.visibility = "visible";
 				break;

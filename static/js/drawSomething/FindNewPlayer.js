@@ -3,4 +3,7 @@ export default class FindNewPlayer extends Phaser.Scene {
 		super("findNewPlayer");
 	}
 
+	preload() {
+		this.load.image
+	}
 }

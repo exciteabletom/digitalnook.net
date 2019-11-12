@@ -1,3 +1,4 @@
+// this entire class is liquid ass
 export default class ScoringScene extends Phaser.Scene {
 	constructor() {
 		super({key: "scoring"});
@@ -9,7 +10,8 @@ export default class ScoringScene extends Phaser.Scene {
 	}
 
 	create() {
-		this.add.rectangle(500, 0, 5, 600);
+		const centerBar = this.add.rectangle(500, 0, 5, 2000, 0xff0000, 0.9);
+		centerBar.setZ(-10);
 
 		// player 1 score text
 		this.p1Text = this.add.text(300, 30, "0", textConfig);
@@ -19,11 +21,12 @@ export default class ScoringScene extends Phaser.Scene {
 
 		this.oldScore = player1.score + player2.score;
 	}
+
 	update() {
-		this.newScore = player1.score + player2.score;
+		this.newScore = player1.score + player2.score; // this is fucked
 		if (this.oldScore !== this.newScore) {
-			this.oldScore = this.newScore
-			// saves on execution time
+			this.oldScore = this.newScore; // what the fuck is this bullshit
+			// saves on execution time hopefully
 			this.updateScores();
 			if (player1.score > player2.score) {
 				this.player1Winning();
@@ -34,6 +37,7 @@ export default class ScoringScene extends Phaser.Scene {
 			}
 		}
 	}
+	// be warned these methods are a shit-fest
 	player1Winning() {
 		this.p1Text.setFill(green);
 		this.p2Text.setFill(red);

@@ -7,6 +7,11 @@ idea/
 errors.txt
 video/
 videos/
+
+loginKey.py
+
+*loginKey*
+*loginKey*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

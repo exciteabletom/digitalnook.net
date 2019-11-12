@@ -1,4 +1,5 @@
-import Menu from "./Menu.js"
+
+import DrawScene from "./CreateDrawing.js";
 export default class Game extends Phaser.Game {
 
 	constructor() {
@@ -6,9 +7,11 @@ export default class Game extends Phaser.Game {
 	}
 
 	create() {
-		this.load.scene("menu", Menu);
-		this.scene.add("settings", Settings);
-		this.scene.add("findPlayer", FindPlayer);
+		//this.load.scene("menu", Menu);
+		//this.scene.add("settings", Settings);
+		//this.scene.add("findPlayer", FindPlayer);
+		this.scene.add("draw", DrawScene);
+		this.scene.start("draw");
 
 	}
 }
@@ -18,8 +21,8 @@ const config = {
 	scale: {
 		parent: "game", // container div
 		mode: Phaser.Scale.FIT, //fit div
-		width: 1920, // 16
-		height: 1080, // by 9
+		width: 1200, // 2
+		height: 600,// by 1
 
 	},
 	backgroundColor: 0xFE8F00, // light blue
@@ -31,3 +34,7 @@ const config = {
 		},
 	},
 };
+
+
+
+window.game = new Game();
