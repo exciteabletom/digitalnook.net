@@ -7,23 +7,28 @@
     <link href="/static/styles1.css" type="text/css" rel="stylesheet"/>
     <link href="/static/favicon.ico" rel="shortcut icon"/>
 </head>
-<body>
+<body style="text-align: center">
 <header>
     <h1>Login to Digitalnook</h1>
 </header>
 <main>
     <div id="loginForm">
-        <form action="/login/" method="post" style="margin-left: 20%; margin-right: 20%; width: 60%; text-align: center">
+        <form action="/login/" method="post" style="margin-left: 20%; margin-right: 20%; width: 60%;">
             Username:<br/> <br/>
             <input type="text" name="username" placeholder="Enter your username here" /><br/> <br/>
             Password:<br/> <br/>
-            <input type="text" name="password" placeholder="Enter your password here" /><br/> <br/>
+            <input type="password" name="password" placeholder="Enter your password here" /><br/> <br/>
             <input class="greenButton" type='submit' value='Submit'>
         </form>
     </div>
 </main>
 <footer>
-    <a href="/games/">Back to Games</a>
+    <div style="width:50%; overflow: hidden; margin: 2% 25% 2%;>
+        <p class="italicsP">{{error}}</p>
+    </div>
+    <a href="/register/">Not a Member?</a>
+    <br/><br/>
+    <a href="/">Back to Home</a>
 </footer>
 </body>
 </html>

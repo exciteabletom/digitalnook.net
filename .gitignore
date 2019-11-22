@@ -8,6 +8,8 @@ errors.txt
 video/
 videos/
 
+*.db
+
 loginKey.py
 
 *loginKey*

@@ -26,13 +26,14 @@ h1, .mainPageHeader {
 	font-family: sans-serif;
 	text-align: center;
 	font-style: italic;
-	display: block;
+	display: inline-block;
 
 }body{
 	background: #FF6F00;
 	border: 20px orange groove;
 	margin: 0px;
 	box-sizing: border-box; min-height: 100vh;
+	text-align: center;
 
 }.blueP{
 	color: blue;

@@ -7,11 +7,11 @@ export default class Game extends Phaser.Game {
 	}
 
 	create() {
-		//this.load.scene("menu", Menu);
-		//this.scene.add("settings", Settings);
-		//this.scene.add("findPlayer", FindPlayer);
+		this.scene.add("menu", Menu);
+		this.scene.add("settings", Settings);
+		this.scene.add("findPlayer", FindPlayer);
 		this.scene.add("draw", DrawScene);
-		this.scene.start("draw");
+		this.scene.start("menu");
 
 	}
 }

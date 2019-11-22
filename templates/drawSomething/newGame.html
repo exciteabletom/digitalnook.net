@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Game | DigitalNook</title>
+
+    <link href="/static/styles1.css" rel="stylesheet"/>
+    <link href="/static/favicon.ico" rel="shortcut icon" type="x-icon/image"/>
+</head>
+<body>
+<header>
+    <h1>Start a new Draw with friends game</h1>
+    <br/><br/>
+    <p><i>Remember usernames are case sensitive!</i></p>
+</header>
+<form action="/games/drawsomething/" method="POST" style="text-align: center">
+    <fieldset style="border: dashed black 2px">
+        <p>Your username:</p><br/>
+        <input type="text" placeholder="{{ currentUser }}" readonly="readonly" /><br/><br/>
+
+        <p>What User would you like to start a game with?</p><br/>
+        <input type="text" placeholder="username" name="newGameRequestUsername" /><br/><br/>
+
+        <input type="submit" value="Request New Game" name="newGameRequest"/>
+    </fieldset>
+</form>
+
+<p><b>{{ error }}</b></p>
+</body>
+</html>
