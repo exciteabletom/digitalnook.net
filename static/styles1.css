@@ -2,25 +2,31 @@
 	padding: 20px;
 	border-top: 2px black dashed;
 }
+
 .splitListBottom {
 	padding: 20px;
 	border-top: 2px black dashed;
 	border-bottom: 2px black dashed;
 }
-h1, .mainPageHeader {
+
+h1 {
 	color: black;
-	font-size:50px;
+	font-size: 50px;
 	font-family: impact, serif;
 	text-align: center;
 	font-weight: bold;
-} h2, .resultsHeader{
+}
+
+h2, .resultsHeader {
 	color: black;
-	font-size:35px;
+	font-size: 35px;
 	font-family: impact, serif;
 	text-align: center;
 	font-weight: normal;
 	text-decoration: underline;
-} a, .link{
+}
+
+a, .link {
 	color: blue;
 	font-size: 30px;
 	font-family: sans-serif;
@@ -28,26 +34,33 @@ h1, .mainPageHeader {
 	font-style: italic;
 	display: inline-block;
 
-}body{
-	background: #FF6F00;
-	border: 20px orange groove;
-	margin: 0px;
-	box-sizing: border-box; min-height: 100vh;
-	text-align: center;
+}
 
-}.blueP{
+body {
+	/* border: 20px orange groove; RIP TO THE OG BORDER */
+	margin: 0px;
+	box-sizing: border-box;
+	min-height: 100vh;
+	text-align: center;
+	background-color: #FF6F00;
+}
+.blueP {
 	color: blue;
 	font-size: 30px;
 	font-family: sans-serif;
 	text-align: center;
 	font-weight: normal;
-}p{
+}
+
+p {
 	color: black;
 	font-size: 30px;
 	font-family: sans-serif;
 	text-align: center;
 	font-weight: normal;
-}.italicsP{
+}
+
+.italicsP {
 	color: black;
 	font-size: 30px;
 	font-family: sans-serif;
@@ -56,25 +69,32 @@ h1, .mainPageHeader {
 	font-style: italic;
 }
 
-.centeredvid{
+.centeredvid {
 	position: fixed;
 	margin: 10px;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 
-} .rps {
+}
+
+.rps {
 	color: black;
 	font-size: 20px;
 	font-family: sans-serif;
 	text-align: center;
 	font-weight: normal;
-}.buttons {
+}
+
+.buttons {
 	text-align: center;
-}/*.paperButton, .rockButton, .scissorsButton {
+}
+
+/*.paperButton, .rockButton, .scissorsButton {
 	position: absolute;
 	top: 50%;
-}*/.centerImage{
+}*/
+.centerImage {
 	float: none;
 	margin: 10px;
 	position: relative;
@@ -83,22 +103,32 @@ h1, .mainPageHeader {
 	margin-right: auto;
 	width: 200px;
 	height: auto;
-}.rightImage{
+}
+
+.rightImage {
 	float: right;
 	width: 200px;
 	height: auto;
-}.leftImage{
+}
+
+.leftImage {
 	float: left;
 	width: 200px;
 	height: auto;
-}.row {
+}
+
+.row {
 	display: flex;
-}.column {
+}
+
+.column {
 	flex: 33.33%;
 	padding: 5px;
 	width: 200px;
 	height: auto;
-}.centerBigImage{
+}
+
+.centerBigImage {
 	float: none;
 	margin: 10px;
 	position: relative;
@@ -107,94 +137,116 @@ h1, .mainPageHeader {
 	margin-right: auto;
 	width: 600px;
 	height: auto;
-}.overlay{
+}
+
+.overlay {
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
 	margin-left: auto;
 	margin-right: auto;
-	display:none;
+	display: none;
 	z-index: 20;
-	top:0;
-	bottom:0;
-	left:0;
-	right:500px;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 500px;
 	border: 20px orange groove;
-}.popup{
+}
+
+.popup {
 	position: fixed;
 
 	width: 100vw;
 	height: 100vh;
-	display:none;
+	display: none;
 	z-index: 20;
-	top:0;
-	bottom:0;
-	left:0;
-	right:0;
-}.reactionButton {
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.reactionButton {
 	position: relative;
 	display: none;
 
-}#startButton {
-    background-color:#5cbf2a;
-	-moz-border-radius:31px;
-	-webkit-border-radius:31px;
-	border-radius:31px;
-	border:1px solid #18ab29;
-	cursor:pointer;
-	color:#ffffff;
-	 font-family: Arial, serif;
-	 font-size:23px;
-	font-weight:bold;
-	padding:16px 31px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #2f6627;
 }
+
+#startButton {
+	background-color: #5cbf2a;
+	-moz-border-radius: 31px;
+	-webkit-border-radius: 31px;
+	border-radius: 31px;
+	border: 1px solid #18ab29;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial, serif;
+	font-size: 23px;
+	font-weight: bold;
+	padding: 16px 31px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #2f6627;
+}
+
 #startButton:hover {
-	background-color:#44c767;
-}#startButton:active {
-	position:relative;
-	top:1px;
-}.centerButton {
+	background-color: #44c767;
+}
+
+#startButton:active {
+	position: relative;
+	top: 1px;
+}
+
+.centerButton {
 	position: relative;
 	top: 50%;
 	left: 32.5%;
 	transform: translate(-50%, -50%);
 	visibility: hidden;
-}.leftButton {
+}
+
+.leftButton {
 	position: relative;
 	float: left;
 	visibility: hidden;
-}.rightButton {
+}
+
+.rightButton {
 	position: relative;
 	float: right;
 	visibility: hidden;
-}.greenButton{
-	background-color:#5cbf2a;
-	-moz-border-radius:28px;
-	-webkit-border-radius:28px;
-	border-radius:28px;
-	border:1px solid #18ab29;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	 font-family: Arial, serif;
-	font-size:30px;
-	padding:16px 31px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #2f6627;
-	margin-top: 10px;
-	margin-bottom: 20px;
-	margin-right: 40%;
-	margin-left:40%;
-	width:20%;
-	font-weight: bold;
-}.greenButton:hover{
-	background-color:#44c767
+}
 
-}#results {
+.greenButton {
+	background-color: #5cbf2a;
+	-moz-border-radius: 28px;
+	-webkit-border-radius: 28px;
+	border-radius: 28px;
+	border: 1px solid #18ab29;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial, serif;
+	font-size: 30px;
+	padding: 16px 31px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #2f6627;
+	margin: 10px 40%;
+	width: 20%;
+	font-weight: bold;
+}
+
+.greenButton:hover {
+	background-color: #44c767
+
+}
+
+#results {
 	display: block;
-}.bottomCenter {
+}
+
+.bottomCenter {
 	margin-right: 70%;
 	float: left;
 }

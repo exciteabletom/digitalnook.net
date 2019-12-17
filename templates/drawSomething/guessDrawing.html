@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Guess the word!</title>
+	{% include "/includes/meta.html" %}
+</head>
+<body>
+<header>
+	<h1>Guess what {{ otherUser }}'s word was!</h1>
+</header>
+<main>
+	<div id="imageDiv">
+		<img alt="Guess the word associated with the image" id="image" src="{{ image }}"
+		     style="background-color: white;"/>
+	</div>
+	<br/>
+	<form action="/games/drawsomething/" method="POST">
+		<p>The word is {{ word|length }} characters long</p>
+		<br/>
+		<input maxlength="{{ word|length }}" minlength="{{ word|length }}" name="guessWord"
+		       placeholder="{{ guessNumber }} guesses remaining" type="text"
+		       value="">
+		<br/>
+		<input class="greenButton" name="ACTIONCheckGuess" type="submit" value="Check Guess">
+	</form>
+</main>
+</body>
+<script>
+
+</script>
+</html>

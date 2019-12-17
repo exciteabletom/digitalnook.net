@@ -1,156 +1,165 @@
 <!DOCTYPE html>
-<html lang=en charset=utf-8>
+<html charset=utf-8 lang=en>
 <!-- Rock Paper Scissors by Tommy Dougiamas -->
 
 <head>
 	<title>Rock, Paper, Scissors! | DigitalNook</title>
-	<meta name="Description" content="Play Rock, Paper, Scissors at digitalnook.net!" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link href='/static/styles1.css' type='text/css' rel='stylesheet'/>
-	<link rel="shortcut icon" href="/static/favicon.ico"/>
+	<meta content="Play Rock, Paper, Scissors at digitalnook.net!" name="Description"/>
+	{% include "/includes/meta.html" %}
+
 	<!--sleep function-->
 	<script src="/static/js/sleep.js"></script>
 </head>
 <body>
-	<section>
-		<h1 id=mainHeader> Rock Paper Scissors! </h1>
-	</section>
-	  	<div id=buttons class='row' style>
-			<div class='column' style='float:center;'>
-				<input alt='image of rock' type='image' onclick="this.disabled=true; userChoice='rock'; runAllFunctions()" src='/static/images/rock.png' id='rockButton' style='width: 100%'>
-			</div>
+<section>
+	<h1 id=mainHeader> Rock Paper Scissors! </h1>
+</section>
+<div class='row' id=buttons style>
+	<div class='column' style='float:center;'>
+		<input alt='image of rock' id='rockButton' onclick="this.disabled=true; userChoice='rock'; runAllFunctions()"
+		       src='/static/images/rock.png' style='width: 100%' type='image'>
+	</div>
 
-			<div class='column'>
-				<input alt='image of paper' type='image' onclick="this.disabled=true;userChoice='paper'; runAllFunctions()" src=/static/images/paper.png id=paperButton style='width: 100%'/>
-			</div>
+	<div class='column'>
+		<input alt='image of paper' id=paperButton onclick="this.disabled=true;userChoice='paper'; runAllFunctions()"
+		       src=/static/images/paper.png style='width: 100%' type='image'/>
+	</div>
 
-			<div class='column'>
-				<input alt='image of scissors' type='image' onclick="this.disabled=true; userChoice='scissors'; runAllFunctions();" src='/static/images/scissors.png' id='scissorsButton' style='width: 100%'/>
-			</div>
+	<div class='column'>
+		<input alt='image of scissors' id='scissorsButton'
+		       onclick="this.disabled=true; userChoice='scissors'; runAllFunctions();" src='/static/images/scissors.png'
+		       style='width: 100%' type='image'/>
+	</div>
 
-		</div>
-		<div id='winnerPopup' class='popup' style="width:100vw; height:100vw; margin-left: 22%;">
-			<img src='/static/images/win.png' alt='winner popup'/>
-		</div>
-		<div id='tutorialPopup' class='overlay' style='background: #ff6f00; display:block;'>
-			<h1>How to Play</h1>
-			<br/>
-			<br/>
-			<p> Click on Rock, Paper or scissors to make your choice. Wait for the computer to choose to see if you won!</p>
-			<br/>
-			<button class='greenButton' id='tutorialClose'type='button' onclick="document.getElementById('tutorialPopup').style.display = 'none'">Let's Play!</button>
-		</div>
-		<div id='main'>
-			<h2> Results </h2>
-			<p id='p1'></p>
-		      <br/>
-			<p id='p2'></p>
-			<p id='p3'></p>
-		      <br/>
-			<a href='/games'><p class=link>Back to Games</p></a>
-	              <br/>
-		      <br/>
-			<p class=italicsP>Note: Sound effects may not work properly on mobile devices.</p>
-		</div>
+</div>
+<div class='popup' id='winnerPopup' style="width:100vw; height:100vw; margin-left: 22%;">
+	<img alt='winner popup' src='/static/images/win.png'/>
+</div>
+<div class='overlay' id='tutorialPopup' style='background: #ff6f00; display:block;'>
+	<h1>How to Play</h1>
+	<br/>
+	<br/>
+	<p> Click on Rock, Paper or scissors to make your choice. Wait for the computer to choose to see if you won!</p>
+	<br/>
+	<button class='greenButton' id='tutorialClose' onclick="document.getElementById('tutorialPopup').style.display = 'none'"
+	        type='button'>Let's Play!
+	</button>
+</div>
+<div id='main'>
+	<h2> Results </h2>
+	<p id='p1'></p>
+	<br/>
+	<p id='p2'></p>
+	<p id='p3'></p>
+	<br/>
+	<a href='/games'><p class=link>Back to Games</p></a>
+	<br/>
+	<br/>
+	<p class=italicsP>Note: Sound effects may not work properly on mobile devices.</p>
+</div>
 
 <script>
-// Makes variable accessable to the DOM
-var userChoice;
+	// Makes variable accessable to the DOM
+	var userChoice;
 
-// Gets computer random choice
-let computerChoice;
+	// Gets computer random choice
+	let computerChoice;
 
-function getComputerChoice(){
-	const random = Math.floor((Math.random() * 3)+1);
-	switch(random){
-		case 1:
-			compChoice = "rock";
-			break;
-		case 2:
-			compChoice = "paper";
-			break;
-		case 3:
-			compChoice ="scissors";
-			break;
-	}
-}
-
-function getWinner(userChoice, compChoice){
-	if (userChoice === compChoice) {
-		document.getElementById('p1').innerHTML = "The game was a tie.";
-
-	}else if (userChoice === 'rock'){
-		if (compChoice === 'paper'){
-			document.getElementById('p1').innerHTML = "Sorry, you lost";
-		}else {
-			document.getElementById('p1').innerHTML = "You Won!";
-		}
-	}else if (userChoice === 'paper'){
-		if (compChoice === 'scissors'){
-			document.getElementById('p1').innerHTML = "Sorry, you lost";
-		}else {
-			document.getElementById('p1').innerHTML = "You Won!";
-		}
-	}else if (userChoice === 'scissors'){
-		if (compChoice === 'rock'){
-			document.getElementById('p1').innerHTML = "Sorry, you lost";
-		}else {
-			document.getElementById('p1').innerHTML = "You Won!";
+	function getComputerChoice() {
+		const random = Math.floor((Math.random() * 3) + 1);
+		switch (random) {
+			case 1:
+				compChoice = "rock";
+				break;
+			case 2:
+				compChoice = "paper";
+				break;
+			case 3:
+				compChoice = "scissors";
+				break;
 		}
 	}
-	console.log(`comps choice: ${compChoice}`);console.log(`users choice: ${userChoice}`) // debugging
-}
 
-//defines all audio to avoid lag
-const drumroll = new Audio('/static/audio/drumroll.mp3');
-const loserSound = new Audio('/static/audio/lose.mp3');
-const winnerSound= new Audio('/static/audio/win.mp3');
-const tieSound = new Audio('/static/audio/tie.mp3');
+	function getWinner(userChoice, compChoice) {
+		if (userChoice === compChoice) {
+			document.getElementById('p1').innerHTML = "The game was a tie.";
 
-// executes all functions if it is not already running
-function runAllFunctions(){
-	document.getElementById('rockButton').disabled = true;
-	document.getElementById('scissorsButton').disabled = true;
-	document.getElementById('paperButton').disabled = true;
-	document.getElementById('p1').innerHTML = ""
-	document.getElementById('p2').innerHTML = ""
-	document.getElementById('p3').innerHTML = ""
-	// init for drumroll audio
-	function playDrumroll(){
-		drumroll.play();
-		drumroll.currentTime=0;
-	}
-	// plays drumroll, waits, finds results and plays appropriate sfx
-
-	playDrumroll();
-	sleep(5000).then(() => {
-		afterDrumroll()
-	})
-	function afterDrumroll(){
-		getComputerChoice()
-		getWinner(userChoice, compChoice);
-		document.getElementById('p3').innerHTML = `The Computers choice was ${compChoice}.`;
-		document.getElementById('p2').innerHTML = `Your choice was ${userChoice.toLowerCase()}.`;
-		if (document.getElementById('p1').innerHTML[0] === "S"){
-			loserSound.play();
-			loserSound.currentTime=0;
-		}else if (document.getElementById('p1').innerHTML[0] === "Y"){
-			document.getElementById('winnerPopup').style.display = "block"
-			winnerSound.play();
-			winnerSound.play();
-			winnerSound.currentTime=0;
-		}else {
-			tieSound.play();
-			tieSound.currentTime=0;
+		} else if (userChoice === 'rock') {
+			if (compChoice === 'paper') {
+				document.getElementById('p1').innerHTML = "Sorry, you lost";
+			} else {
+				document.getElementById('p1').innerHTML = "You Won!";
+			}
+		} else if (userChoice === 'paper') {
+			if (compChoice === 'scissors') {
+				document.getElementById('p1').innerHTML = "Sorry, you lost";
+			} else {
+				document.getElementById('p1').innerHTML = "You Won!";
+			}
+		} else if (userChoice === 'scissors') {
+			if (compChoice === 'rock') {
+				document.getElementById('p1').innerHTML = "Sorry, you lost";
+			} else {
+				document.getElementById('p1').innerHTML = "You Won!";
+			}
 		}
+		console.log(`comps choice: ${compChoice}`);
+		console.log(`users choice: ${userChoice}`) // debugging
+	}
+
+	//defines all audio to avoid lag
+	const drumroll = new Audio('/static/audio/drumroll.mp3');
+	const loserSound = new Audio('/static/audio/lose.mp3');
+	const winnerSound = new Audio('/static/audio/win.mp3');
+	const tieSound = new Audio('/static/audio/tie.mp3');
+
+	// executes all functions if it is not already running
+	function runAllFunctions() {
+		document.getElementById('rockButton').disabled = true;
+		document.getElementById('scissorsButton').disabled = true;
+		document.getElementById('paperButton').disabled = true;
+		document.getElementById('p1').innerHTML = ""
+		document.getElementById('p2').innerHTML = ""
+		document.getElementById('p3').innerHTML = ""
+
+		// init for drumroll audio
+		function playDrumroll() {
+			drumroll.play();
+			drumroll.currentTime = 0;
+		}
+
+		// plays drumroll, waits, finds results and plays appropriate sfx
+
+		playDrumroll();
+		sleep(5000).then(() => {
+			afterDrumroll()
+		})
+
+		function afterDrumroll() {
+			getComputerChoice()
+			getWinner(userChoice, compChoice);
+			document.getElementById('p3').innerHTML = `The Computers choice was ${compChoice}.`;
+			document.getElementById('p2').innerHTML = `Your choice was ${userChoice.toLowerCase()}.`;
+			if (document.getElementById('p1').innerHTML[0] === "S") {
+				loserSound.play();
+				loserSound.currentTime = 0;
+			} else if (document.getElementById('p1').innerHTML[0] === "Y") {
+				document.getElementById('winnerPopup').style.display = "block"
+				winnerSound.play();
+				winnerSound.play();
+				winnerSound.currentTime = 0;
+			} else {
+				tieSound.play();
+				tieSound.currentTime = 0;
+			}
 			sleep(1900).then(() => { // waits 1.9 seconds then enables buttons
-			document.getElementById('winnerPopup').style.display = "none"
-			document.getElementById('rockButton').disabled = false;
-			document.getElementById('scissorsButton').disabled = false;
-			document.getElementById('paperButton').disabled = false;
+				document.getElementById('winnerPopup').style.display = "none"
+				document.getElementById('rockButton').disabled = false;
+				document.getElementById('scissorsButton').disabled = false;
+				document.getElementById('paperButton').disabled = false;
 			})
+		}
 	}
-}
 </script>
 <noscript>
 	<p class='italicsP'>Your browser does not support JavaScript, Please enable it to view this page...</p>

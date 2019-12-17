@@ -100,7 +100,7 @@ export default class SinglePlayerScene extends Phaser.Scene {
 		}
 	}
 
-	checkScore(){
+	checkScore() {
 		if (sprites.ball.body.x > 900) {
 			player1.score++;
 			sprites.ball.x = 500;
@@ -125,8 +125,6 @@ export default class SinglePlayerScene extends Phaser.Scene {
 		sprites.ball = this.physics.add.sprite(500, 300, "ball").setScale(0.1).setInteractive();
 
 
-
-
 		sprites.playerP.setCollideWorldBounds(true);
 		sprites.compP.setCollideWorldBounds(true);
 		sprites.ball.setCollideWorldBounds(true);
@@ -139,7 +137,6 @@ export default class SinglePlayerScene extends Phaser.Scene {
 		sprites.ball.setVelocityY(0);
 		sprites.ball.setZ(10);
 	}
-
 
 
 }

@@ -1,35 +1,26 @@
 <!-- This is the main page that let's the user choose whether to start a new game or continue their old game -->
 <!DOCTYPE html>
-<html lang="en" charset="UTF-8">
+<html charset="UTF-8" lang="en">
 <head>
-    <title>Draw Something | DigitalNook</title>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link href="/static/favicon.ico" rel="shortcut icon"/>
-    <link href="/static/styles1.css" rel="stylesheet" type="text/css"/>
-
-    <script src="/static/js/phaser.min.js"></script>
-
-    <script src="/static/js/drawSomething/globals.js"></script>
-
-    <script src="/static/js/drawSomething/Index.js" type="module"></script>
+	<title>Draw Something | DigitalNook</title>
+	{% include "/includes/meta.html" %}
 
 </head>
 <body>
 <header>
-    <h1>Draw Something</h1>
+	<h1>Draw Something</h1>
 
 </header>
 <br/>
 <main>
-    <form action="/games/drawsomething/" method="POST">
-        <input type="submit" value="New game" name="newGame"/>
-        <br/><br/>
-        <input type="submit" value="Continue game" name="continueGame"/>
-    </form>
+	<form action="/games/drawsomething/" method="POST">
+		<input class="greenButton" name="ACTIONnewGame" type="submit" value="New game"/>
+		<br/><br/>
+		<input class="greenButton" name="ACTIONcontinueGame" type="submit" value="Continue game"/>
+	</form>
 
 </main>
 <br/>
-<a style="margin-bottom: 5%;" href="/games/">Back to Games</a>
+<a href="/games/" style="margin-bottom: 5%;">Back to Games</a>
 </body>
 </html>

@@ -14,7 +14,7 @@ export default class WinnerScene extends Phaser.Scene {
 		winnerPopup.setOrigin(0, 0).setInteractive();
 
 		// when popup is clicked start menu
-		winnerPopup.on("pointerup",function(){
+		winnerPopup.on("pointerup", function () {
 			scene.start("menu"); // implied "this"
 		});
 	}

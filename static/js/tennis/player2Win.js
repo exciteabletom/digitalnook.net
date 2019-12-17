@@ -8,7 +8,7 @@ export default class Player2WinScene extends Phaser.Scene {
 	}
 
 	create() {
-		const { scene } = this;
+		const {scene} = this;
 		let player2Win = this.add.image(0, 0, "player2Win").setOrigin(0, 0);
 
 		player2Win.setInteractive();

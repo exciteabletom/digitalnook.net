@@ -1,52 +1,51 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Games | DigitalNook</title>
-		<meta name="description" content="Play fun games at digitalnook.net!"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link href="/static/styles1.css" rel="stylesheet" type="text/css"/>
-		<link href="/static/favicon.ico" rel="shortcut icon"/>
-		<style>
-			a {
-				display: block;
-			}
-		</style>
-	</head>
-	<body>
-		<header>
-			<img src="/static/images/banner.jpg" style="margin-left: 20%; margin-right: 20%; width: 60%; height: auto; position: sticky;" alt="banner for the site">
-		</header>
-		<div class='title'>
-			<h1>Games</h1>
-		</div>
-		<div class="list">
-			<div id="tennis" class="splitList">
-				 <br/>
-				<a href="/games/tennis/">Tennis</a>
-				 <br/>
-			</div>
-			
-			<div id="reaction" class="splitList">
-				 <br/>
-				<a href="/games/reaction/">Reaction Test!</a>
-				 <br/>
-				<a href="/games/reactionleaderboard/">Reaction Test Leaderboard</a>
-				 <br/>
-			</div>
+<html lang="en">
+<head>
+	<title>Games | DigitalNook</title>
+	<meta content="Play fun games at digitalnook.net!" name="description"/>
+
+	{% include "/includes/meta.html" %}
+</head>
+<body>
+<header>
+	<img alt="banner for the site" src="/static/images/banner.jpg" style="margin-left: 20%; margin-right: 20%; width: 60%; height: auto; position: sticky;" />
+</header>
+<div class='title'>
+	<h1>Games</h1>
+</div>
+<div class="list">
+	<div class="splitList" id="drawSomething">
+		<br/>
+		<a href="/games/drawsomething">Draw Something</a>
+		<br/>
+	</div>
+	<div class="splitList" id="tennis">
+		<br/>
+		<a href="/games/tennis/">Tennis</a>
+		<br/>
+	</div>
+
+	<div class="splitList" id="reaction">
+		<br/>
+		<a href="/games/reaction/">Reaction Test!</a>
+		<br/>
+		<a href="/games/reactionleaderboard/">Reaction Test Leaderboard</a>
+		<br/>
+	</div>
 
 
-			<div id="rockPaperScissors" class="splitListBottom">
-		   		 <br/>
-				<a href="/games/rps/">Rock, Paper, Scissors</a>
-				 <br/>
-			</div>
+	<div class="splitListBottom" id="rockPaperScissors">
+		<br/>
+		<a href="/games/rps/">Rock, Paper, Scissors</a>
+		<br/>
+	</div>
 
-			<footer style="padding: 20px;">
-				<p class=italicsP> More games coming soon!</p>
-				 <br/>
-				 <br/>
-				<a href="/">Back To Home</a>
-			</footer>
-		</div>
-	</body>
+	<footer style="padding: 20px;">
+		<p class=italicsP> More games coming soon!</p>
+		<br/>
+		<br/>
+		<a href="/">Back To Home</a>
+	</footer>
+</div>
+</body>
 </html>

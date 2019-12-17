@@ -4,10 +4,9 @@
 TODO: FIX CANVAS RESIZING-->
 <head>
 	<title>Tennis | DigitalNook</title>
-	<meta name="Description" CONTENT="Play the Tennis game at digitalnook.net!" />
+	<meta CONTENT="Play the Tennis game at digitalnook.net!" name="Description"/>
 
-	<link href="/static/styles1.css" rel="stylesheet" type="text/css"/>
-	<link href="/static/favicon.ico" rel="shortcut icon" type="favicon/x-icon"/>
+	{% include "includes/meta.html" %}
 
 	<!-- sleep function -->
 	<script src="/static/js/sleep.js"></script>
@@ -16,57 +15,58 @@ TODO: FIX CANVAS RESIZING-->
 	<!-- Phaser 3 Game Framework -->
 	<script src="/static/js/phaser.min.js"></script>
 	<!-- tennis game index -->
-	<script type="module" src="/static/js/tennis/index.js"></script>
-
-	<!-- Dynamic Viewport scaling -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="/static/js/tennis/index.js" type="module"></script>
 
 	<!-- styles for phaser canvas -->
 	<style>
-	canvas{
-		border: 3px solid blue;
-		margin-right: 1vw;
-		margin-left: 1vw;
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-	} html{
-		height: 100%
-	}</style>
+		canvas {
+			border: 3px solid blue;
+			margin-right: 1vw;
+			margin-left: 1vw;
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+
+		html {
+			height: 100%
+		}</style>
 
 </head>
 
 <body style="resize: both; margin: 0; padding: 0;">
-	<header>
-		<h1>Tennis</h1>
-	</header>
-	<div id="main" style="margin: 10px; overflow: hidden; display:flex; flex-flow: row wrap; justify-content: center;  ">
-		<div id="game" style="" margin-right="5%">
-		</div>
-
-		<div id="intro" style="max-width: 65%;">
-			<p style="font-weight: bold;">First to 10 wins!</p>
-			<br/>
-			<p>In Tennis, a game <strong>completely different</strong> to Pong, try to beat your opponent by hitting the ball past them with a paddle to score points.</p>
-			<br/>
-			<p id="tutorial">
-				Single Player: Use the arrow or W/S keys to move<br/>
-				Multiplayer: Use the arrow keys for the green paddle and W/S keys for the red paddle
-			</p>
-			<br/>
-			<p id="feedback">This game is very new, so feel free to send me some feedback/suggestions at my <a style="display: inline;" href="mailto:admin@digitalnook.net">email</a></p>
-			<br/>
-		</div>
+<header>
+	<h1>Tennis</h1>
+</header>
+<div id="main" style="margin: 10px; overflow: hidden; display:flex; flex-flow: row wrap; justify-content: center;  ">
+	<div id="game" margin-right="5%" style="">
 	</div>
-	<footer>
-		 <br/>
-		<a href="/games">Back to Games</a>
-		 <br/>
-		 <br/>
-	</footer>
+
+	<div id="intro" style="max-width: 65%;">
+		<p style="font-weight: bold;">First to 10 wins!</p>
+		<br/>
+		<p>In Tennis, a game <strong>completely different</strong> to Pong, try to beat your opponent by hitting the
+			ball past them with a paddle to score points.</p>
+		<br/>
+		<p id="tutorial">
+			Single Player: Use the arrow or W/S keys to move<br/>
+			Multiplayer: Use the arrow keys for the green paddle and W/S keys for the red paddle
+		</p>
+		<br/>
+		<p id="feedback">This game is very new, so feel free to send me some feedback/suggestions at my <a
+				href="mailto:admin@digitalnook.net" style="display: inline;">email</a></p>
+		<br/>
+	</div>
+</div>
+<footer>
+	<br/>
+	<a href="/games">Back to Games</a>
+	<br/>
+	<br/>
+</footer>
 <noscript>
-This webpage depends on JavaScript... Please enable Javascript in your browser (enable-javascript.com) or download firefox (mozilla.org/firefox/)
+	This webpage depends on JavaScript... Please enable Javascript in your browser (enable-javascript.com) or download
+	firefox (mozilla.org/firefox/)
 </noscript>
 </body>
 </html>

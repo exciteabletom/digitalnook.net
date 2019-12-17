@@ -1,1 +1,105 @@
-new pictures will be drawn here
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>New Drawing | Digitalnook</title>
+	{% include "/includes/meta.html" %}
+
+	<style>
+		#newDrawing {
+			border: 1px solid #000000;
+			background-color: #FFFFFF;
+		}
+
+		#clearCanvas {
+			float: right;
+		}
+
+		.optionButton {
+			background-color: #000000;
+			border: none;
+			color: white;
+			padding: 20px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 10px;
+			margin: 10px;
+			border-radius: 50%;
+		}
+
+		.optionButton {
+			background-color: #128900;
+		}
+	</style>
+
+</head>
+<body>
+<header>
+	<h1>Send a new drawing to user '{{ requestedUser }}'</h1>
+	<p style="font-style: italic;">Your word is: {{ randomWord }}</p>
+
+</header>
+
+<main>
+	<div>
+		<div id="canvas/options"
+		     style="display:flex; justify-content: center; width:75%; margin-right: 12.5%; margin-left: 14%;">
+			<div id="colors" style="display:flex; flex-direction:column; margin-right: 10px;">
+				<button class="optionButton" id="#000000" onclick="changeColor('#000000');"
+				        style="background-color: #000000;"></button>
+				<button class="optionButton" id="#FF0000" onclick="changeColor('#FF0000');"
+				        style="background-color: #FF0000;"></button>
+				<button class="optionButton" id="#0000FF" onclick="changeColor('#0000FF');"
+				        style="background-color: #0000FF;"></button>
+				<button class="optionButton" id="#654321" onclick="changeColor('#654321');"
+				        style="background-color: #654321;"></button>
+				<button class="optionButton" id="#FFFF00" onclick="changeColor('#FFFF00');"
+				        style="background-color: #FFFF00;"></button>
+				<button class="optionButton" id="#128900" onclick="changeColor('#128900');"
+				        style="background-color: #128900;"></button>
+				<button class="optionButton" id="#FF6FF0" onclick="changeColor('#FF6FF0');"
+				        style="background-color: #FF6FF0;"></button>
+				<button class="optionButton" id="#FFFFFF" onclick="changeColor('#FFFFFF');"
+				        style="background-color: #FFFFFF;"></button>
+
+			</div>
+			<canvas height="500" id="newDrawing" style="" width="600"></canvas>
+			<div id="brushSizes" style="display:flex; flex-direction:column; flex">
+				<button class="optionButton" onclick="changeWidth(5)" style="font-size:15px;">Tiny</button>
+				<button class="optionButton" onclick="changeWidth(10)" style="font-size:20px;">Small</button>
+				<button class="optionButton" onclick="changeWidth(15);" style="font-size:25px;">Medium</button>
+				<button class="optionButton" onclick="changeWidth(20)" style="font-size:30px;">Large</button>
+			</div>
+		</div>
+
+		<div id="drawingOptions">
+			<button class="greenButton" id="clearCanvas" onClick="clearCanvasAndPaths()"
+			        style="background-color: #FF0000; border-color: #FF1000">Clear Drawing
+			</button>
+			<button class="greenButton" id="submitDrawing" onclick="sendCanvasAsImage()">Send Drawing</button>
+		</div>
+
+	</div>
+</main>
+<!-- invisible form -->
+<form action="/games/drawsomethingsubmission/" id="imageForm" method="post" style="display:none">
+	<input id="image" name="image" type="text"/>
+	<input id="gameId" name="gameId" type="text" value="{{ gameId }}"/>
+</form>
+<script>
+	// This sends the canvas image data to the backend by submitting an invisible form
+	function sendCanvasAsImage() {
+		const dataUrl = canvas.toDataURL();
+		const imageInput = document.getElementById("image");
+		imageInput.value = dataUrl;
+		document.getElementById("imageForm").submit();
+
+	}
+</script>
+<!-- KEEP THIS BELOW EVERYTHING BECAUSE IT NEEDS A LOADED DOM!
+-->
+<script src="/static/js/drawSomething/newGame.js"></script><!--
+------------------------------------------------------------------->
+</body>
+
+</html>

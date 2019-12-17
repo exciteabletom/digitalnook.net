@@ -1,34 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" charset="UTF-8">
+<html charset="UTF-8" lang="en">
 <head>
-    <title>Login | DigitalNook</title>
-    <meta name="description" content="Login to your account at DigitalNook.net"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link href="/static/styles1.css" type="text/css" rel="stylesheet"/>
-    <link href="/static/favicon.ico" rel="shortcut icon"/>
+	<title>Login | DigitalNook</title>
+	<meta content="Login to your account at DigitalNook.net" name="description"/>
+
+	{% include "/includes/meta.html" %}
 </head>
 <body style="text-align: center">
 <header>
-    <h1>Login to Digitalnook</h1>
+	<h1>Login to Digitalnook</h1>
 </header>
 <main>
-    <div id="loginForm">
-        <form action="/login/" method="post" style="margin-left: 20%; margin-right: 20%; width: 60%;">
-            Username:<br/> <br/>
-            <input type="text" name="username" placeholder="Enter your username here" /><br/> <br/>
-            Password:<br/> <br/>
-            <input type="password" name="password" placeholder="Enter your password here" /><br/> <br/>
-            <input class="greenButton" type='submit' value='Submit'>
-        </form>
-    </div>
+	<div id="loginForm">
+		<form action="/login/" method="post" style="margin-left: 20%; margin-right: 20%; width: 60%;">
+			Username:<br/> <br/>
+			<input name="username" placeholder="Enter your username here" type="text"/><br/> <br/>
+			Password:<br/> <br/>
+			<input name="password" placeholder="Enter your password here" type="password"/><br/> <br/>
+			<input class="greenButton" type='submit' value='Submit'>
+		</form>
+	</div>
 </main>
 <footer>
-    <div style="width:50%; overflow: hidden; margin: 2% 25% 2%;>
-        <p class="italicsP">{{error}}</p>
-    </div>
-    <a href="/register/">Not a Member?</a>
-    <br/><br/>
-    <a href="/">Back to Home</a>
+	<div italicsP style="width:50%; overflow: hidden; margin: 2% 25% 2%;>
+        <p class="
+	">{{error}}</p>
+	</div>
+	<a href="/register/">Not a Member?</a>
+	<br/><br/>
+	<a href="/">Back to Home</a>
 </footer>
 </body>
 </html>

@@ -37,6 +37,7 @@ export default class ScoringScene extends Phaser.Scene {
 			}
 		}
 	}
+
 	// be warned these methods are a shit-fest
 	player1Winning() {
 		this.p1Text.setFill(green);

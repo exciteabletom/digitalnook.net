@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Continue Game</title>
+	{% include "/includes/meta.html" %}
+
+</head>
+<body>
+<header>
+	<h1>Continue a game as {{ currentUser }}</h1>
+</header>
+<main>
+	<div>
+		<div class="splitList" id="sentGames">
+			<p><b>DRAWINGS SENT</b></p>
+			<p>View your sent games<br/>This feature will be available in the future</p>
+		</div>
+		<div class="splitListBottom" id="receivedGames">
+			<p><b>DRAWINGS RECEIVED</b></p>
+		</div>
+	</div>
+</main>
+<form action="/games/drawsomething/" id="getDrawings" method="POST" style="display:none;">
+
+	<input id="gameId" name="gameId" type="text" value="">
+	<input id="ACTIONRequestDrawing" name="ACTIONrequestForDrawing" type="submit">
+
+</form>
+</body>
+<!--suppress BadExpressionStatementJS -->
+<script>
+	const receivedGamesDiv = document.getElementById("receivedGames");
+
+	let receivedGames = {;
+	{
+		received | tojson
+	}
+	}
+	// games user has received from others
+
+	// let sentGames =  {{sent | tojson}}; // games user has sent to others
+
+	let currentUser = {;
+	{
+		currentUser | tojson
+	}
+	}
+</script>
+<script>
+	if (Array.isArray(receivedGames)) {
+		for (let i = 0; i < receivedGames.length; i++) {
+			let current = receivedGames[i];
+
+			let split = current.split("_"); // string is in format "sentUser_receivingUser"
+
+			const fromUser = split[0];
+			const newButton = document.createElement("BUTTON");
+			newButton.setAttribute("class", "greenButton");
+			newButton.setAttribute("onclick", `getReceivedDrawing('${current}')`);
+			newButton.innerHTML = `${fromUser} sent you a drawing!`;
+
+			receivedGamesDiv.appendChild(newButton);
+			receivedGamesDiv.appendChild(document.createElement("BR"));
+			console.log(receivedGamesDiv)
+		}
+
+	} else if (typeof receivedGames === "string") {
+		const noGamesMessage = `Sorry ${currentUser}, you have not been sent any drawings...`;
+		const newP = document.createElement("P");
+		newP.innerHTML = noGamesMessage;
+
+		receivedGamesDiv.appendChild(newP);
+	}
+
+	function getReceivedDrawing(gameId) {
+		const requestForDrawing = document.getElementById("requestForDrawing");
+		requestForDrawing.value = gameId;
+
+		document.getElementById("getDrawings").submit();
+	}
+
+</script>
+</html>

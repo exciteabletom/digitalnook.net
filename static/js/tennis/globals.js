@@ -15,17 +15,21 @@ let textConfig = {
 	fontWeight: "bold",
 	color: red,
 };
+
 // object for storing text values
 
 function getRandomInt(min, max = min + 1) {
 	return Math.round(Math.random() * (max - min) + min); // gets a integer between max and min values
 }
+
 function getRandomFloat(min, max = min + 1) {
 	return Math.random() * (max - min) + min; // gets a float between max and min values
 }
+
 function getRandomBool() {
 	return Math.random() < 0.5; // returns true if condition is met false otherwise
 }
+
 function resetVars() {
 	player1.score = 0;
 	player2.score = 0;

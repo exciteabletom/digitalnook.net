@@ -2,6 +2,7 @@ export default class MenuScene extends Phaser.Scene {
 	constructor() {
 		super({key: "menu"});
 	}
+
 	preload() {
 		this.load.image("logo", "/static/images/tennis/logo.png");
 		this.load.image("singlePlayer", "/static/images/tennis/singlePlayer.png");

@@ -1,33 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" charset="UTF-8">
+<html charset="UTF-8" lang="en">
 <head>
-    <title>Register | DigitalNook</title>
-    <meta name="description" content="Login to your account at DigitalNook.net"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link href="/static/styles1.css" type="text/css" rel="stylesheet"/>
-    <link href="/static/favicon.ico" rel="shortcut icon"/>
+	<title>Register | DigitalNook</title>
+	<meta content="Login to your account at DigitalNook.net" name="description"/>
+	{% include "/includes/meta.html" %}
+
 </head>
 <body style="text-align:center">
 <header>
-    <h1>Register on Digitalnook</h1>
+	<h1>Register on Digitalnook</h1>
 </header>
 <main>
-    <div id="registerForm">
-        <form action="/register/" method="post" style="margin-left: 20%; margin-right: 20%; width: 60%; text-align: center">
-            Username:<br/> <br/>
-            <input type="text" name="username" placeholder="Enter your username here" /><br/> <br/>
-            Password:<br/> <br/>
-            <input type="password" placeholder="Enter your password here" /><br/> <br/>
-            <input class="greenButton" type='submit' value='Submit'>
-        </form>
-    </div>
-    <br/>
-    <p>{{error}}</p>
+	<div id="registerForm">
+		<form action="/register/" method="post"
+		      style="margin-left: 20%; margin-right: 20%; width: 60%; text-align: center">
+			Username:<br/> <br/>
+			<input name="username" placeholder="Enter your username here" type="text"/><br/> <br/>
+			Password:<br/> <br/>
+			<input placeholder="Enter your password here" type="password"/><br/> <br/>
+			<input class="greenButton" type='submit' value='Submit'>
+		</form>
+	</div>
+	<br/>
+	<p>{{error}}</p>
 </main>
 <footer style="margin: 30px;">
-    <a href="/login/">Already a member?</a>
-    <br/> <br/>
-    <a href="/">Back to Home</a>
+	<a href="/login/">Already a member?</a>
+	<br/> <br/>
+	<a href="/">Back to Home</a>
 </footer>
 </body>
 </html>

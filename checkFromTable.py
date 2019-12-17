@@ -1,50 +1,91 @@
 import sqlite3
-from string import Template
-
-from loginKey import key
 
 from cryptography.fernet import Fernet
+
+from loginKey import key
 
 cipher = Fernet(key)
 
 
-def checkFromMain(name, password=0):
-    """
-    Returns True if the name and password entered match the table data
+def checkFromMain(name, password=False):
+	"""
+	Returns True if username and password (optional) match table data.
 
-    Otherwise, False
-    """
+	Otherwise, False
+	"""
+	connection = sqlite3.connect("userdata.db")
+	cursor = connection.cursor()
 
-    try:
-        connection = sqlite3.connect("userdata.db")
-        cursor = connection.cursor()
+	cursor.execute("SELECT * from main WHERE name = (?)", (name,))  # this method prevents SQL injection
 
-        cursor.execute("SELECT * from main WHERE name = (?) ", (name,))
+	rawData = cursor.fetchall()
+	print(rawData)
 
-        rawData = cursor.fetchall()
-        print(rawData)
-        if rawData:
-            if password == 0:
-                return True
+	if rawData:
+		data = rawData[0]  # sqlite returns a list of tuples. I only have one tuple I need to isolate it
 
-            data = rawData[0]  # sqlite returns a list of tuples. Since I only have one tuple I need to isolate it
-            tablePassword = data[2]  # select password from tuple
+		if password:
+			tablePassword = data[2]  # select password from tuple: (id, username, password)
 
-            tableEncodedPassword = str.encode(tablePassword)  # we have to convert the normal string to a byte string
-            decryptedTablePassword = cipher.decrypt(tableEncodedPassword)
+			tableEncodedPassword = str.encode(tablePassword)  # convert the byte string to a string literal
+			decryptedTablePassword = cipher.decrypt(tableEncodedPassword)
 
-            finalTablePassword = decryptedTablePassword.decode()
+			finalTablePassword = decryptedTablePassword.decode()
 
-            if password == finalTablePassword:
-                print("YES")
-                return data
+			if password == finalTablePassword:
+				return True
 
-            else:
-                print("NO")
-                return False
+			else:
+				return False  # TODO: probably better way to do this chain of returns
 
-        else:
-            raise Exception("The program exited for an unknown reason")
+		else:
+			return True
 
-    except Exception as e:
-        raise Exception(e)
+	else:
+		return False
+
+
+def checkFromDraw(gameId):
+	conn = sqlite3.connect("userdata.db")
+	cur = conn.cursor()
+
+	cur.execute("""SELECT * FROM drawSomething WHERE gameId = (?)""", (gameId,))
+
+	rawData = cur.fetchall()
+
+	if rawData:  # if tuple is full
+		data = rawData[0]  # isolate first tuple from array
+		return data
+
+	else:
+		return False
+
+
+def checkForActiveDrawingGames(name):
+	conn = sqlite3.connect("userdata.db")
+	cur = conn.cursor()
+	cur.execute("""SELECT * FROM drawSomething;""")
+	data = cur.fetchall()
+
+	if data:
+		print(data)
+		games = {
+			"sent": [],
+			"received": [],
+		}
+
+		for i in data:
+			names = i[0].split("_")
+
+			if names[0] == name:
+				games.get("sent").append(i[0])
+
+			elif names[1] == name:
+				games.get("received").append(i[0])
+
+		conn.close()
+		return games
+
+	else:
+		conn.close()
+		return False

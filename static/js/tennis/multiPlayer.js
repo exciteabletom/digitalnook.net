@@ -104,7 +104,7 @@ export default class MultiPlayerScene extends Phaser.Scene {
 	}
 
 
-	checkScore(){
+	checkScore() {
 		if (sprites.ball.body.x > 900) {
 			player1.score++;
 			sprites.ball.x = 500;
@@ -140,7 +140,6 @@ export default class MultiPlayerScene extends Phaser.Scene {
 		sprites.ball.setVelocityY(0);
 		sprites.ball.setZ(10);
 	}
-
 
 
 }
