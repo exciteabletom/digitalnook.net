@@ -8,6 +8,7 @@
 </head>
 <body style="text-align: center">
 <header>
+	{% include "/includes/header.html" %}
 	<h1>Login to Digitalnook</h1>
 </header>
 <main>
@@ -22,9 +23,8 @@
 	</div>
 </main>
 <footer>
-	<div italicsP style="width:50%; overflow: hidden; margin: 2% 25% 2%;>
-        <p class="
-	">{{error}}</p>
+	<div style="width:50%; overflow: hidden; margin: 2% 25% 2%;" >
+        <p class="italics">{{error}}</p>
 	</div>
 	<a href="/register/">Not a Member?</a>
 	<br/><br/>

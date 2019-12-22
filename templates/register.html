@@ -2,13 +2,14 @@
 <html charset="UTF-8" lang="en">
 <head>
 	<title>Register | DigitalNook</title>
-	<meta content="Login to your account at DigitalNook.net" name="description"/>
+	<meta content="Register an account at DigitalNook.net" name="description"/>
 	{% include "/includes/meta.html" %}
 
 </head>
 <body style="text-align:center">
 <header>
-	<h1>Register on Digitalnook</h1>
+	{% include "/includes/header.html" %}
+	<h1>Register at Digitalnook</h1>
 </header>
 <main>
 	<div id="registerForm">
@@ -17,7 +18,7 @@
 			Username:<br/> <br/>
 			<input name="username" placeholder="Enter your username here" type="text"/><br/> <br/>
 			Password:<br/> <br/>
-			<input placeholder="Enter your password here" type="password"/><br/> <br/>
+			<input name="password" placeholder="Enter your password here" type="password"/><br/> <br/>
 			<input class="greenButton" type='submit' value='Submit'>
 		</form>
 	</div>

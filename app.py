@@ -3,17 +3,22 @@
 import json
 import operator
 from functools import wraps
+from string import Template
 
 from flask import Flask, render_template, request, redirect, send_from_directory
 
-import addToTable
-import checkFromTable
-from encryptionManager import encryptString, decryptString
+import modifyTable
+import checkTable
+from cyrpto import encryptString, decryptString
 from loginKey import key
 from nocache import nocache
 
 app = Flask(__name__)
 Flask.secret_key = key
+
+#  encryption functions in jinja2 templating
+app.jinja_env.globals.update(decryptString=decryptString)
+app.jinja_env.globals.update(encryptString=encryptString)
 
 
 # PROD ONLY, THIS BREAKS DEV because of localhost
@@ -34,6 +39,14 @@ def loginRequired(appRoute):
 
 	@wraps(appRoute)
 	def wrapper(*args, **kwargs):
+		loginErrorMessage = Template("$page requires you to be logged in")
+		errorResp = app.make_response(redirect("/login/"))
+		pathList = str(request.path).split("/")
+		newPathList = [i for i in pathList if i != "" or " "]
+		print(pathList)
+		currentPage = newPathList[-1]
+
+		errorResp.set_cookie("LOGINERROR", loginErrorMessage.substitute(page=currentPage.title()))
 
 		if "USERNAME" in request.cookies and "PASSWORD" in request.cookies:
 			encryptedUsername = request.cookies.get("USERNAME")
@@ -41,16 +54,14 @@ def loginRequired(appRoute):
 
 			username = decryptString(encryptedUsername)
 			password = decryptString(encryptedPassword)
-			print(username, password, encryptedUsername, encryptedPassword)
-			validLogin = checkFromTable.checkFromMain(username, password)  # true if login cookies are valid credentials
+			validLogin = checkTable.checkFromMain(username, password)  # true if login cookies are valid credentials
 
 			if validLogin:
 				return appRoute(*args, **kwargs)
 			else:
-				return redirect("/login/")
-
+				return errorResp
 		else:
-			return redirect("/login/")
+			return errorResp
 
 	return wrapper
 
@@ -71,7 +82,12 @@ def staticLeaderboard():
 # Default page
 @app.route("/")
 def index():
-	return render_template("index.html")
+	if request.cookies.get("USERNAME"):
+		currentUser = decryptString(request.cookies.get("USERNAME"))
+		return render_template("index.html", currentUser=currentUser)
+
+	else:
+		return render_template("index.html")
 
 
 # About page
@@ -80,11 +96,32 @@ def about():
 	return render_template("about.html")
 
 
+# logout page
+@nocache
+@app.route("/logout/")
+def logout():
+	resp = app.make_response(render_template("logout.html"))
+
+	# replaces cookies with empty strings that expire instantly
+	resp.set_cookie("USERNAME", "", expires=0)
+	resp.set_cookie("PASSWORD", "", expires=0)
+
+	return resp
+
+
 # login page
 @nocache
 @app.route("/login/", methods=["GET", "POST"])
 def login():
 	if request.method == "GET":
+		if request.cookies.get("LOGINERROR"):
+			loginErrorCookie = request.cookies.get("LOGINERROR")
+
+			resp = app.make_response(render_template("login.html", error=loginErrorCookie))
+			resp.set_cookie("LOGINERROR", "", expires=0)
+
+			return resp
+
 		return render_template("login.html")
 
 	elif request.method == "POST":
@@ -94,22 +131,16 @@ def login():
 		if request.cookies.get("USERNAME"):
 			return render_template("login.html", error="You are already logged in, would you like to logout?")
 
-		try:
+		if checkTable.checkFromMain(username, password):  # returns true if login is valid
+			resp = app.make_response(redirect("/"))
 
-			if checkFromTable.checkFromMain(username, password):  # returns true if login is valid
-				resp = app.make_response(redirect("/"))
+			resp.set_cookie("USERNAME", encryptString(username))
+			resp.set_cookie("PASSWORD", encryptString(password))
 
-				resp.set_cookie("USERNAME", encryptString(username))
-				resp.set_cookie("PASSWORD", encryptString(password))
+			return resp
 
-				return resp
-
-			else:
-				return render_template("login.html", error="""Your username or password was incorrect""")
-
-		except ValueError:
-			return render_template("login.html", error="""Your login details were not valid.
-                                                        Would you like to register?""")
+		else:
+			return render_template("login.html", error="""Your username or password was incorrect""")
 
 
 # Registration page
@@ -121,28 +152,37 @@ def register():
 
 	elif request.method == "POST":
 
-		username = str(request.form.get("username"))
-		password = str(request.form.get("password"))
+		username = request.form.get("username")
+		password = request.form.get("password")
 
-		if "_" in username:
-			return render_template("register.html", error="Underscores are not allowed in names")
+		print(password)
 
-		# encrypt password
+		if type(username) is None or type(password) is None:
+			return render_template("register.html", error="Please fill in all fields")
+
+		testForIllegalChars = username + password
+
+		if "_" in testForIllegalChars or " " in testForIllegalChars:
+			return render_template("register.html", error="Underscores and spaces are not allowed")
+
+		if not modifyTable.checkForUsername(username):  # if username is already in use
+			return render_template("register.html", error="This username is already in use")
+
+		if len(password) < 8:
+			return render_template("register.html", error="Your password must be at least 8 characters long")
+
+		# encrypt password before it is committed to the table
 		encryptedPassword = encryptString(password)
-		strPassword = encryptedPassword.decode("utf-8")
 
-		successfulRegister = addToTable.addToMain(username.strip(), strPassword.strip())
+		successfulRegister = modifyTable.addToMain(username, encryptedPassword)
 		if successfulRegister:
 			newUsername = encryptString(username)
 
 			resp = app.make_response(redirect("/"))
 			resp.set_cookie("USERNAME", newUsername)
-			resp.set_cookie("PASSWORD", strPassword)
+			resp.set_cookie("PASSWORD", encryptedPassword)
 
 			return resp
-
-		elif not successfulRegister:
-			return render_template("register.html", error="This name is already in use")
 
 		else:
 			return render_template("register.html", error="An unknown error occurred")
@@ -163,44 +203,115 @@ def drawSomething():
 		currentUser = decryptString(request.cookies.get("USERNAME"))  # gets current user from cookies
 
 		# Interprets user actions in the drawsomething forms
-		if request.form.get("ACTIONnewGame"):
+		if request.form.get("ACTIONnewGame"):  # newGame.html
 			return render_template("drawSomething/newGame.html", currentUser=currentUser)
 
-		elif request.form.get("ACTIONcontinueGame"):
+		elif request.form.get("ACTIONcontinueGame"):  # continueGame.html
 
-			activeGames = checkFromTable.checkForActiveDrawingGames(currentUser)
-			received = "No received drawings were found!"
-			sent = "No sent drawings were found!"
+			activeGames = checkTable.checkForActiveDrawingGames(currentUser)
+			received = ""
+			sent = ""
+
+			print(activeGames)
+
 			if activeGames:
 
-				if activeGames.get("received"):
-					received = activeGames.get("received")
+				rawReceived = activeGames.get("received")
+				received = []
+				for i in rawReceived:
+					data = checkTable.checkFromDraw(i)
 
-				if activeGames.get("sent"):
-					sent = activeGames.get("sent")
+					if data[4] == 1 or data[3] == 0:  # if word was guessed or out of guesses
+						continue
+
+					received.append(i)
+
+				rawSent = activeGames.get("sent")
+				sent = []
+				for i in rawSent:
+					newLst = [i]
+					data = checkTable.checkFromDraw(i)
+					word = data[1]
+					guess = data[3]
+					gameResult = data[4]
+
+					newLst.append(word)
+					if gameResult == 1:
+						newLst.append("successfully guessed your drawing")
+
+					elif guess == 1:
+						newLst.append("has 1 guess remaining")
+
+					elif guess > 0:
+						newLst.append("has " + str(guess) + " guesses remaining")
+
+					elif guess == 0:
+						newLst.append("failed to guess the word")
+
+					# newLst == [gameId, word, message about gameState]
+					sent.append(newLst)
 
 			return render_template("drawSomething/continueGame.html", currentUser=currentUser, sent=sent,
 			                       received=received)
 
-		elif request.form.get("ACTIONrequestForDrawing"):
-			gameId = request.form.get("requestForDrawing")
-			usernames = gameId.split("_")  # gameId is sendingPlayer_receivingPlayer
-			data = checkFromTable.checkFromDraw(gameId)
-			print("usernames:", usernames)
-			return render_template("drawSomething/guessDrawing.html", currentUser=currentUser, gameId=gameId,
-			                       otherUser=usernames[1], image=data[2], word=data[1])
+		elif request.form.get("ACTIONrequestForGuessingDrawing"):  # guessDrawing.html
+			gameId = request.form.get("gameId")
+			userNames = gameId.split("_")  # gameId is sendingPlayer_receivingPlayer
+			data = checkTable.checkFromDraw(gameId)
 
-		elif request.form.get("ACTIONnewGameRequest"):
+			if not data[3]:
+				modifyTable.updateDrawGuess(gameId, 4)
+			print(data)
+			if data and (userNames[1] == currentUser):
+				return render_template("drawSomething/guessDrawing.html", currentUser=currentUser, gameId=gameId,
+				                       otherUser=userNames[0], image=data[2], word=data[1], guess=data[3])
+
+		elif request.form.get("ACTIONrequestForViewingGame"):  # viewGame.html
+			gameId = request.form.get("gameId")
+			userNames = gameId.split("_")
+			data = checkTable.checkFromDraw(gameId)
+
+			deletion = False
+			if data[3] == 0 or data[4] == 1:
+				deletion = True
+
+			if data and (userNames[0] == currentUser):
+				return render_template("drawSomething/viewGame.html", currentUser=currentUser, gameId=gameId,
+				                       otherUser=userNames[1], image=data[2], word=data[1], guess=data[3],
+				                       deletion=deletion,
+				                       gameResult=bool(data[4]))
+
+		elif request.form.get("ACTIONdeleteGame"):  # requested from viewGame.html
+			gameId = request.form.get("gameId")
+			userNames = gameId.split("_")
+			data = checkTable.checkFromDraw(gameId)
+
+			if data[3] == 0 or data[4] == 1:
+				if data and userNames[0] == currentUser:
+					modifyTable.deleteDrawGame(gameId)
+					return render_template("drawSomething/drawSomething.html",
+					                       error="The game was successfully deleted")
+
+		elif request.form.get("ACTIONnewGameRequest"):  # drawNewPicture.html
 			requestedUser = request.form.get("newGameRequestUsername")
 
 			if requestedUser.strip() == currentUser.strip():
 				return render_template("drawSomething/newGame.html", error="You can't request a game with yourself!",
 				                       currentUser=currentUser)
 
-			if checkFromTable.checkFromMain(requestedUser):
-				gameId = currentUser + "_" + requestedUser
+			gameId = currentUser + "_" + requestedUser
+
+			if checkTable.checkFromDraw(gameId):
+				data = checkTable.checkFromDraw(gameId)
+				print("data, ", data)
+				if data[2]:
+					return render_template("drawSomething/newGame.html",
+					                       error="You have already started a game with this user!",
+					                       currentUser=currentUser)
+
+			if checkTable.checkFromMain(requestedUser):
 				randWord = None
-				data = checkFromTable.checkFromDraw(gameId)
+				data = checkTable.checkFromDraw(gameId)
 
 				if data:  # game already started therefore word already exists
 					randWord = data[1]  # select random word from (id, word, image) tuple
@@ -212,12 +323,13 @@ def drawSomething():
 					i = randint(0, (len(drawingWords) - 1))
 					randWord = drawingWords[i]  # new word selection if it is not already done
 
-				if addToTable.addToDraw(gameId, randWord):  # game already exists
+				if checkTable.checkFromDraw(gameId):  # game already exists
 
 					return render_template("drawSomething/newGame.html",
 					                       error="You have already started a game with this user!",
 					                       currentUser=currentUser)
 				else:
+					modifyTable.addToDraw(gameId, randWord)
 					return render_template("drawSomething/drawNewPicture.html", gameId=gameId,
 					                       requestedUser=requestedUser,
 					                       randomWord=randWord.title())
@@ -226,10 +338,41 @@ def drawSomething():
 				return render_template("drawSomething/newGame.html", error="This user doesn't exist",
 				                       currentUser=currentUser)
 
-		elif request.form.get("guessWord"):
-			return "wip"
+		elif request.form.get("ACTIONcheckGuess"):
+			gameId = request.form.get("gameId")
+			currentUser = decryptString(request.cookies.get("USERNAME"))
 
-		return render_template("drawSomething/drawSomething.html")
+			userNames = gameId.split("_")
+
+			if userNames[1] != currentUser:  # This would suggest user is doing some html form fuckery
+				return render_template("drawSomething/drawSomething.html", error="Don't mess with the form please :)")
+
+			data = checkTable.checkFromDraw(gameId)
+
+			image = data[2]
+			otherUser = userNames[1]
+			word = data[1]
+
+			guessWord = request.form.get("guessWord")
+
+			wordIsCorrect = checkTable.checkIfDrawingWordCorrect(gameId, guessWord)
+
+			if wordIsCorrect:
+				modifyTable.finishDrawGame(gameId)
+				return render_template("drawSomething/guessWasCorrect.html", guessWord=guessWord)
+
+			else:
+
+				guessNum = modifyTable.updateDrawGuess(gameId)  # increments guesses remaining down by one
+				if guessNum != 0:
+					return render_template("drawSomething/guessDrawing.html", guess=guessNum, image=image,
+					                       currentUser=currentUser,
+					                       otherUser=otherUser, word=word, gameId=gameId)
+
+				else:
+					return render_template("drawSomething/outOfGuesses.html", otherUser=otherUser, word=word)
+
+		return render_template("drawSomething/drawSomething.html", error="An unknown error occured")
 
 
 @app.route("/games/drawsomethingsubmission/", methods=["GET", "POST"])
@@ -242,7 +385,7 @@ def drawSomethingSubmission():
 		image = request.form.get("image")
 		gameId = request.form.get("gameId")
 
-		addToTable.addToDraw(gameId=gameId, image=image)
+		modifyTable.addToDraw(gameId, image=image)
 
 		return redirect("/games/drawsomethingsubmission/")
 
@@ -266,7 +409,6 @@ def games():
 
 # tennis game
 @app.route("/games/tennis/")
-@loginRequired
 def tennis():
 	return render_template("tennis.html")
 
@@ -308,9 +450,9 @@ def submission():
 			finalData = json.dumps(leaderboardData)  # dump json to string
 			leaderboard.write(finalData)  # replaces leaderboard.json with new values
 
-		return redirect("/games/reactionleaderboard/", code="302")
+		return redirect("/games/reactionleaderboard/", 302)
 
-	return render_template("404.html")
+	return render_template("errors/404.html")
 
 
 @app.route("/games/reactionleaderboard/", methods=["GET"])
@@ -320,8 +462,14 @@ def reactionLeaderboard():
 
 # Handles 404 errors
 @app.errorhandler(404)
-def not_found(e):
-	return render_template("404.html"), 404
+def notFound(e):
+	return render_template("errors/404.html"), 404
+
+
+# Handles 5** errors
+@app.errorhandler(500)
+def internalError(e):
+	return render_template("errors/500.html"), 500
 
 
 if __name__ == "__main__":

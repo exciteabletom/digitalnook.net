@@ -13,7 +13,7 @@ try {
 	canvas.addEventListener("mousedown", event => startDrawing(event));
 	canvas.addEventListener("mouseup", stopDrawing);
 	canvas.addEventListener("mousemove", event => draw(event));
-
+	document.addEventListener("mouseup", stopDrawing)
 	let isDrawing = false;
 
 // MOUSE EVENTS
@@ -36,8 +36,6 @@ try {
 	function stopDrawing() {
 		isDrawing = false;
 		paths = [];
-		paths.push("newPath");
-
 
 	}
 
@@ -65,16 +63,16 @@ try {
 			for (let i = 0; i <= paths.length; i++) {
 				try {
 					const current = paths[i];
-					if (current === "newPath") { // newPath says if the user released the mouse
+					/*if (current === "newPath") { // newPath says if the user released the mouse
 						newPath = true;
 						continue;
-					}
+					}*/
 
-					if (newPath) {
+					/*if (newPath) {
 						context.moveTo(current.x, current.y);
 						newPath = false;
 						continue;
-					}
+					}*/
 
 					context.strokeStyle = current.color;
 					context.lineWidth = current.width;
@@ -122,7 +120,6 @@ function invertHex(inputHex) {
 	let hex = inputHex.substring(1);
 	return `#${(Number(`0x1${hex}`) ^ 0xFFFFFF).toString(16).substr(1).toUpperCase()}`
 }
-
 // end stack overflow
 
 document.getElementById(config.color).style.border = `2px solid ${invertHex(config.color)}`; // default border

@@ -37,12 +37,11 @@ a, .link {
 }
 
 body {
-	/* border: 20px orange groove; RIP TO THE OG BORDER */
-	margin: 0px;
-	box-sizing: border-box;
+	/* border: 20px orange groove;/* RIP TO THE OG BORDER */
 	min-height: 100vh;
 	text-align: center;
 	background-color: #FF6F00;
+	margin: 0 0 50px; /* no margin except for bottom */
 }
 .blueP {
 	color: blue;
@@ -60,12 +59,7 @@ p {
 	font-weight: normal;
 }
 
-.italicsP {
-	color: black;
-	font-size: 30px;
-	font-family: sans-serif;
-	text-align: center;
-	font-weight: normal;
+.italics {
 	font-style: italic;
 }
 
@@ -233,7 +227,7 @@ p {
 	text-decoration: none;
 	text-shadow: 0px 1px 0px #2f6627;
 	margin: 10px 40%;
-	width: 20%;
+	text-align: center;
 	font-weight: bold;
 }
 

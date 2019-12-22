@@ -10,9 +10,6 @@
 			background-color: #FFFFFF;
 		}
 
-		#clearCanvas {
-			float: right;
-		}
 
 		.optionButton {
 			background-color: #000000;
@@ -35,6 +32,7 @@
 </head>
 <body>
 <header>
+	{% include "includes/header.html" %}
 	<h1>Send a new drawing to user '{{ requestedUser }}'</h1>
 	<p style="font-style: italic;">Your word is: {{ randomWord }}</p>
 
@@ -67,7 +65,7 @@
 			<div id="brushSizes" style="display:flex; flex-direction:column; flex">
 				<button class="optionButton" onclick="changeWidth(5)" style="font-size:15px;">Tiny</button>
 				<button class="optionButton" onclick="changeWidth(10)" style="font-size:20px;">Small</button>
-				<button class="optionButton" onclick="changeWidth(15);" style="font-size:25px;">Medium</button>
+				<button class="optionButton" onclick="changeWidth(15)" style="font-size:25px;">Medium</button>
 				<button class="optionButton" onclick="changeWidth(20)" style="font-size:30px;">Large</button>
 			</div>
 		</div>
@@ -96,10 +94,9 @@
 
 	}
 </script>
-<!-- KEEP THIS BELOW EVERYTHING BECAUSE IT NEEDS A LOADED DOM!
--->
-<script src="/static/js/drawSomething/newGame.js"></script><!--
-------------------------------------------------------------------->
+<!-- KEEP THIS BELOW EVERYTHING BECAUSE IT NEEDS A LOADED DOM! -->
+<script src="/static/js/drawSomething/newGame.js"></script>
+<!--------------------------------------------------------------->
 </body>
 
 </html>

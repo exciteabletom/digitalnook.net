@@ -7,53 +7,50 @@
 </head>
 <body>
 <header>
+	{% include "/includes/header.html" %}
 	<h1>Continue a game as {{ currentUser }}</h1>
 </header>
 <main>
 	<div>
 		<div class="splitList" id="sentGames">
 			<p><b>DRAWINGS SENT</b></p>
-			<p>View your sent games<br/>This feature will be available in the future</p>
+
 		</div>
 		<div class="splitListBottom" id="receivedGames">
 			<p><b>DRAWINGS RECEIVED</b></p>
 		</div>
 	</div>
+	<a style="margin-top: 35px" href="/games/drawsomething">Back to Home</a>
 </main>
-<form action="/games/drawsomething/" id="getDrawings" method="POST" style="display:none;">
+<form action="/games/drawsomething/" id="getReceivedDrawings" method="POST" style="display:none;">
 
-	<input id="gameId" name="gameId" type="text" value="">
-	<input id="ACTIONRequestDrawing" name="ACTIONrequestForDrawing" type="submit">
+	<input id="gameIdReceived" name="gameId" type="text" value="">
+	<input name="ACTIONrequestForGuessingDrawing" type="text" value="true">
+	<input type="submit">
 
 </form>
-</body>
-<!--suppress BadExpressionStatementJS -->
-<script>
-	const receivedGamesDiv = document.getElementById("receivedGames");
+<form action="/games/drawsomething/" id="getSentDrawings" method="POST" style="display:none;">
 
-	let receivedGames = {;
-	{
-		received | tojson
-	}
-	}
+	<input id="gameIdSent" name="gameId" type="text" value="">
+	<input name="ACTIONrequestForViewingGame" type="text" value="true">
+	<input type="submit">
+
+</form>
+<script>
 	// games user has received from others
+	let receivedGames = {{ received | tojson }}
 
-	// let sentGames =  {{sent | tojson}}; // games user has sent to others
+	let currentUser = {{ currentUser | tojson }}
 
-	let currentUser = {;
-	{
-		currentUser | tojson
-	}
-	}
-</script>
-<script>
-	if (Array.isArray(receivedGames)) {
+	const receivedGamesDiv = document.getElementById("receivedGames");
+	if (receivedGames.length > 0) {
+		// For every game the user has received a button is created to allow access to that game
 		for (let i = 0; i < receivedGames.length; i++) {
 			let current = receivedGames[i];
 
-			let split = current.split("_"); // string is in format "sentUser_receivingUser"
+			let userNames = current.split("_"); // string is in format "sentUser_receivingUser"
 
-			const fromUser = split[0];
+			const fromUser = userNames[0];
 			const newButton = document.createElement("BUTTON");
 			newButton.setAttribute("class", "greenButton");
 			newButton.setAttribute("onclick", `getReceivedDrawing('${current}')`);
@@ -61,11 +58,10 @@
 
 			receivedGamesDiv.appendChild(newButton);
 			receivedGamesDiv.appendChild(document.createElement("BR"));
-			console.log(receivedGamesDiv)
 		}
-
-	} else if (typeof receivedGames === "string") {
-		const noGamesMessage = `Sorry ${currentUser}, you have not been sent any drawings...`;
+	} else {
+		console.log("HERE");
+		const noGamesMessage = `Sorry ${currentUser}, you have not been sent any drawings`;
 		const newP = document.createElement("P");
 		newP.innerHTML = noGamesMessage;
 
@@ -73,11 +69,53 @@
 	}
 
 	function getReceivedDrawing(gameId) {
-		const requestForDrawing = document.getElementById("requestForDrawing");
-		requestForDrawing.value = gameId;
+		const gameIdForm = document.getElementById("gameIdReceived");
+		gameIdForm.value = gameId;
 
-		document.getElementById("getDrawings").submit();
+		document.getElementById("getReceivedDrawings").submit();
 	}
 
+	const sentGamesDiv = document.getElementById("sentGames");
+	let sentGames =  {{ sent | tojson }}; // games user has sent to others
+
+	if (sentGames.length > 0){
+		console.log("here2");
+		for (let i = 0; i < sentGames.length; i++) {
+			let current = sentGames[i];
+
+			let userNames = current[0].split("_"); // string is in format "sentUser_receivingUser"
+			let gameState = current[2]; // string describing result of game
+
+			const toUser = userNames[1];
+			const newButton = document.createElement("BUTTON");
+			newButton.setAttribute("class", "greenButton");
+			newButton.setAttribute("onclick", `getSentDrawing('${current[0]}')`);
+			newButton.innerHTML = `${toUser} ${gameState}`;
+
+			sentGamesDiv.appendChild(newButton);
+			sentGamesDiv.appendChild(document.createElement("BR"));
+		}
+
+	}
+
+	else {
+		const noGamesMessage = "Sorry {{ currentUser }}, you have not sent any drawings";
+		const newP = document.createElement("P");
+
+		newP.innerHTML = noGamesMessage;
+
+		sentGamesDiv.appendChild(newP);
+
+	}
+
+	function getSentDrawing(gameId) {
+		const gameIdForm = document.getElementById("gameIdSent");
+		gameIdForm.value = gameId;
+
+		document.getElementById("getSentDrawings").submit();
+	}
 </script>
+</body>
+<!--suppress BadExpressionStatementJS -->
+
 </html>

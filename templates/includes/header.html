@@ -3,30 +3,89 @@
 	#mainHeader {
 		position: sticky;
 		top: 0; /* top of page */
-		height: 25vh;
+		height: 100px;
+		padding-top: 10px;
+		margin-bottom: 5%;
 
-		background-color:transparent;
+		background: linear-gradient(0deg, rgba(255,111,0,1) 20%, rgba(255,111,0,1) 40%, rgba(255,173,0,1) 70%);
+
 		display: flex;
 		justify-content: center;
 	}
 
-	#mainHeaderImg {
-		height: 100%;
+	#mainHeaderLinkDiv {
+		display: flex;
+		align-items: center;
+		justify-items: center;
+		flex-wrap: nowrap;
+		flex-direction: row;
+		width: 20%;
+		margin-left: 10%
 	}
 
-	.headerLink {
+	#mainHeaderLogoImage{
+		height:100%;
+	}
+
+
+	.mainHeaderLink {
 		align-self: center;
-		margin-left: 20%;
+		margin-left:15%;
 	}
-</style>
-<div id="mainHeader">
-	<img alt="banner for the site" id="mainHeaderImg" src="/static/images/banner.webp" onclick="window.location = '/'"/>
 
-	{% if request.cookies.get("USERNAME") is defined %}
-	<a class="headerLink" href="/logout/">Logout</a>
-	{% else %}
-	<a class="headerLink" href="/login/">Login</a>
-	<a class= "headerLink" href="/register/">Not a member?</a>
-	{% endif %}
+	#mainHeaderLogoTitle {
+		font-family: /*"Courier 10 Pitch",*/ monospace;
+		font-size: 30px;
+		padding: 0px;
+		border-bottom: #000000 dashed 3px;
+		text-decoration: none;
+		align-self: center;
+		margin-bottom: 10px;
+		font-weight: bold;
+	}
+	#mainHeaderLogoSub {
+		font-family: monospace;
+		font-size: 20px;
+		margin: 0;
+		padding: 0;
+
+	}
+
+	#mainHeaderLogo{
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		margin-right: 20px;
+	}
+
+	.clickToHome {
+		cursor: pointer;
+	}
+
+</style>
+
+<div id="mainHeader">
+	<!--<img alt="banner for the site" id="mainHeaderImg" src="/static/images/banner.webp" onclick="window.location = '/'"/>-->
+	<div id="mainHeaderLogo" class="clickToHome">
+		<h2 id="mainHeaderLogoTitle">digitalnook.net</h2>
+		<p id="mainHeaderLogoSub">The cosiest place on the internet</p>
+	</div>
+	<img alt="logo fire image" id="mainHeaderLogoImage" src="/static/images/logo/fire.png" class="clickToHome"/>
+	<div id="mainHeaderLinkDiv">
+		{% if request.cookies["USERNAME"] is defined %}
+		<a class="mainHeaderLink" href="/logout/">Logout "{{ decryptString(request.cookies.get("USERNAME")) }}"</a>
+		{% else %}
+		<a class="mainHeaderLink" href="/login/">Login</a>
+		<a class= "mainHeaderLink" href="/register/">Register</a>
+		{% endif %}
+	</div>
 </div>
+<script>
+	(function () {
+		const toHome = document.getElementsByClassName("clickToHome");
+		for (let i = 0; i < toHome.length; i++){
+			toHome[i].setAttribute("onclick", "window.location = '/'");
+		}
+	})()
+</script>
 <!-- end header template -->

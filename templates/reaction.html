@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang='en'>
-<!-- reaction time game by Tommy Dougiamas -->
+<!-- reaction time game by Tommy Dougiamas
+TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 <head>
 	<title>Test your reactions! | DigitalNook</title>
 	<meta content="Test your reaction speed at digitalnook.net!" name="description"/>
@@ -30,6 +31,7 @@
 </head>
 <body onload="submitToLeaderboard.reset()">
 <header>
+	{% include "/includes/header.html"  %}
 	<h1>Test your reactions!</h1>
 </header>
 <!-- All buttons for game and start button -->
@@ -42,7 +44,7 @@
 		</button>
 	</div>
 	<!-- sections the page into three vertical stacks, buttons floated left/right -->
-	<div id="mainGame" style="display: none; width: 100%;">
+	<div id="mainGame" style="display: none; width: 100%; ">
 		<div id="top" style="height:33%">
 			<input alt="Button is not loading.." class="leftButton" id="topLeft" onclick="endTimer(); this.style.visibility = 'hidden'"
 			       src="/static/images/dot.png" type="image"/>

@@ -5,10 +5,15 @@
 	<meta content="Play fun games at digitalnook.net!" name="description"/>
 
 	{% include "/includes/meta.html" %}
+	<style>
+		a{
+			display: block;
+		}
+	</style>
 </head>
 <body>
 <header>
-	<img alt="banner for the site" src="/static/images/banner.jpg" style="margin-left: 20%; margin-right: 20%; width: 60%; height: auto; position: sticky;" />
+	{% include "/includes/header.html" %}
 </header>
 <div class='title'>
 	<h1>Games</h1>
@@ -16,7 +21,7 @@
 <div class="list">
 	<div class="splitList" id="drawSomething">
 		<br/>
-		<a href="/games/drawsomething">Draw Something</a>
+		<a href="/games/drawsomething">Draw Something | BETA</a>
 		<br/>
 	</div>
 	<div class="splitList" id="tennis">
@@ -41,7 +46,7 @@
 	</div>
 
 	<footer style="padding: 20px;">
-		<p class=italicsP> More games coming soon!</p>
+		<p class=italics> More games coming soon!</p>
 		<br/>
 		<br/>
 		<a href="/">Back To Home</a>

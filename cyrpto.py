@@ -8,7 +8,7 @@ cipher = Fernet(key)
 def encryptString(plainString):
 	byteString = str.encode(plainString)
 	encryptedString = cipher.encrypt(byteString)
-	return encryptedString
+	return encryptedString.decode("UTF-8")
 
 
 def decryptString(encryptedString):

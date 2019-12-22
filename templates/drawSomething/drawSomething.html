@@ -8,6 +8,7 @@
 </head>
 <body>
 <header>
+	{% include "/includes/header.html" %}
 	<h1>Draw Something</h1>
 
 </header>
@@ -19,6 +20,7 @@
 		<input class="greenButton" name="ACTIONcontinueGame" type="submit" value="Continue game"/>
 	</form>
 
+	<p id="error" class="italics">{{ error }}</p> <!-- if there is a game breaking error user will be booted here and error message will appear in this <p> -->
 </main>
 <br/>
 <a href="/games/" style="margin-bottom: 5%;">Back to Games</a>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Guess the word!</title>
+	{% include "/includes/meta.html" %}
+	<style>
+		.greenButton {
+			background-color: #F00;
+			border-color: #f22;
+		}
+	</style>
+</head>
+<body>
+<header>
+	{% include "includes/header.html" %}
+	<h1>Game from {{ currentUser }} to {{ otherUser }}</h1>
+</header>
+<main>
+	<div id="imageDiv">
+		<img alt="Image for game {{ gameId }}" id="image" src="{{ image }}"
+		     style="background-color: #FFF;"/>
+	</div>
+	<br/>
+	<p>Word: {{ word }}</p>
+	<div id="gameStatus">
+	</div>
+	<form action="/games/drawsomething/" method="POST" id="deleteForm">
+		<input name="gameId" value="{{ gameId }}" style="display: none;"/>
+		<br/>
+	</form>
+	<br/>
+</main>
+<footer>
+	<a href="/games/drawsomething">Back to Home</a>
+</footer>
+</body>
+<script>
+	const deletion = {{ deletion | tojson }};
+	const otherUser = {{ otherUser | tojson }};
+	const currentUser = {{ currentUser | tojson }};
+	const word = {{ word | tojson}};
+
+	if (deletion) {
+		deleteButton = document.createElement("INPUT");
+
+		deleteButton.name = "ACTIONdeleteGame";
+		deleteButton.value = "Delete Game";
+		deleteButton.type = "submit";
+		deleteButton.class = "greenButton";
+
+		document.getElementById("deleteForm").appendChild(deleteButton);
+	}
+
+	const guesses = {{ guess | tojson }}
+	const otherUserWin = {{ gameResult | tojson }}
+
+	newP = document.createElement("P");
+
+	if (otherUserWin) {
+		newP.innerHTML = `${otherUser} guessed the drawing!`
+	} else if (guesses === 1) {
+		newP.innerHTML = `${otherUser} has 1 guess remaining.`
+	} else if (guesses > 1){
+		newP.innerHTML = `${otherUser} has ${guesses} guesses remaining.`
+	} else if (guesses === 0){
+		newP.innerHTML = `${otherUser} failed to guess the word }`
+	}
+
+	document.getElementById("gameStatus").appendChild(newP);
+</script>
+</html>

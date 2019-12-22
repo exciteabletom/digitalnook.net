@@ -13,22 +13,22 @@ def checkFromMain(name, password=False):
 
 	Otherwise, False
 	"""
-	connection = sqlite3.connect("userdata.db")
-	cursor = connection.cursor()
+	conn = sqlite3.connect("userdata.db")
+	cur = conn.cursor()
 
-	cursor.execute("SELECT * from main WHERE name = (?)", (name,))  # this method prevents SQL injection
+	cur.execute("SELECT * from main WHERE name = (?)", (name,))  # this method prevents SQL injection
 
-	rawData = cursor.fetchall()
-	print(rawData)
+	data = cur.fetchone()
+	conn.close()
 
-	if rawData:
-		data = rawData[0]  # sqlite returns a list of tuples. I only have one tuple I need to isolate it
+	if data:
 
 		if password:
 			tablePassword = data[2]  # select password from tuple: (id, username, password)
 
-			tableEncodedPassword = str.encode(tablePassword)  # convert the byte string to a string literal
-			decryptedTablePassword = cipher.decrypt(tableEncodedPassword)
+			encryptedTablePassword = tablePassword.encode()
+
+			decryptedTablePassword = cipher.decrypt(encryptedTablePassword)
 
 			finalTablePassword = decryptedTablePassword.decode()
 
@@ -36,7 +36,9 @@ def checkFromMain(name, password=False):
 				return True
 
 			else:
-				return False  # TODO: probably better way to do this chain of returns
+				return False
+
+			# TODO: probably better way to do this chain of returns
 
 		else:
 			return True
@@ -51,10 +53,9 @@ def checkFromDraw(gameId):
 
 	cur.execute("""SELECT * FROM drawSomething WHERE gameId = (?)""", (gameId,))
 
-	rawData = cur.fetchall()
+	data = cur.fetchone()
 
-	if rawData:  # if tuple is full
-		data = rawData[0]  # isolate first tuple from array
+	if data:  # if tuple is full
 		return data
 
 	else:
@@ -64,11 +65,11 @@ def checkFromDraw(gameId):
 def checkForActiveDrawingGames(name):
 	conn = sqlite3.connect("userdata.db")
 	cur = conn.cursor()
-	cur.execute("""SELECT * FROM drawSomething;""")
-	data = cur.fetchall()
+	cur.execute("""SELECT * FROM drawSomething""")
+
+	data = cur.fetchall()  # list of tuples containing all of the table data
 
 	if data:
-		print(data)
 		games = {
 			"sent": [],
 			"received": [],
@@ -88,4 +89,24 @@ def checkForActiveDrawingGames(name):
 
 	else:
 		conn.close()
+		return False
+
+
+def checkIfDrawingWordCorrect(gameId, word):
+	"""
+	If guessed word is correct returns True
+
+	If guessed word is not correct returns False
+	"""
+	conn = sqlite3.connect("userdata.db")
+	cur = conn.cursor()
+
+	cur.execute("""SELECT * FROM drawSomething WHERE gameId=(?) AND word=(?)""", (gameId, word))
+	data = cur.fetchone()
+
+	if data:
+		cur.execute("""UPDATE drawSomething SET guesses = -100""")
+		return True
+
+	else:
 		return False

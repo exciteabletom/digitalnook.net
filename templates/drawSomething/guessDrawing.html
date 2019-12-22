@@ -6,6 +6,7 @@
 </head>
 <body>
 <header>
+	{% include "includes/header.html" %}
 	<h1>Guess what {{ otherUser }}'s word was!</h1>
 </header>
 <main>
@@ -15,13 +16,15 @@
 	</div>
 	<br/>
 	<form action="/games/drawsomething/" method="POST">
-		<p>The word is {{ word|length }} characters long</p>
+		<input name="gameId" value="{{ gameId }}" style="display: none;"/>
+		<p>The word is <b>{{ word|length }}</b> characters long</p>
+		<p>You have <b>{{ guess }}</b> guesses remaining</p>
 		<br/>
 		<input maxlength="{{ word|length }}" minlength="{{ word|length }}" name="guessWord"
 		       placeholder="{{ guessNumber }} guesses remaining" type="text"
 		       value="">
 		<br/>
-		<input class="greenButton" name="ACTIONCheckGuess" type="submit" value="Check Guess">
+		<input class="greenButton" name="ACTIONcheckGuess" type="submit" value="Check Guess">
 	</form>
 </main>
 </body>
