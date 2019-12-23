@@ -21,7 +21,7 @@
 		     style="background-color: #FFF;"/>
 	</div>
 	<br/>
-	<p>Word: {{ word }}</p>
+	<p>Word: {{ word }} </p>
 	<div id="gameStatus">
 	</div>
 	<form action="/games/drawsomething/" method="POST" id="deleteForm">
@@ -46,7 +46,7 @@
 		deleteButton.name = "ACTIONdeleteGame";
 		deleteButton.value = "Delete Game";
 		deleteButton.type = "submit";
-		deleteButton.class = "greenButton";
+		deleteButton.className = "greenButton";
 
 		document.getElementById("deleteForm").appendChild(deleteButton);
 	}
@@ -63,9 +63,8 @@
 	} else if (guesses > 1){
 		newP.innerHTML = `${otherUser} has ${guesses} guesses remaining.`
 	} else if (guesses === 0){
-		newP.innerHTML = `${otherUser} failed to guess the word }`
+		newP.innerHTML = `${otherUser} failed to guess the word`
 	}
-
 	document.getElementById("gameStatus").appendChild(newP);
 </script>
 </html>
