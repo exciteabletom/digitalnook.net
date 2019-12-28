@@ -101,7 +101,7 @@ def checkIfDrawingWordCorrect(gameId, word):
 	conn = sqlite3.connect("userdata.db")
 	cur = conn.cursor()
 
-	cur.execute("""SELECT * FROM drawSomething WHERE gameId=(?) AND word=(?)""", (gameId, word))
+	cur.execute("""SELECT * FROM drawSomething WHERE gameId=(?) AND word=(?)""", (gameId, word.lower()))
 	data = cur.fetchone()
 
 	if data:

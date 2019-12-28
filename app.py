@@ -1,5 +1,3 @@
-# WELCOME TO MY SPAGHETTI!
-# I hope you enjoy your stay
 import json
 import operator
 from functools import wraps
@@ -32,7 +30,6 @@ def loginRequired(appRoute):
 	Works by checking cookies to see if they already exist.
 	If cookies already exist and are correct. don't interrupt request.
 	If there is no cookies, redirect to login page
-
 	This will be used for the new draw something game that will require a login.
 	Reaction game will also be ported over to use this system
 	"""
@@ -42,8 +39,7 @@ def loginRequired(appRoute):
 		loginErrorMessage = Template("$page requires you to be logged in")
 		errorResp = app.make_response(redirect("/login/"))
 		pathList = str(request.path).split("/")
-		newPathList = [i for i in pathList if i != "" or " "]
-		print(pathList)
+		newPathList = [i for i in pathList if i != ""]
 		currentPage = newPathList[-1]
 
 		errorResp.set_cookie("LOGINERROR", loginErrorMessage.substitute(page=currentPage.title()))
@@ -118,8 +114,8 @@ def login():
 			loginErrorCookie = request.cookies.get("LOGINERROR")
 
 			resp = app.make_response(render_template("login.html", error=loginErrorCookie))
-			resp.set_cookie("LOGINERROR", "", expires=0)
 
+			resp.set_cookie("LOGINERROR", "", expires=0)
 			return resp
 
 		return render_template("login.html")
@@ -211,8 +207,6 @@ def drawSomething():
 			activeGames = checkTable.checkForActiveDrawingGames(currentUser)
 			received = ""
 			sent = ""
-
-			print(activeGames)
 
 			if activeGames:
 
@@ -359,7 +353,7 @@ def drawSomething():
 
 			if wordIsCorrect:
 				modifyTable.finishDrawGame(gameId)
-				return render_template("drawSomething/guessWasCorrect.html", guessWord=guessWord)
+				return render_template("drawSomething/guessWasCorrect.html", guessWord=guessWord.title())
 
 			else:
 
