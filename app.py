@@ -347,7 +347,7 @@ def drawSomething():
 			otherUser = userNames[1]
 			word = data[1]
 
-			guessWord = request.form.get("guessWord")
+			guessWord = request.form.get("guessWord").lower()
 
 			wordIsCorrect = checkTable.checkIfDrawingWordCorrect(gameId, guessWord)
 
