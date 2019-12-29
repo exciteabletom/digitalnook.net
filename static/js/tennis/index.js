@@ -37,9 +37,9 @@ let config = { // config obj for creating Phaser.Game() instance
 		height: 600, // 600px
 
 	},
-	backgroundColor: 0xFE8F00, // light blue
+	backgroundColor: 0xFE8F00, // light orange
 	physics: {
-		default: "arcade", //arcade physids
+		default: "arcade", // arcade physics
 		arcade: {
 			gravity: {y: 0}, // no gravity
 //			debug: true, // debug physics view

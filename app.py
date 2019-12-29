@@ -449,9 +449,14 @@ def submission():
 	return render_template("errors/404.html")
 
 
-@app.route("/games/reactionleaderboard/", methods=["GET"])
+@app.route("/games/reactionleaderboard/")
 def reactionLeaderboard():
 	return render_template("reactionLeaderboard.html")
+
+
+@app.route("/games/spaceadventure/")
+def adventure():
+	return render_template("adventure.html")
 
 
 # Handles 404 errors
