@@ -2,10 +2,7 @@
 export default class ScoringScene extends Phaser.Scene {
 	constructor() {
 		super({key: "scoring"});
-		this.p1Text = null;
-		this.p2Text = null;
 		this.newScore = 0;
-		this.oldScore = null;
 		this.count = 0;
 	}
 

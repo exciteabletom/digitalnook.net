@@ -41,7 +41,7 @@ body {
 	min-height: 100vh;
 	text-align: center;
 	background-color: #FF6F00;
-	margin: 0 0 50px; /* no margin except for bottom */
+	margin: 0 0 150px; /* no margin except for bottom */
 }
 .blueP {
 	color: blue;

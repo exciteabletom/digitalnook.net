@@ -1,6 +1,5 @@
 import Menu from "./Menu.js";
 import Main from "./Main.js";
-import Bullet from "./Bullet.js";
 
 class Game extends Phaser.Game {
 	constructor() {
@@ -15,21 +14,22 @@ class Game extends Phaser.Game {
 }
 
 let config = {
-	type: Phaser.AUTO,
+	type: Phaser.CANVAS,
 	backgroundColor: "#000",
 	scale: {
 		parent: "game",
 		mode: Phaser.Scale.FIT,
-		width: 1200,
+		width: 1900,
 		height: 600,
 	},
 	physics: {
 		default: "arcade",
 		arcade: {
-			gravity: {y: 0},
-			debug: true,
+			//debug: true,
 		}
-	}
+	},
+	pixelArt: true,
 };
-
-window.game = new Game();
+window.addEventListener("load", () => {
+	window.game = new Game();
+});

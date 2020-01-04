@@ -133,10 +133,10 @@
 		playDrumroll();
 		sleep(5000).then(() => {
 			afterDrumroll()
-		})
+		});
 
 		function afterDrumroll() {
-			getComputerChoice()
+			getComputerChoice();
 			getWinner(userChoice, compChoice);
 			document.getElementById('p3').innerHTML = `The Computers choice was ${compChoice}.`;
 			document.getElementById('p2').innerHTML = `Your choice was ${userChoice.toLowerCase()}.`;
@@ -153,7 +153,7 @@
 				tieSound.currentTime = 0;
 			}
 			sleep(1900).then(() => { // waits 1.9 seconds then enables buttons
-				document.getElementById('winnerPopup').style.display = "none"
+				document.getElementById('winnerPopup').style.display = "none";
 				document.getElementById('rockButton').disabled = false;
 				document.getElementById('scissorsButton').disabled = false;
 				document.getElementById('paperButton').disabled = false;

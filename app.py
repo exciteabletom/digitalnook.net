@@ -359,6 +359,7 @@ def drawSomething():
 
 				guessNum = modifyTable.updateDrawGuess(gameId)  # increments guesses remaining down by one
 				if guessNum != 0:
+					print(image)
 					return render_template("drawSomething/guessDrawing.html", guess=guessNum, image=image,
 					                       currentUser=currentUser,
 					                       otherUser=otherUser, word=word, gameId=gameId)
