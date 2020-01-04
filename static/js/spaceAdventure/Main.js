@@ -69,7 +69,7 @@ export default class Main extends Phaser.Scene {
 		keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 		keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
 		keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
-		keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+		keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
 
 		//stores sprite groups
