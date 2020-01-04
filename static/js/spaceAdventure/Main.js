@@ -114,7 +114,7 @@ export default class Main extends Phaser.Scene {
 			//bullet.destroy();
 			alien.destroy();
 			g.gameScore += g.simpleAlienWorth;
-			const randY = Phaser.Math.Between(this.hud.scoreText.y - 20, this.hud.scoreText.y + 80t );
+			const randY = Phaser.Math.Between(this.hud.scoreText.y - 20, this.hud.scoreText.y + 80t :);
 			this.hud.plusTexts.add(new PlusHudText({scene: this, x: this.hud.scoreText.x + 100, y: randY, text: `+${g.simpleAlienWorth}`}));
 			explosionAudio.play();
 		});
