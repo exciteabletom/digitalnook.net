@@ -5,7 +5,7 @@ import { g , getRandomInt } from "./Global.js";
 import SimpleAlien from "./SimpleAlien.js";
 import {HudText, PlusHudText} from "./HudText.js";
 
-let keyW, keyS, keyA, keyD, keyF;
+let keyW, keyS, keyA, keyD, keyF, keySpace;
 export default class Main extends Phaser.Scene {
 	constructor() {
 		super("main");
@@ -69,6 +69,7 @@ export default class Main extends Phaser.Scene {
 		keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 		keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
 		keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+		keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
 
 		//stores sprite groups
@@ -162,7 +163,6 @@ export default class Main extends Phaser.Scene {
 		}
 		if (g.playerLife === 0) {
 			this.scene.stop();
-
 		}
 		this.background.updateBackground(); // scrolls background image
 		this.checkCursors();
@@ -197,7 +197,7 @@ export default class Main extends Phaser.Scene {
 			this.sprites.ship.setVelocityX(this.vel * -1);
 		} if (keyD.isDown) {
 			this.sprites.ship.setVelocityX(this.vel)
-		} if (keyF.isDown) {
+		} if (keyF.isDown || keySpace.isDown) {
 			this.fireGun();
 		}
 
