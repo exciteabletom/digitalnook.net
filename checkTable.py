@@ -7,7 +7,7 @@ from loginKey import key
 cipher = Fernet(key)
 
 
-def checkFromMain(name, password=False):
+def checkFromMain(name, password=None):
 	"""
 	Returns True if username and password (optional) match table data.
 
@@ -23,7 +23,7 @@ def checkFromMain(name, password=False):
 
 	if data:
 
-		if password:
+		if password != None:
 			tablePassword = data[2]  # select password from tuple: (id, username, password)
 
 			encryptedTablePassword = tablePassword.encode()

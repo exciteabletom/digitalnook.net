@@ -4,7 +4,7 @@
 	<title>Space-O-Rama | digitalnook</title>
 	{% include "/includes/meta.html" %}
 
-	<script src="/static/js/phaser.min.js"></script>
+	<script src="/static/js/phaser.js"></script>
 	<script src="/static/js/spaceAdventure/Index.js" type="module"></script>
 	<style>
 		canvas {
@@ -30,7 +30,7 @@
 	<div id="game"></div>
 	<br/>
 	<div id="pretext">
-		<p>In this game you must defeat the evil aliens working for the evil 'Doctor 🅱️' Use WASD to move and F to fire</p>
+		<p>Defeat the aliens protecting the evil Doctor 🅱️!<br/>Use WASD to move and F/SPACE to fire.</p>
 	</div>
 </main>
 <br/><br/>
@@ -41,14 +41,14 @@
 </footer>
 </body>
 <script>
-	window.addEventListener("load", () => { // make sure canvas element is 100% loaded
-		const canvases = document.getElementsByTagName("CANVAS");  // get all canvases on page
-		const gameCanvas = canvases[0];  // get first canvas since there is only one
-		window.addEventListener("resize", () => { // when window resizes overrule dodgy ass scaling
-			gameCanvas.style.width = "100%";  // game canvas fits div 100%
-			gameCanvas.style.height = "100%";
-			console.log("resizing canvas to fit 'game' div");
-		}, true);
+window.addEventListener("load", () => { // make sure canvas element is 100% loaded
+	const canvases = document.getElementsByTagName("CANVAS");  // get all canvases on page
+	const gameCanvas = canvases[0];  // get first canvas since there is only one
+	window.addEventListener("resize", () => { // when window resizes overrule dodgy ass scaling
+		gameCanvas.style.width = "100%";  // game canvas fits div 100%
+		gameCanvas.style.height = "100%";
+		console.log("resizing canvas to fit 'game' div");
 	}, true);
+}, true);
 </script>
 </html>

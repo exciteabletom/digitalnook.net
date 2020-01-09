@@ -1,5 +1,6 @@
 import Menu from "./Menu.js";
 import Main from "./Main.js";
+import BossBattle from "./BossBattle.js";
 
 class Game extends Phaser.Game {
 	constructor() {
@@ -7,14 +8,14 @@ class Game extends Phaser.Game {
 
 		this.scene.add("menu", Menu);
 		this.scene.add("main", Main);
+		this.scene.add("bossBattle", BossBattle);
 
 		this.scene.start("main");
 	}
-
 }
 
 let config = {
-	type: Phaser.CANVAS,
+	type: Phaser.AUTO,
 	backgroundColor: "#000",
 	scale: {
 		parent: "game",
@@ -26,10 +27,10 @@ let config = {
 		default: "arcade",
 		arcade: {
 			//debug: true,
-		}
+			fps: 60,
+		},
 	},
 	pixelArt: true,
 };
-window.addEventListener("load", () => {
-	window.game = new Game();
-});
+new Game(); // init game
+

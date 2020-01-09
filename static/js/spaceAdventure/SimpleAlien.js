@@ -16,8 +16,16 @@ export default class SimpleAlien extends Phaser.Physics.Arcade.Sprite {
 		}
 		this.setVelocityY(velY);
 		this.setVelocityX(-400);
-		this.setCollideWorldBounds(true, 1, 1);
+		this.body.onWorldBounds = true;
+		this.setCollideWorldBounds(true);
 		this.setBounce(1);
+
+		config.scene.events.on("worldbounds", (body) => {
+			console.log("BRUH");
+			if (this.physics.body.touching=== true && body === this.body) {
+				this.destroy();
+			}
+		}, this)
 	}
 
 	update() {

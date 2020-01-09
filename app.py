@@ -124,7 +124,7 @@ def login():
 		username = str(request.form.get("username"))
 		password = str(request.form.get("password"))
 
-		if request.cookies.get("USERNAME"):
+		if request.cookies.get("USERNAME") :
 			return render_template("login.html", error="You are already logged in, would you like to logout?")
 
 		if checkTable.checkFromMain(username, password):  # returns true if login is valid
