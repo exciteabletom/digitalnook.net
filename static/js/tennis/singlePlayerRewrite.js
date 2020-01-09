@@ -6,9 +6,6 @@ export default class SinglePlayerScene extends Phaser.Scene {
 
 	preload() {
 		// preload images for use in create()
-		this.load.image("ball", "/static/images/tennis/ball.png");
-		this.load.image("playerPaddle", "/static/images/tennis/playerPaddle.png");
-		this.load.image("compPaddle", "/static/images/tennis/compPaddle.png");
 	}
 
 	create() {
@@ -123,7 +120,6 @@ export default class SinglePlayerScene extends Phaser.Scene {
 		sprites.playerP = this.physics.add.sprite(50, 300, "playerPaddle").setScale(0.3).setInteractive();
 		sprites.compP = this.physics.add.sprite(950, 300, "compPaddle").setScale(0.3).setInteractive();
 		sprites.ball = this.physics.add.sprite(500, 300, "ball").setScale(0.1).setInteractive();
-
 
 		sprites.playerP.setCollideWorldBounds(true);
 		sprites.compP.setCollideWorldBounds(true);

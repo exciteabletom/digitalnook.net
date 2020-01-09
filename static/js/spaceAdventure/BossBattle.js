@@ -86,7 +86,6 @@ export default class BossBattle extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image("bossAlien", "/static/images/spaceAdventure/simpleAlien.png"); // TODO: PLACEHOLDER IMAGE CHANGE LATER
 	}
 
 	create() {

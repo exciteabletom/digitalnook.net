@@ -6,9 +6,6 @@ export default class MultiPlayerScene extends Phaser.Scene {
 
 	preload() {
 		// preload images for use in create()
-		this.load.image("ball", "/static/images/tennis/ball.png");
-		this.load.image("playerPaddle", "/static/images/tennis/playerPaddle.png");
-		this.load.image("compPaddle", "/static/images/tennis/compPaddle.png");
 	}
 
 	create() {

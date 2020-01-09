@@ -33,6 +33,7 @@ export default class Main extends Phaser.Scene {
 		this.load.audio("explosionAudio", "/static/audio/spaceAdventure/explosion1.wav");
 		this.load.audio("invincible", "/static/audio/spaceAdventure/invincible.ogg");
 		// BOSS ASSETS
+		this.load.image("bossAlien", "/static/images/spaceAdventure/simpleAlien.png"); // TODO: PLACEHOLDER IMAGE CHANGE LATER
 		this.load.audio("bossMusic1", "/static/audio/spaceAdventure/boss1.ogg");
 		this.load.audio("bossMusic", "/static/audio/spaceAdventure/boss2.ogg");
 	}

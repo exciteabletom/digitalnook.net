@@ -4,7 +4,6 @@ export default class LoserScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image("loserPopup", "/static/images/tennis/loserPopup.png");
 	}
 
 	create() {

@@ -7,6 +7,13 @@ export default class MenuScene extends Phaser.Scene {
 		this.load.image("logo", "/static/images/tennis/logo.png");
 		this.load.image("singlePlayer", "/static/images/tennis/singlePlayer.png");
 		this.load.image("multiPlayer", "/static/images/tennis/multiPlayer.png");
+		this.load.image("playerPaddle", "/static/images/tennis/playerPaddle.png");
+		this.load.image("compPaddle", "/static/images/tennis/compPaddle.png");
+		this.load.image("ball", "/static/images/tennis/ball.png");
+		this.load.image("player1Win", "/static/images/tennis/player1Win.png");
+		this.load.image("player2Win", "/static/images/tennis/player2Win.png");
+		this.load.image("winnerPopup", "/static/images/tennis/winnerPopup.png");
+		this.load.image("loserPopup", "/static/images/tennis/loserPopup.png");
 	}
 
 	create() {

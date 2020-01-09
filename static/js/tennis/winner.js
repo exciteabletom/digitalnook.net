@@ -4,7 +4,6 @@ export default class WinnerScene extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.image("winnerPopup", "/static/images/tennis/winnerPopup.png");
 	}
 
 	create() {
