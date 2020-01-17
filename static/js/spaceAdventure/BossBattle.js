@@ -10,6 +10,12 @@ class BossBullet extends Phaser.Physics.Arcade.Sprite {
 		this.setAngle(180);
 
 		this.setVelocityX(-800);
+		config.scene.physics.world.on("worldbounds", (body) => {
+			if (body.gameObject === this) {
+				console.log("LOL");
+				this.destroy();
+			}
+		}, this);
 	}
 
 }
@@ -85,9 +91,6 @@ export default class BossBattle extends Phaser.Scene {
 		this.warningTimer = 300;
 	}
 
-	preload() {
-	}
-
 	create() {
 		this.bossMusic = this.sound.add("bossMusic", {loop: true, volume: 0.6});
 		this.bossMusic1 = this.sound.add("bossMusic1", {loop: true, volume: 0.6});
@@ -119,15 +122,25 @@ export default class BossBattle extends Phaser.Scene {
 			f.destroy();
 		});
 
-		this.events.on("update", () => {
+		/*this.events.on("update", () => {
 			if (g.playerlife === 0){
 				this.bossmusic.stop();
 				this.scene.stop();
 			}
-		})
+		})*/
 	}
 
 	update() {
+		if (g.playerLife === 0 ){
+			this.bossMusic.stop();
+			this.scene.stop();
+		} else if (g.bossLife <= 0){
+			g.gameResult = "win";
+			g.aliensKilled += 1;
+			this.warningTimer = 300;
+			this.scene.stop();
+		}
+
 		if (this.warningTimer === 0){
 			this.sprites.bossAlien.update();
 		} else {
@@ -137,7 +150,5 @@ export default class BossBattle extends Phaser.Scene {
 				this.sprites.bossAlien.setCollideWorldBounds(true);
 			}
 		}
-
-
 	}
 }

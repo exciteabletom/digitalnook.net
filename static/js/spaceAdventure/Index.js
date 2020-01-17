@@ -1,6 +1,7 @@
 import Menu from "./Menu.js";
 import Main from "./Main.js";
 import BossBattle from "./BossBattle.js";
+import EndCard from "./EndCard.js";
 
 class Game extends Phaser.Game {
 	constructor() {
@@ -9,6 +10,7 @@ class Game extends Phaser.Game {
 		this.scene.add("menu", Menu);
 		this.scene.add("main", Main);
 		this.scene.add("bossBattle", BossBattle);
+		this.scene.add("endCard", EndCard);
 
 		this.scene.start("main");
 	}
@@ -26,7 +28,7 @@ let config = {
 	physics: {
 		default: "arcade",
 		arcade: {
-			//debug: true,
+			debug: true,
 			fps: 60,
 		},
 	},

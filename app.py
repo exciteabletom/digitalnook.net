@@ -455,10 +455,9 @@ def reactionLeaderboard():
 	return render_template("reactionLeaderboard.html")
 
 
-@app.route("/games/spaceorama/")
+@app.route("/games/doctorb/")
 def spaceORama():
-	return render_template("spaceORama.html")
-
+	return render_template("doctorB.html")
 
 # Handles 404 errors
 @app.errorhandler(404)

@@ -5,21 +5,18 @@ import SimpleAlien from "./SimpleAlien.js";
 import { HudText, PlusHudText } from "./HudText.js";
 import Ship from "./Ship.js";
 import FriendlyBullet from "./FriendlyBullet.js";
-
-let keyW, keyS, keyA, keyD, keyF, keySpace;
+import HeartPowerUp from "./HeartPowerUp.js"
 export default class Main extends Phaser.Scene {
 	constructor() {
 		super("main");
 		this.sprites = {};
 		this.hud = {}; // Heads Up Display Elements
-		// bullet vars
-
-		this.alienSpawnRate = 100; // lower is quicker
+		this.killGame = 20;
+		this.alienSpawnRate = 150;// lower is quicker
 		this.keys = {};
 	}
 
 	preload() {
-		//	this.load.image("ship", "/static/images/spaceAdventure/sheet.png");
 		this.load.spritesheet("ship",
 			"/static/images/spaceAdventure/sheet/shipSheet.png",
 			{frameWidth: 52, frameHeight: 30,}
@@ -32,7 +29,8 @@ export default class Main extends Phaser.Scene {
 		this.load.audio("backgroundAudio", "/static/audio/spaceAdventure/space.ogg");
 		this.load.audio("explosionAudio", "/static/audio/spaceAdventure/explosion1.wav");
 		this.load.audio("invincible", "/static/audio/spaceAdventure/invincible.ogg");
-		// BOSS ASSETS
+
+		// BOSS FIGHT ASSETS USED IN SCENE "BossBattle"
 		this.load.image("bossAlien", "/static/images/spaceAdventure/simpleAlien.png"); // TODO: PLACEHOLDER IMAGE CHANGE LATER
 		this.load.audio("bossMusic1", "/static/audio/spaceAdventure/boss1.ogg");
 		this.load.audio("bossMusic", "/static/audio/spaceAdventure/boss2.ogg");
@@ -77,6 +75,11 @@ export default class Main extends Phaser.Scene {
 			classType: Phaser.Physics.Arcade.Sprite,
 			maxSize: 100,
 		});
+		sprites.hearts = this.add.group({
+			classType: Phaser.Physics.Arcade.Sprite,
+			maxSize: 2,
+			runChildUpdate: true,
+		});
 		this.hud.hearts = this.add.group({
 			classType: Phaser.Physics.Arcade.Image,
 			maxSize: g.playerLife,
@@ -105,11 +108,10 @@ export default class Main extends Phaser.Scene {
 			bullet.destroy();
 			alien.destroy();
 			g.aliensKilled++;
-			g.gameScore += g.simpleAlienWorth;
-			const randY = Phaser.Math.Between(this.hud.scoreText.y - 20, this.hud.scoreText.y + 80);
-			this.hud.plusTexts.add(new PlusHudText({scene: this, x: this.hud.scoreText.x + 100, y: randY, text: `+${g.simpleAlienWorth}`}));
+			g.addScore(g.simpleAlienWorth);
 			this.explosionAudio.play();
 		});
+
 		this.physics.add.collider(sprites.ship, sprites.enemyBullets, (ship, bullet) => {
 			if (!g.shipShielding) {
 				g.playerHit();
@@ -117,11 +119,27 @@ export default class Main extends Phaser.Scene {
 				this.explosionAudio.play(); //TODO: DIFFERENT AUDIO for player collision
 			}
 		});
+
+		this.physics.add.overlap(sprites.friendlyBullets, sprites.enemyBullets, (f, e) => {
+			f.destroy();
+			e.destroy();
+			g.addScore(30);
+		});
+
 		this.physics.add.collider(sprites.aliens, sprites.aliens, (a1, a2) => {
 			a1.setVelocityY(a2.body.velocity.y * -1);
 		});
-		this.physics.add.collider(sprites.aliens, sprites.ship);
+		this.physics.add.collider(sprites.aliens, sprites.ship, (alien, ship) => {
+			alien.destroy();
+		});
 
+		this.physics.add.overlap(sprites.ship, sprites.hearts, (ship, heart) => {
+			g.addLife();
+			heart.destroy();
+		});
+		g.Main = this;
+		g.sprites = this.sprites;
+		g.hud = this.hud;
 	}
 
 	update() {
@@ -129,24 +147,24 @@ export default class Main extends Phaser.Scene {
 		g.sprites = this.sprites;
 		g.hud = this.hud;
 		g.gameTick++;
-		// TODO: FIX SHIELD MECHANISM IT IS BAD
-		if (g.shipShielding > 0){
-			g.shipShielding--;
-		} else if (g.shieldCooldown > 0) {
-			g.shieldCooldown--;
-		} else {
-			g.shipShielding--
+		if (g.gameResult) {
+			this.killGame--;
+			if (this.killGame <= 0){ // short delay to ensure there are no more collisions
+				this.bgAudio.destroy();
+				this.scene.stop();
+				this.scene.start("endCard");
+			}
 		}
-		if (g.playerLife === 0) {
-			this.scene.start("gameOver");
+		else if (g.playerLife === 0) {
+			g.gameResult = "loss";
 		}
-		if (g.distanceToBoss !== 0){ // boss not active
+		if (g.distanceToBoss > 0){ // boss not active
 			this.hud.boss.text = `Dr. 🅱️'s ship:\n${g.distanceToBoss}m`;
-			g.distanceToBoss -= 10;
+			g.distanceToBoss -= 9;
 
 			if (g.gameTick % this.alienSpawnRate === 0) {
-				if (this.alienSpawnRate <= !50) {
-					this.alienSpawnRate -= 30;
+				if (this.alienSpawnRate > 100) {
+					this.alienSpawnRate -= 1;
 				}
 				this.generateNewAliens();
 			}
@@ -154,7 +172,7 @@ export default class Main extends Phaser.Scene {
 		else { // boss battle active
 			if (!g.boss){
 				this.bgAudio.pause();
-				this.scene.launch("bossBattle");
+				this.scene.launch("bossBattle"); // starts boss battle alongside Main mechanics
 			}
 			g.boss = true;
 			this.hud.boss.text = `Dr. 🅱️:\n${g.bossLife}hp`;
@@ -170,12 +188,13 @@ export default class Main extends Phaser.Scene {
 			}
 		}
 
-		if (g.playerLife === 0) {
-			this.scene.stop();
-		}
 		if (g.gameTick % 50 === 0) {
-			g.gameScore += 5;
+			g.addScore(10);
 		}
+		if  (g.gameTick % 400 === 0 && g.playerLife === 1 && Math.random() < 0.8){
+			this.spawnPowerUp();
+		}
+
 		if (g.firingCooldown > 0) {
 			g.firingCooldown--;
 		}
@@ -184,10 +203,20 @@ export default class Main extends Phaser.Scene {
 		this.checkCursors();
 	}
 
+	spawnPowerUp(type=null) { // TODO different types of powerups
+		if (this.sprites.hearts.getChildren().length === 0) {
+			const randY = Phaser.Math.Between(0, 600);
+			if (Math.random() < 0.5) {
+				this.sprites.hearts.add(new HeartPowerUp({scene: this, x: 1800, y: randY}))
+			}
+		}
+
+	}
+
 	generateNewAliens() {
-		const yVals = [getRandomInt(50, 550), getRandomInt(50, 550), getRandomInt(50,550)];
-		let i = getRandomInt(0, 1);
-		for (;i < yVals.length; i++) {
+		const yVals = [getRandomInt(30, 200), getRandomInt(230, 400), getRandomInt(400,550)];
+
+		for (let i = Phaser.Math.Between(0, 2); i < yVals.length; i++) {
 			this.sprites.aliens.add(new SimpleAlien({scene: this, x: 2500, y: yVals[i]}));
 		}
 	}
@@ -213,8 +242,9 @@ export default class Main extends Phaser.Scene {
 			this.sprites.ship.setVelocityX(g.vel);
 		} if (this.keys.F.isDown || this.keys.Space.isDown) {
 			this.fireGun();
-		} if (this.keys.Q.isDown && g.shieldCooldown === 0 && !g.shipShielding) {
-			this.sprites.ship.shield(1000);
 		}
+		/*if (this.keys.Q.isDown && g.shieldCooldown === 0 && !g.shipShielding) {
+			this.sprites.ship.shield(1000);
+		}*/
 	}
 }

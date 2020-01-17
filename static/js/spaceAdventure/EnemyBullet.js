@@ -20,6 +20,9 @@ export default class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
 		this.setScale(4);
 		this.setVelocityX(-500);
 
+		this.setCollideWorldBounds(true);
+		this.body.onWorldBounds = true;
+
 		config.scene.physics.world.on("worldbounds", (body) => {
 			if (body.gameObject === this) {
 				this.destroy();
