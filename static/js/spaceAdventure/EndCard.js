@@ -3,16 +3,16 @@ export default class EndCard extends Phaser.Scene {
 	/**
 	 *This scene is triggered from Main when the game ends.
 	 *It relies on the g.gameResult string being either "win" or "loss"
-	**/
+	 */
 	constructor() {
 		super("endCard");
 	}
 	create() {
-		this.physics.world.setFPS(10);
-		console.log(this.physics.world.fps);
+		this.physics.world.setFPS(5); // reduces processing required for end screen
 		let resultMessage;
 		if (g.gameResult === "loss") {
 			resultMessage= "You Died...";
+			g.Main.explosionAudio.play();
 		} else if (g.gameResult === "win") {
 			resultMessage= "You Won!";
 		} else {

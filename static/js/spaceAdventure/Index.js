@@ -2,17 +2,18 @@ import Menu from "./Menu.js";
 import Main from "./Main.js";
 import BossBattle from "./BossBattle.js";
 import EndCard from "./EndCard.js";
-
+import Load from "./Load.js";
 class Game extends Phaser.Game {
 	constructor() {
 		super(config); // equivalent to Phaser.Game(config)
 
+		this.scene.add("load", Load);
 		this.scene.add("menu", Menu);
 		this.scene.add("main", Main);
 		this.scene.add("bossBattle", BossBattle);
 		this.scene.add("endCard", EndCard);
 
-		this.scene.start("main");
+		this.scene.start("load");
 	}
 }
 

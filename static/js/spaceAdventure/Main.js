@@ -11,29 +11,9 @@ export default class Main extends Phaser.Scene {
 		super("main");
 		this.sprites = {};
 		this.hud = {}; // Heads Up Display Elements
-		this.killGame = 20;
-		this.alienSpawnRate = 150;// lower is quicker
+		this.killGame = 2;
+		this.alienSpawnRate = 170;// lower is quicker
 		this.keys = {};
-	}
-
-	preload() {
-		this.load.spritesheet("ship",
-			"/static/images/spaceAdventure/sheet/shipSheet.png",
-			{frameWidth: 52, frameHeight: 30,}
-		);
-		this.load.image("heart", "/static/images/spaceAdventure/heart.png");
-		this.load.image("friendlyBullet", "/static/images/spaceAdventure/friendlyBullet.png");
-		this.load.image("enemyBullet", "/static/images/spaceAdventure/enemyBullet.png");
-		this.load.image("simpleAlien", "/static/images/spaceAdventure/simpleAlien.png");
-		this.load.image("background", "/static/images/spaceAdventure/background.jpg");
-		this.load.audio("backgroundAudio", "/static/audio/spaceAdventure/space.ogg");
-		this.load.audio("explosionAudio", "/static/audio/spaceAdventure/explosion1.wav");
-		this.load.audio("invincible", "/static/audio/spaceAdventure/invincible.ogg");
-
-		// BOSS FIGHT ASSETS USED IN SCENE "BossBattle"
-		this.load.image("bossAlien", "/static/images/spaceAdventure/simpleAlien.png"); // TODO: PLACEHOLDER IMAGE CHANGE LATER
-		this.load.audio("bossMusic1", "/static/audio/spaceAdventure/boss1.ogg");
-		this.load.audio("bossMusic", "/static/audio/spaceAdventure/boss2.ogg");
 	}
 
 	create() {
@@ -70,10 +50,12 @@ export default class Main extends Phaser.Scene {
 		sprites.friendlyBullets = this.add.group({
 			classType: Phaser.Physics.Arcade.Sprite,
 			maxSize: 30,
+			runChildUpdate: true
 		});
 		sprites.enemyBullets = this.add.group({
 			classType: Phaser.Physics.Arcade.Sprite,
 			maxSize: 100,
+			runChildUpdate: true
 		});
 		sprites.hearts = this.add.group({
 			classType: Phaser.Physics.Arcade.Sprite,
@@ -88,7 +70,6 @@ export default class Main extends Phaser.Scene {
 			classType: Phaser.GameObjects.Text,
 			runChildUpdate: true,
 		});
-
 		this.hud.scoreText = new HudText({scene: this, x: 300, y: 30, text:""});
 		this.hud.boss= new HudText({scene: this, x: 450, y: 30, text:""});
 
@@ -113,11 +94,9 @@ export default class Main extends Phaser.Scene {
 		});
 
 		this.physics.add.collider(sprites.ship, sprites.enemyBullets, (ship, bullet) => {
-			if (!g.shipShielding) {
 				g.playerHit();
 				bullet.destroy();
 				this.explosionAudio.play(); //TODO: DIFFERENT AUDIO for player collision
-			}
 		});
 
 		this.physics.add.overlap(sprites.friendlyBullets, sprites.enemyBullets, (f, e) => {
@@ -131,6 +110,7 @@ export default class Main extends Phaser.Scene {
 		});
 		this.physics.add.collider(sprites.aliens, sprites.ship, (alien, ship) => {
 			alien.destroy();
+			g.playerHit();
 		});
 
 		this.physics.add.overlap(sprites.ship, sprites.hearts, (ship, heart) => {
@@ -191,7 +171,7 @@ export default class Main extends Phaser.Scene {
 		if (g.gameTick % 50 === 0) {
 			g.addScore(10);
 		}
-		if  (g.gameTick % 400 === 0 && g.playerLife === 1 && Math.random() < 0.8){
+		if  (g.gameTick % 200 === 0 && g.playerLife <= 2 && Math.random() < 0.5){
 			this.spawnPowerUp();
 		}
 
@@ -243,8 +223,5 @@ export default class Main extends Phaser.Scene {
 		} if (this.keys.F.isDown || this.keys.Space.isDown) {
 			this.fireGun();
 		}
-		/*if (this.keys.Q.isDown && g.shieldCooldown === 0 && !g.shipShielding) {
-			this.sprites.ship.shield(1000);
-		}*/
-	}
+		}
 }
