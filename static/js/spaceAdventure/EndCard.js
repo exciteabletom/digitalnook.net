@@ -18,15 +18,15 @@ export default class EndCard extends Phaser.Scene {
 		} else {
 			throw new TypeError("g.gameResult is neither 'loss' or 'win'"); // ensures that g.gameResult is always set
 		}
-		const resultText = this.add.text(700, 100, resultMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "50px"});
+		const resultText = this.add.text(700, 100, resultMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "50px", color: "FFF"});
 
 		const scoreMessage = `Your score was ${g.gameScore}`;
-		const scoreText = this.add.text(700, 250, scoreMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "30px"});
+		const scoreText = this.add.text(700, 250, scoreMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "30px", color: "FFF"});
 
 		const alienMessage = `You killed ${g.aliensKilled} aliens`;
-		const alienText = this.add.text(700, 300, alienMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "30px"});
+		const alienText = this.add.text(700, 300, alienMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "30px", color: "FFF"});
 
-		const playAgainText = this.add.text(700, 400, "Play Again?", {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "40px"});
+		const playAgainText = this.add.text(700, 400, "Play Again?", {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "40px", color: "FFF"});
 		//this.add.rectangle(playAgainText.x, playAgainText.y, playAgainText.width, playAgainText.height, 0xF2FF66);
 		playAgainText.setInteractive();
 		playAgainText.on("pointerup", () => {

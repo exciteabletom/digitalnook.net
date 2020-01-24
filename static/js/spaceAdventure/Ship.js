@@ -14,8 +14,8 @@ export default class Ship extends Phaser.Physics.Arcade.Sprite {
 		});
 		this.setScale(3);
 		this.setCollideWorldBounds(true);
-		this.setMaxVelocity(g.vel);
-		this.firingSpeed = 20; // lower number means higher speed
+		this.setMaxVelocity(g.shipVel);
+
 		this.tintFill = true;
 		this.body.onCollide = true;
 		this.anims.play("fire");

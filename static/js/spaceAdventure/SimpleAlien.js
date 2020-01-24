@@ -10,7 +10,7 @@ export default class SimpleAlien extends Phaser.Physics.Arcade.Sprite {
 		config.scene.add.existing(this);
 		config.scene.physics.add.existing(this);
 		this.setScale(0.8);
-		this.setDepth(100); // bullets were going underneath aliens, i needed to make sure that the aliens were on top
+		this.setDepth(100); // bullets were going underneath aliens
 		let velY = Phaser.Math.Between(200, 600);
 		if (Math.random() < 0.5) {
 			velY = velY * -1

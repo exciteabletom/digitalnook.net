@@ -1,6 +1,6 @@
 export default class Load extends Phaser.Scene {
 	/**
-	 * This scene loads in all the assets needed for the game and displays a loading message
+	 * This scene loads in all the assets needed for the game and displays a loading bar
 	 */
 	constructor() {
 		super("load");
@@ -27,9 +27,15 @@ export default class Load extends Phaser.Scene {
 	}
 
 	create() {
-		this.add.text(800, 250, "loading", {fontFamily: '"Lucida Console", Monaco, monospace', fontSize: "50px", align: "center", color: "#FF0000"});
-		setTimeout(() => {
-			this.scene.start("main");
-		}, 1000);
+		this.loadingRectangle = this.add.rectangle(0, 300, 100, 100, {bgColor: "#FFF"});
+		const loadingText = this.add.text(950, 300, "loading", {fontWeight: "bold", fontFamily: '"Lucida Console", Monaco, monospace', fontSize: "50px", align: "center", color: "#FF0000"});
+		loadingText.setOrigin(loadingText.halfWidth, loadingText.halfHeight);
 	}
-}
+	update() {
+		const randIncrease = Phaser.Math.Between(10, 70);
+		this.loadingRectangle.width += 20;
+		if (this.loadingRectangle.width > this.game.canvas.width + 100){
+			this.scene.start("main");
+		}
+	}
+};

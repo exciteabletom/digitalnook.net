@@ -19,7 +19,7 @@ export default class HeartPowerUp extends Phaser.Physics.Arcade.Sprite {
 			this.setVelocityX(randX);
 			this.setVelocityY(randY);
 		}
-		if (g.gameTick === this.spawnTick + 2000) { // destroy after 2000 ticks (roughly 30 seconds)
+		if (g.gameTick === this.spawnTick + 2000) { // destroy after 2000 frames (roughly 30 seconds)
 			this.destroy();
 			g.powerUpActive = false;
 		}

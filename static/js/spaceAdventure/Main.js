@@ -11,8 +11,6 @@ export default class Main extends Phaser.Scene {
 		super("main");
 		this.sprites = {};
 		this.hud = {}; // Heads Up Display Elements
-		this.killGame = 2;
-		this.alienSpawnRate = 170;// lower is quicker
 		this.keys = {};
 	}
 
@@ -49,12 +47,12 @@ export default class Main extends Phaser.Scene {
 		});
 		sprites.friendlyBullets = this.add.group({
 			classType: Phaser.Physics.Arcade.Sprite,
-			maxSize: 30,
+			maxSize: 20,
 			runChildUpdate: true
 		});
 		sprites.enemyBullets = this.add.group({
 			classType: Phaser.Physics.Arcade.Sprite,
-			maxSize: 100,
+			maxSize: 50,
 			runChildUpdate: true
 		});
 		sprites.hearts = this.add.group({
@@ -128,12 +126,9 @@ export default class Main extends Phaser.Scene {
 		g.hud = this.hud;
 		g.gameTick++;
 		if (g.gameResult) {
-			this.killGame--;
-			if (this.killGame <= 0){ // short delay to ensure there are no more collisions
 				this.bgAudio.destroy();
 				this.scene.stop();
 				this.scene.start("endCard");
-			}
 		}
 		else if (g.playerLife === 0) {
 			g.gameResult = "loss";
@@ -142,9 +137,9 @@ export default class Main extends Phaser.Scene {
 			this.hud.boss.text = `Dr. 🅱️'s ship:\n${g.distanceToBoss}m`;
 			g.distanceToBoss -= 9;
 
-			if (g.gameTick % this.alienSpawnRate === 0) {
-				if (this.alienSpawnRate > 100) {
-					this.alienSpawnRate -= 1;
+			if (g.gameTick % g.alienSpawnRate === 0) {
+				if (g.alienSpawnRate > 100) {
+					g.alienSpawnRate -= 1;
 				}
 				this.generateNewAliens();
 			}
@@ -213,13 +208,13 @@ export default class Main extends Phaser.Scene {
 		this.sprites.ship.setVelocityY(0);
 
 		if (this.keys.W.isDown) {
-			this.sprites.ship.setVelocityY(g.vel * -1);
+			this.sprites.ship.setVelocityY(g.shipVel * -1);
 		} if (this.keys.S.isDown) {
-			this.sprites.ship.setVelocityY(g.vel);
+			this.sprites.ship.setVelocityY(g.shipVel);
 		} if (this.keys.A.isDown) {
-			this.sprites.ship.setVelocityX(g.vel * -1);
+			this.sprites.ship.setVelocityX(g.shipVel * -1);
 		} if (this.keys.D.isDown) {
-			this.sprites.ship.setVelocityX(g.vel);
+			this.sprites.ship.setVelocityX(g.shipVel);
 		} if (this.keys.F.isDown || this.keys.Space.isDown) {
 			this.fireGun();
 		}

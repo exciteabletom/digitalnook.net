@@ -5,18 +5,22 @@ import {PlusHudText} from "./HudText.js";
 export let g = { // g stands for 'global'
 	gameScore: 0,
 	gameTick: 0,
+	gameResult: null,
+
 	aliensKilled: 0,
 	playerLife: 4,
-	bulletSpeed: 1200,
-	enemyBulletSpeed: -500,
+
 	simpleAlienWorth: 300,
+	alienSpawnRate: 140,// lower is quicker
 	bossAlienWorth: 5000,
 	boss: false, // true if boss battle is active
 	bossLife: 2000,
-	distanceToBoss: 60000, // when zero boss battle starts
-	vel: 750,
+	distanceToBoss: 40000, // when <0 boss battle starts
+
+	shipVel: 750,
 	firingCooldown: 0,
 	firingSpeed: 28, // bigger num is slower
+	bulletSpeed: 1200,
 	playerHit: () => {
 		/** to be triggered when player is hit,
 		 * removes one player life
@@ -38,7 +42,9 @@ export let g = { // g stands for 'global'
 		g.playerLife += life;
 		const hearts = g.Main.hud.hearts.getChildren();
 		const last = hearts[hearts.length -1];
-		g.Main.hud.hearts.add(g.Main.add.image(last.x + 50, 60, "heart").setScale(0.3));
+		if (last) {
+			g.Main.hud.hearts.add(g.Main.add.image(last.x + 50, 60, "heart").setScale(0.3));
+		}
 		return g.playerLife;
 	},
 	addScore: (score) => {
@@ -63,7 +69,7 @@ export function resetGlobals() {
 	for (let key in oldG){
 		g[key] = oldG[key]
 	}
-	return [g, oldG];
+	return g;
 }
 export function getRandomInt(min, max = min + 1) {
 	return Math.round(Math.random() * (max - min) + min); // gets a integer between max and min values and returns
