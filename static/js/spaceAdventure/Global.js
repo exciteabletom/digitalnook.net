@@ -8,10 +8,10 @@ export let g = { // g stands for 'global'
 	gameResult: null,
 
 	aliensKilled: 0,
-	playerLife: 4,
+	playerLife: 3,
 
 	simpleAlienWorth: 300,
-	alienSpawnRate: 130,// lower is quicker
+	alienSpawnRate: 150,// lower is quicker
 	bossAlienWorth: 5000,
 	boss: false, // true if boss battle is active
 	bossLife: 2000,

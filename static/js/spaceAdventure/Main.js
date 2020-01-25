@@ -17,9 +17,21 @@ export default class Main extends Phaser.Scene {
 	create() {
 		const {sprites} = this;
 		this.physics.world.setFPS(60); // sets update to run at 60hz doesn't change render fps
+		{
+			const rand = Phaser.Math.Between(0, 2);
+			let audio = "";
 
-		this.bgAudio = this.sound.add("backgroundAudio", {rate: 1, detune: 200, volume : "0.4"});
-		this.bgAudio.play({loop: true,});
+			if (rand === 0) {
+				audio = "space0"
+			} else if (rand === 1) {
+				audio = "space1"
+			} else if (rand === 2){
+				audio = "space2"
+			}
+
+			this.bgAudio = this.sound.add(audio);
+		}
+		this.bgAudio.play({loop: true, rate: 1, detune: 200, volume : "0.4"});
 		this.background = new Background({
 			scene: this,
 			x: 0,
@@ -88,7 +100,8 @@ export default class Main extends Phaser.Scene {
 			alien.destroy();
 			g.aliensKilled++;
 			g.addScore(g.simpleAlienWorth);
-			this.explosionAudio.play();
+			const detune = Phaser.Math.FloatBetween(-500, 100).toString();
+			this.explosionAudio.play({detune: detune});
 		});
 
 		this.physics.add.collider(sprites.ship, sprites.enemyBullets, (ship, bullet) => {
@@ -110,11 +123,11 @@ export default class Main extends Phaser.Scene {
 			alien.destroy();
 			g.playerHit();
 		});
-
 		this.physics.add.overlap(sprites.ship, sprites.hearts, (ship, heart) => {
 			g.addLife();
 			heart.destroy();
 		});
+
 		g.Main = this;
 		g.sprites = this.sprites;
 		g.hud = this.hud;
@@ -139,7 +152,7 @@ export default class Main extends Phaser.Scene {
 
 			if (g.gameTick % g.alienSpawnRate === 0) {
 				if (g.alienSpawnRate > 100) {
-					g.alienSpawnRate -= 2;
+					g.alienSpawnRate -= 1;
 				}
 				this.generateNewAliens();
 			}
@@ -189,9 +202,9 @@ export default class Main extends Phaser.Scene {
 	}
 
 	generateNewAliens() {
-		const yVals = [getRandomInt(30, 200), getRandomInt(230, 400), getRandomInt(400,550)];
+		const yVals = [getRandomInt(0, 200), getRandomInt(200, 400), getRandomInt(400, 500)];
 
-		for (let i = Phaser.Math.Between(0, 2); i < yVals.length; i++) {
+		for (let i = Phaser.Math.Between(0, 1); i < yVals.length; i++) {
 			this.sprites.aliens.add(new SimpleAlien({scene: this, x: 2500, y: yVals[i]}));
 		}
 	}
