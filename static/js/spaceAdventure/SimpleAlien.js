@@ -5,8 +5,8 @@ export default class SimpleAlien extends Phaser.Physics.Arcade.Sprite {
 	constructor(config) {
 		super(config.scene, config.x, config.y, "simpleAlien");
 		this.config = config;
-		this.internalTick = 0;
-		this.firingSpeed = Phaser.Math.Between(70, 75);
+		this.firingSpeed = Phaser.Math.Between(65, 75);
+		this.internalTick = this.firingSpeed - Phaser.Math.Between(0, 30);
 		config.scene.add.existing(this);
 		config.scene.physics.add.existing(this);
 		this.setScale(0.8);
