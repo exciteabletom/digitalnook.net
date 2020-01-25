@@ -11,7 +11,7 @@ export let g = { // g stands for 'global'
 	playerLife: 3,
 
 	simpleAlienWorth: 300,
-	alienSpawnRate: 150,// lower is quicker
+	alienSpawnRate: 180,// lower is quicker
 	bossAlienWorth: 5000,
 	boss: false, // true if boss battle is active
 	bossLife: 2000,
@@ -54,20 +54,24 @@ export let g = { // g stands for 'global'
 		g.Main.hud.plusTexts.add(new PlusHudText({scene: g.Main, x: g.Main.hud.scoreText.x + 100, y: randY, text: `+${score}`}));
 		return g.gameScore;
 	},
-	getRandTrack(scene) {
+	getRandTrack (scene) {
 		let audio = "";
-		scene = scene.toLowerCase();
 
+		if (!scene) {
+			throw new TypeError("g.selectRandTrack >> scene is undefined")
+		}
+
+		scene = scene.toLowerCase();
+		let rand = -100;
 		if (scene === "main") {
-			const rand = Phaser.Math.Between(0, 2);
-			audio = scene + rand.toString();
+			rand = Phaser.Math.Between(0, 2);
 		} else if (scene === "boss") {
-			const rand = Phaser.Math.Between(0, 2);
-			audio = scene + rand.toString();
+			rand = Phaser.Math.Between(0, 2);
+		} else {
+			throw new TypeError(`The scene: '${scene}' is not supported`)
 		}
-		if (!audio) {
-			throw new TypeError("g.selectRandTrack could not select a track. Did you pass a scene string?")
-		}
+
+		audio = scene + rand.toString();
 
 		return audio;
 	}

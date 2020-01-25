@@ -105,9 +105,7 @@ export default class Main extends Phaser.Scene {
 			g.addScore(30);
 		});
 
-		this.physics.add.collider(sprites.aliens, sprites.aliens, (a1, a2) => {
-			a1.setVelocityY(a2.body.velocity.y * -1);
-		});
+		this.physics.add.collider(sprites.aliens, sprites.aliens);
 		this.physics.add.collider(sprites.aliens, sprites.ship, (alien, ship) => {
 			alien.destroy();
 			g.playerHit();
@@ -169,7 +167,7 @@ export default class Main extends Phaser.Scene {
 		if (g.gameTick % 50 === 0) {
 			g.addScore(10);
 		}
-		if  (g.gameTick % 200 === 0 && g.playerLife <= 2 && Math.random() < 0.5){
+		if  (g.gameTick % 100 === 0 && g.playerLife <= 2 && Math.random() < 0.2){
 			this.spawnPowerUp();
 		}
 
