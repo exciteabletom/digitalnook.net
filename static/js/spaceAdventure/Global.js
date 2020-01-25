@@ -53,6 +53,23 @@ export let g = { // g stands for 'global'
 		const randY = Phaser.Math.Between(g.Main.hud.scoreText.y - 20, g.Main.hud.scoreText.y + 80);
 		g.Main.hud.plusTexts.add(new PlusHudText({scene: g.Main, x: g.Main.hud.scoreText.x + 100, y: randY, text: `+${score}`}));
 		return g.gameScore;
+	},
+	getRandTrack(scene) {
+		let audio = "";
+		scene = scene.toLowerCase();
+
+		if (scene === "main") {
+			const rand = Phaser.Math.Between(0, 2);
+			audio = scene + rand.toString();
+		} else if (scene === "boss") {
+			const rand = Phaser.Math.Between(0, 2);
+			audio = scene + rand.toString();
+		}
+		if (!audio) {
+			throw new TypeError("g.selectRandTrack could not select a track. Did you pass a scene string?")
+		}
+
+		return audio;
 	}
 };
 function getObjCopy(obj) { // for whatever fucking reason objects saved to variables are essentially links instead of behaving like variables

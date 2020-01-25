@@ -17,21 +17,10 @@ export default class Main extends Phaser.Scene {
 	create() {
 		const {sprites} = this;
 		this.physics.world.setFPS(60); // sets update to run at 60hz doesn't change render fps
-		{
-			const rand = Phaser.Math.Between(0, 2);
-			let audio = "";
-
-			if (rand === 0) {
-				audio = "space0"
-			} else if (rand === 1) {
-				audio = "space1"
-			} else if (rand === 2){
-				audio = "space2"
-			}
-
-			this.bgAudio = this.sound.add(audio);
-		}
+		this.powerupAudio = this.sound.add("powerUp");
+		this.bgAudio = this.sound.add(g.getRandTrack("main"));
 		this.bgAudio.play({loop: true, rate: 1, detune: 200, volume : "0.4"});
+
 		this.background = new Background({
 			scene: this,
 			x: 0,
@@ -100,7 +89,7 @@ export default class Main extends Phaser.Scene {
 			alien.destroy();
 			g.aliensKilled++;
 			g.addScore(g.simpleAlienWorth);
-			const detune = Phaser.Math.FloatBetween(-500, 100).toString();
+			const detune = Phaser.Math.FloatBetween(-700, 100).toString();
 			this.explosionAudio.play({detune: detune});
 		});
 
@@ -125,6 +114,7 @@ export default class Main extends Phaser.Scene {
 		});
 		this.physics.add.overlap(sprites.ship, sprites.hearts, (ship, heart) => {
 			g.addLife();
+			this.powerupAudio.play();
 			heart.destroy();
 		});
 

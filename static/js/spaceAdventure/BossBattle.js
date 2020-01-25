@@ -138,9 +138,10 @@ export default class BossBattle extends Phaser.Scene {
 	}
 
 	create() {
-		this.bossMusic = this.sound.add("bossMusic", {loop: true, volume: 0.6});
-		this.bossMusic1 = this.sound.add("bossMusic1", {loop: true, volume: 0.6});
-		this.bossMusic.play();
+
+		this.bossMusic = this.sound.add(g.getRandTrack("boss"));
+
+		this.bossMusic.play({loop: true, volume: 0.6});
 		this.sprites.bossAlien = new BossAlien({scene: this, x: 3000, y: 300});
 
 		this.sprites.bossBullets = this.add.group({
