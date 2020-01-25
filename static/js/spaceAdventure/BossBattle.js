@@ -9,7 +9,7 @@ class BossBullet extends Phaser.Physics.Arcade.Sprite {
 		this.setScale(config.scale);
 		this.setAngle(180);
 		this.setVelocityX(-800);
-		this.health = 5;
+		this.health = 3;
 	}
 
 	update() {
@@ -164,7 +164,7 @@ export default class BossBattle extends Phaser.Scene {
 		});
 		this.physics.add.overlap(g.sprites.friendlyBullets, this.sprites.bossBullets, (f, b) => {
 			b.health -= 1;
-			b.setAlpha(b.alpha - 0.1);
+			b.setAlpha(b.alpha - 0.2);
 			if (b.health <= 0) {
 				b.destroy();
 				g.addScore(100);

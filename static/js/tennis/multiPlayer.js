@@ -4,10 +4,6 @@ export default class MultiPlayerScene extends Phaser.Scene {
 	}
 
 
-	preload() {
-		// preload images for use in create()
-	}
-
 	create() {
 		this.scene.launch("scoring");
 		// add keys W and S

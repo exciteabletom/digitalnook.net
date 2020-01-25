@@ -1,4 +1,3 @@
-import Menu from "./Menu.js";
 import Main from "./Main.js";
 import BossBattle from "./BossBattle.js";
 import EndCard from "./EndCard.js";
@@ -8,7 +7,6 @@ class Game extends Phaser.Game {
 		super(config); // equivalent to Phaser.Game(config)
 
 		this.scene.add("load", Load);
-		this.scene.add("menu", Menu);
 		this.scene.add("main", Main);
 		this.scene.add("bossBattle", BossBattle);
 		this.scene.add("endCard", EndCard);
@@ -18,8 +16,8 @@ class Game extends Phaser.Game {
 }
 
 let config = {
-	type: Phaser.WEBGL,
-	backgroundColor: "#FFF",
+	type: Phaser.AUTO,
+	backgroundColor: "#000",
 	scale: {
 		parent: "game",
 		mode: Phaser.Scale.FIT,
@@ -30,7 +28,6 @@ let config = {
 		default: "arcade",
 		arcade: {
 			debug: true,
-			fps: 60,
 		},
 	},
 	pixelArt: true,

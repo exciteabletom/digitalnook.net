@@ -139,7 +139,7 @@ export default class Main extends Phaser.Scene {
 
 			if (g.gameTick % g.alienSpawnRate === 0) {
 				if (g.alienSpawnRate > 100) {
-					g.alienSpawnRate -= 1;
+					g.alienSpawnRate -= 2;
 				}
 				this.generateNewAliens();
 			}

@@ -8,7 +8,6 @@ export default class EndCard extends Phaser.Scene {
 		super("endCard");
 	}
 	create() {
-		this.physics.world.setFPS(5); // reduces processing required for end screen
 		let resultMessage;
 		if (g.gameResult === "loss") {
 			resultMessage= "You Died...";
@@ -18,15 +17,15 @@ export default class EndCard extends Phaser.Scene {
 		} else {
 			throw new TypeError("g.gameResult is neither 'loss' or 'win'"); // ensures that g.gameResult is always set
 		}
-		const resultText = this.add.text(700, 100, resultMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "50px", color: "FFF"});
+		const resultText = this.add.text(700, 100, resultMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "50px", color: "#FFF"});
 
 		const scoreMessage = `Your score was ${g.gameScore}`;
-		const scoreText = this.add.text(700, 250, scoreMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "30px", color: "FFF"});
+		const scoreText = this.add.text(700, 250, scoreMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "30px", color: "#FFF"});
 
 		const alienMessage = `You killed ${g.aliensKilled} aliens`;
-		const alienText = this.add.text(700, 300, alienMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "30px", color: "FFF"});
+		const alienText = this.add.text(700, 300, alienMessage, {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "30px", color: "#FFF"});
 
-		const playAgainText = this.add.text(700, 400, "Play Again?", {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "40px", color: "FFF"});
+		const playAgainText = this.add.text(700, 400, "Play Again?", {fontFamily: "'Lucida Console', Monaco, monospace", align: "center", fontSize: "40px", color: "#FFF"});
 		//this.add.rectangle(playAgainText.x, playAgainText.y, playAgainText.width, playAgainText.height, 0xF2FF66);
 		playAgainText.setInteractive();
 		playAgainText.on("pointerup", () => {
