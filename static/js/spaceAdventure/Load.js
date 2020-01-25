@@ -48,11 +48,13 @@ export default class Load extends Phaser.Scene {
 		this.load.image("simpleAlien", "/static/images/spaceAdventure/simpleAlien.png");
 		this.load.image("background", "/static/images/spaceAdventure/background.jpg");
 		this.load.audio("explosionAudio", "/static/audio/spaceAdventure/explosion.wav");
+		this.load.audio("levelUp", "/static/audio/spaceAdventure/levelUp.ogg");
+		this.load.audio("powerUp", "/static/audio/spaceAdventure/powerUp.mp3");
 
 		// BACKGROUND TUNES
-		this.load.audio("space0", "/static/audio/spaceAdventure/space.ogg");
-		this.load.audio("space1", "/static/audio/spaceAdventure/space1.ogg");
-		this.load.audio("space2", "/static/audio/spaceAdventure/space2.ogg");
+		this.load.audio("main0", "/static/audio/spaceAdventure/main.ogg");
+		this.load.audio("main1", "/static/audio/spaceAdventure/main1.ogg");
+		this.load.audio("main2", "/static/audio/spaceAdventure/main2.ogg");
 
 		// BOSS FIGHT ASSETS
 
@@ -60,7 +62,6 @@ export default class Load extends Phaser.Scene {
 		this.load.audio("boss0", "/static/audio/spaceAdventure/boss.ogg");
 		this.load.audio("boss1", "/static/audio/spaceAdventure/boss1.ogg");
 		this.load.audio("boss2", "/static/audio/spaceAdventure/boss2.ogg");
-		this.load.audio("boss3", "/static/audio/spaceAdventure/boss3.ogg");
 	}
 	create() {
 		this.loadAudio = this.sound.add("loadingSound", {volume: "0.9"});
