@@ -21,7 +21,7 @@
 		<p>You have <b>{{ guess }}</b> guesses remaining</p>
 		<br/>
 		<input maxlength="{{ word|length }}" minlength="{{ word|length }}" name="guessWord"
-		       placeholder="{{ guessNumber }} guesses remaining" type="text"
+		       placeholder="{{ guess }} guesses remaining" type="text"
 		       value="">
 		<br/>
 		<input class="greenButton" name="ACTIONcheckGuess" type="submit" value="Check Guess">

@@ -42,7 +42,7 @@ let config = { // config obj for creating Phaser.Game() instance
 		default: "arcade", // arcade physics
 		arcade: {
 			gravity: {y: 0}, // no gravity
-			debug: true, // debug physics view
+			//debug: true, // debug physics view
 		},
 	},
 };
