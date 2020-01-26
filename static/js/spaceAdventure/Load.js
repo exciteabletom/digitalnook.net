@@ -40,6 +40,7 @@ export default class Load extends Phaser.Scene {
 		this.load.image("logo", "/static/images/logo/fire.png");
 		this.load.audio("loadingSound", "/static/audio/spaceAdventure/loadingSound.mp3");
 		this.load.audio("digitalnook.net", "/static/audio/digitalnook.ogg");
+		this.load.audio("intro", "/static/audio/spaceAdventure/intro.mp3");
 
 		//GAME ASSETS
 		this.load.image("heart", "/static/images/spaceAdventure/heart.png");
@@ -48,6 +49,10 @@ export default class Load extends Phaser.Scene {
 		this.load.image("simpleAlien", "/static/images/spaceAdventure/simpleAlien.png");
 		this.load.image("background", "/static/images/spaceAdventure/background.jpg");
 		this.load.audio("explosionAudio", "/static/audio/spaceAdventure/explosion.wav");
+		this.load.audio("playerHit", "/static/audio/spaceAdventure/playerHit.mp3");
+		this.load.audio("fireGun", "/static/audio/spaceAdventure/fireGun.mp3");
+		this.load.audio("fireGun1", "/static/audio/spaceAdventure/fireGun1.mp3");
+		this.load.audio("fireGun2", "/static/audio/spaceAdventure/fireGun2.mp3");
 		this.load.audio("levelUp", "/static/audio/spaceAdventure/levelUp.ogg");
 		this.load.audio("powerUp", "/static/audio/spaceAdventure/powerUp.mp3");
 
@@ -65,8 +70,10 @@ export default class Load extends Phaser.Scene {
 	}
 	create() {
 		this.loadAudio = this.sound.add("loadingSound", {volume: "0.9"});
-		this.digitalnook = this.sound.add("digitalnook.net", {volume: "1.2", detune: ""});
-		this.loadAudio.play();
+		this.digitalnook = this.sound.add("digitalnook.net", {volume: "1.5", detune: ""});
+		this.intro = this.sound.add("intro", {volume: "0.4", detune: "100"});
+		//this.loadAudio.play();
+		this.intro.play();
 		this.digitalnook.play();
 
 		this.tick = 0;

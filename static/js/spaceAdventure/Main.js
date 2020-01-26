@@ -18,6 +18,12 @@ export default class Main extends Phaser.Scene {
 		const {sprites} = this;
 		this.physics.world.setFPS(60); // sets update to run at 60hz doesn't change render fps
 		this.powerupAudio = this.sound.add("powerUp");
+		this.playerHitAudio = this.sound.add("playerHit");
+
+		this.fireGunAudio = this.sound.add("fireGun");
+		this.fireGun1Audio = this.sound.add("fireGun1", {volume: 0.5});
+		this.fireGun2Audio = this.sound.add("fireGun2", {volume: 0.5});
+
 		this.bgAudio = this.sound.add(g.getRandTrack("main"));
 		this.bgAudio.play({loop: true, rate: 1, detune: 200, volume : "0.4"});
 
@@ -198,6 +204,18 @@ export default class Main extends Phaser.Scene {
 	}
 	fireGun() {
 		if (g.firingCooldown === 0) {
+			/*const randAudio = Phaser.Math.Between(0, 2);
+			switch (randAudio){
+				case 0:
+					this.fireGunAudio.play();
+					break;
+				case 1:
+					this.fireGun1Audio.play();
+					break;
+				case 2:
+					this.fireGun2Audio.play();
+			}*/
+			this.fireGunAudio.play({volume: "0.8"});
 			g.firingCooldown = g.firingSpeed;
 			const shipX = this.sprites.ship.body.x;
 			const shipY = this.sprites.ship.body.y;

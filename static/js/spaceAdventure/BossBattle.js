@@ -192,6 +192,7 @@ export default class BossBattle extends Phaser.Scene {
 			g.gameResult = "win";
 			g.aliensKilled += 1;
 			this.warningTimer = 300;
+			g.addScore(parseInt(g.gameScore /6))
 			this.bossMusic.stop();
 			this.scene.stop();
 		}

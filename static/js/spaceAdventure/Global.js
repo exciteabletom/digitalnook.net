@@ -27,11 +27,13 @@ export let g = { // g stands for 'global'
 		 * plays damage audio
 		 * removes heart from hud
 		 */
-		g.playerLife--;
-		g.Main.explosionAudio.play();
-		const hearts = g.Main.hud.hearts.getChildren();
-		const last = hearts[hearts.length -1];
-		last.destroy();
+		if (g.playerLife > 0) {
+			g.playerLife--;
+			g.Main.playerHitAudio.play();
+			const hearts = g.Main.hud.hearts.getChildren();
+			const last = hearts[hearts.length -1];
+			last.destroy();
+		}
 		return g.playerLife;
 	},
 	addLife: (life=1) => {
@@ -39,19 +41,26 @@ export let g = { // g stands for 'global'
 		 * adds heart image to hud
 		 * for use with the heart powerup in game
 		 */
-		g.playerLife += life;
-		const hearts = g.Main.hud.hearts.getChildren();
-		const last = hearts[hearts.length -1];
-		if (last) {
-			g.Main.hud.hearts.add(g.Main.add.image(last.x + 50, 60, "heart").setScale(0.3));
+		if (g.playerLife > 0) {
+			g.playerLife += life;
+			const hearts = g.Main.hud.hearts.getChildren();
+			const last = hearts[hearts.length -1];
+			if (last) {
+				g.Main.hud.hearts.add(g.Main.add.image(last.x + 50, 60, "heart").setScale(0.3));
+			}
 		}
+
 		return g.playerLife;
 	},
 	addScore: (score) => {
 		/** adds to player score and adds graphics to the hud **/
 		g.gameScore += score;
-		const randY = Phaser.Math.Between(g.Main.hud.scoreText.y - 20, g.Main.hud.scoreText.y + 80);
-		g.Main.hud.plusTexts.add(new PlusHudText({scene: g.Main, x: g.Main.hud.scoreText.x + 100, y: randY, text: `+${score}`}));
+		try {
+			const randY = Phaser.Math.Between(g.Main.hud.scoreText.y - 20, g.Main.hud.scoreText.y + 80);
+			g.Main.hud.plusTexts.add(new PlusHudText({scene: g.Main, x: g.Main.hud.scoreText.x + 100, y: randY, text: `+${score}`}));
+		} catch (TypeError) {
+			console.log(TypeError); // catches errors that occur if g.main has ended
+		}
 		return g.gameScore;
 	},
 	getRandTrack (scene) {
