@@ -15,7 +15,7 @@ export let g = { // g stands for 'global'
 	bossAlienWorth: 5000,
 	boss: false, // true if boss battle is active
 	bossLife: 2000,
-	distanceToBoss: 40000, // when <0 boss battle starts
+	distanceToBoss: 34000, // when <0 boss battle starts
 
 	shipVel: 750,
 	firingCooldown: 0,
@@ -55,11 +55,11 @@ export let g = { // g stands for 'global'
 	addScore: (score) => {
 		/** adds to player score and adds graphics to the hud **/
 		g.gameScore += score;
-		try {
+		try { // Only works if g.Main is active
 			const randY = Phaser.Math.Between(g.Main.hud.scoreText.y - 20, g.Main.hud.scoreText.y + 80);
 			g.Main.hud.plusTexts.add(new PlusHudText({scene: g.Main, x: g.Main.hud.scoreText.x + 100, y: randY, text: `+${score}`}));
 		} catch (TypeError) {
-			console.log(TypeError); // catches errors that occur if g.main has ended
+			console.log(`EXPECTED ERROR in g.addScore \n`, TypeError); // catches errors that occur if g.main has ended
 		}
 		return g.gameScore;
 	},
@@ -77,7 +77,7 @@ export let g = { // g stands for 'global'
 		} else if (scene === "boss") {
 			rand = Phaser.Math.Between(0, 2);
 		} else {
-			throw new TypeError(`The scene: '${scene}' is not supported`)
+			throw new TypeError(`The scene: '${scene}' is not supported by g.getRandTrack`)
 		}
 
 		audio = scene + rand.toString();
