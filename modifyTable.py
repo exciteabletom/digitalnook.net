@@ -69,7 +69,8 @@ def addToDraw(gameId, word=None, image=None):
 		return True
 
 	elif not gameIdExists:
-		cur.execute("""INSERT INTO drawSomething ('gameId', 'word', 'gameResult', 'guesses') VALUES (?, ?, ?, ?)""", (gameId, word, 0, 4))
+		cur.execute("""INSERT INTO drawSomething ('gameId', 'word', 'gameResult', 'guesses') VALUES (?, ?, ?, ?)""",
+		            (gameId, word, 0, 4))
 		conn.commit()
 		conn.close()
 		return True
@@ -160,3 +161,20 @@ def deleteDrawGame(gameId):
 
 	else:
 		return False
+
+
+def updateSpaceScore(name, score):
+	conn = sqlite3.connect("userdata.db")
+	cur = conn.cursor()
+
+	cur.execute("""SELECT * FROM space WHERE name=(?)""", (name,))
+	data = cur.fetchone()
+
+	if data[0]:
+		cur.execute("""UPDATE space SET score = (?) WHERE name = (?)""", (score, name))
+
+	else:
+		cur.execute("""INSERT INTO space ('name', 'score') VALUES (?, ?)""", (name, score))
+
+	conn.commit()
+	conn.close()

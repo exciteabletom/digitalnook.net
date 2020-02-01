@@ -110,3 +110,13 @@ def checkIfDrawingWordCorrect(gameId, word):
 
 	else:
 		return False
+
+
+def checkFromSpace(name):
+	conn = sqlite3.connect("userdata.db")
+	cur = conn.cursor()
+
+	cur.execute("""SELECT * FROM drawSomehting WHERE name = (?)""", (name,))
+	data = cur.fetchone()
+
+	return data

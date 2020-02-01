@@ -455,9 +455,25 @@ def reactionLeaderboard():
 	return render_template("reactionLeaderboard.html")
 
 
-@app.route("/games/doctorb/")
-def spaceORama():
-	return render_template("doctorB.html")
+@app.route("/games/doctorb/", methods=["GET", "POST"])
+@loginRequired
+def doctorB():
+	username = decryptString(request.cookies.get("USERNAME"))
+	storedScore = checkTable.checkFromSpace(username)[1]
+	if request.method == "GET":
+		return render_template("doctorB.html", username=username, score=storedScore)
+
+	elif request.method == "POST":  # Handle XMLHTTPRequests
+		newScore = request.form.get("score")
+
+		if newScore > storedScore:
+			modifyTable.updateSpaceScore(username, storedScore)
+
+			return newScore
+
+		return storedScore
+
+
 
 # Handles 404 errors
 @app.errorhandler(404)
