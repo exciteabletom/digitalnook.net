@@ -6,6 +6,23 @@ from loginKey import key
 
 cipher = Fernet(key)
 
+def checkForUsername(name):
+	"""
+	This function checks to see if the name the user has entered is already in the mainTable
+	"""
+
+	connection = sqlite3.connect("userdata.db")
+	cursor = connection.cursor()
+
+	cursor.execute("""SELECT name From main WHERE name = (?)""", (name,))
+	names = cursor.fetchall()
+
+	if name.upper() not in str(names).upper():
+		return True
+
+	else:
+		return False
+
 
 def checkFromMain(name, password=None):
 	"""
@@ -32,19 +49,12 @@ def checkFromMain(name, password=None):
 
 			finalTablePassword = decryptedTablePassword.decode()
 
-			if password == finalTablePassword:
-				return True
-
-			else:
+			if password != finalTablePassword:
 				return False
 
-			# TODO: probably better way to do this chain of returns
+		return True
 
-		else:
-			return True
-
-	else:
-		return False
+	return False
 
 
 def checkFromDraw(gameId):
@@ -116,7 +126,7 @@ def checkFromSpace(name):
 	conn = sqlite3.connect("userdata.db")
 	cur = conn.cursor()
 
-	cur.execute("""SELECT * FROM drawSomehting WHERE name = (?)""", (name,))
+	cur.execute("""SELECT * FROM space WHERE name = (?)""", (name,))
 	data = cur.fetchone()
 
 	return data

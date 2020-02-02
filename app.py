@@ -124,7 +124,7 @@ def login():
 		username = str(request.form.get("username"))
 		password = str(request.form.get("password"))
 
-		if request.cookies.get("USERNAME") :
+		if request.cookies.get("USERNAME"):
 			return render_template("login.html", error="You are already logged in, would you like to logout?")
 
 		if checkTable.checkFromMain(username, password):  # returns true if login is valid
@@ -161,7 +161,7 @@ def register():
 		if "_" in testForIllegalChars or " " in testForIllegalChars:
 			return render_template("register.html", error="Underscores and spaces are not allowed")
 
-		if not modifyTable.checkForUsername(username):  # if username is already in use
+		if not checkTable.checkForUsername(username):  # if username is already in use
 			return render_template("register.html", error="This username is already in use")
 
 		if len(password) < 8:
@@ -459,20 +459,35 @@ def reactionLeaderboard():
 @loginRequired
 def doctorB():
 	username = decryptString(request.cookies.get("USERNAME"))
-	storedScore = checkTable.checkFromSpace(username)[1]
+	storedData = checkTable.checkFromSpace(username)
+	storedScore = 0
+	print(request.method)
+	if storedData:
+		storedScore = storedData[1]
+
 	if request.method == "GET":
-		return render_template("doctorB.html", username=username, score=storedScore)
+		postID = modifyTable.addPostId(username)
+		resp = app.make_response(render_template("doctorB.html", username=username, score=storedScore))
+		resp.set_cookie("postID", postID)
+		return resp
 
 	elif request.method == "POST":  # Handle XMLHTTPRequests
-		newScore = request.form.get("score")
+		if request.form.get("score"):
+			newScore = int(request.form.get("score"))
+			if newScore > storedScore:
+				modifyTable.updateSpaceScore(username, storedScore)
 
-		if newScore > storedScore:
-			modifyTable.updateSpaceScore(username, storedScore)
+				return str(newScore)
 
-			return newScore
+			return str(storedScore)
 
-		return storedScore
 
+@app.route("/getPostID/", methods=["POST"])
+def getPostId():
+	username = decryptString(request.cookies.get("USERNAME"))
+	postID = modifyTable.addPostId(username)
+
+	return postID
 
 
 # Handles 404 errors

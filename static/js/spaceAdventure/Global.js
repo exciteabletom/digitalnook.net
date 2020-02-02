@@ -2,10 +2,14 @@
 // all variables/functions needed across different classes and files are stored here
 import {PlusHudText} from "./HudText.js";
 
+let tempNewScore = 0;
 export let g = { // g stands for 'global'
 	gameScore: 0,
+	highScore: window.highScore,
+	username: window.username,
 	gameTick: 0,
 	gameResult: null,
+	cookieTimeout: 2000,
 
 	aliensKilled: 0,
 	playerLife: 3,
@@ -83,9 +87,68 @@ export let g = { // g stands for 'global'
 		audio = scene + rand.toString();
 
 		return audio;
+	},
+	updateScore (score) {
+		let formData = new FormData();
+		formData.append("score", score.toString());
+
+		const postID = g.getCookie("postID");
+		formData.append("postID", postID);
+
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", "/games/doctorb/");
+		xhr.send(formData);
+
+		xhr.onload = () => {
+			tempNewScore = xhr.responseText;
+			console.log(xhr.responseText);
+		}
+	},
+	updatePostID () {
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", "/getPostID/");
+		xhr.send();
+
+		xhr.onload = () => {
+			const newPostID = xhr.responseText;
+			document.cookie = `postID=${newPostID}; max-age=${g.cookieTimeout}`;
+		}
+	},
+	getAllCookies() {
+		const cookies = document.cookie.split("; ");
+		const cookieObj = {};
+
+		console.log(cookies);
+
+		for (let i = 0; i< cookies.length; i++) {
+			let nameAndValue = cookies[i].split("=");
+			nameAndValue = nameAndValue.filter(item => item !== "");
+
+			console.log(nameAndValue);
+			cookieObj[nameAndValue[0]] = nameAndValue[1];
+		}
+		console.log(cookieObj);
+		return cookieObj
+
+	},
+	getCookie(name) {
+		const all = g.getAllCookies();
+
+		if (all[name]) {
+			return all[name]
+		} else {
+			throw TypeError(`Cookie '${name}' does not exist`)
+		}
+
 	}
+
 };
-function getObjCopy(obj) { // for whatever fucking reason objects saved to variables are essentially links instead of behaving like variables
+
+setInterval(() => {
+	g.updatePostID();
+}, 2000);
+
+function getObjCopy(obj) { // for whatever fucking reason objects saved to variables are essentially symlinks instead of behaving like variables
 	let newObj = {};
 	for (let key in obj){
 		newObj[key] = obj[key];
@@ -99,6 +162,9 @@ export function resetGlobals() {
 	for (let key in oldG){
 		g[key] = oldG[key]
 	}
+
+	g.highScore = tempNewScore;
+
 	return g;
 }
 export function getRandomInt(min, max = min + 1) {

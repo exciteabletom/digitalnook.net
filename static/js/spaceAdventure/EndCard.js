@@ -11,6 +11,8 @@ export default class EndCard extends Phaser.Scene {
 		this.explosionAudio = this.sound.add("explosionAudio");
 		this.levelUp = this.sound.add("levelUp");
 
+		g.updateScore(g.gameScore);
+
 		let resultMessage;
 		if (g.gameResult === "loss") {
 			resultMessage= "You Died...";

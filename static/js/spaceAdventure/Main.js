@@ -77,6 +77,7 @@ export default class Main extends Phaser.Scene {
 		});
 		this.hud.scoreText = new HudText({scene: this, x: 300, y: 30, text:""});
 		this.hud.boss= new HudText({scene: this, x: 450, y: 30, text:""});
+		this.hud.highScore = new HudText({scene: this, x: 1600, y: 30, text:`High Score:\n${g.highScore}`});
 
 		function createHearts(scene) {
 			let x = 30; // x value for hearts
@@ -132,6 +133,16 @@ export default class Main extends Phaser.Scene {
 		g.sprites = this.sprites;
 		g.hud = this.hud;
 		g.gameTick++;
+
+		if (g.gameScore > g.highScore) {
+			g.highScore = g.gameScore;
+			this.hud.highScore.text = `High Score:\n${g.highScore}`;
+		}
+
+		if (g.gameTick % 400 === 0) {
+			g.updatePostID();
+		}
+
 		if (g.gameResult) {
 				this.bgAudio.destroy();
 				this.scene.stop();
