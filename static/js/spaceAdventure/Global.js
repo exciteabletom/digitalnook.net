@@ -2,10 +2,15 @@
 // all variables/functions needed across different classes and files are stored here
 import {PlusHudText} from "./HudText.js";
 
+let tempNewScore = 0;
 export let g = { // g stands for 'global'
 	gameScore: 0,
+	highScore: window.highScore,
+	username: window.username,
 	gameTick: 0,
 	gameResult: null,
+	postID: undefined,
+	currentLevel: 0,
 
 	aliensKilled: 0,
 	playerLife: 3,
@@ -83,9 +88,93 @@ export let g = { // g stands for 'global'
 		audio = scene + rand.toString();
 
 		return audio;
+	},
+	updateScore () {
+		g.updatePostID();
+		let formData = new FormData();
+		formData.append("score", g.gameScore.toString());
+		formData.append("postID", g.getCookie("postID"));
+
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", "/games/doctorb/");
+		xhr.send(formData);
+
+		xhr.onload = () => {
+			tempNewScore = xhr.responseText;
+			g.destroyPostID();
+		}
+	},
+	getLevel () {
+		g.updatePostID();
+		let formData = new FormData();
+		formData.append("action", "get");
+		formData.append("postID", g.getCookie("postID"));
+
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", "/games/doctorbLevel/");
+		xhr.send(formData);
+
+		xhr.onload = () => {
+			g.currentLevel = parseInt(xhr.responseText);
+			g.destroyPostID();
+		}
+	},
+	sendLevel (level) {
+		g.updatePostID();
+		let formData=  new FormData();
+		formData.append("action", "set");
+		formData.append("postID", g.getCookie("postID"));
+		formData.append("level", level);
+
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", "/games/doctorbLevel/");
+		xhr.send(formData);
+
+		xhr.onload = () => {
+			g.currentLevel = parseInt(xhr.responseText);
+			g.destroyPostID();
+		}
+	},
+	updatePostID () {
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", "/getPostID/");
+		xhr.send();
+
+		xhr.onload = () => {
+			const newPostID = xhr.responseText;
+			document.cookie = `postID=${newPostID}; max-age=100`;
+			g.updateScore();
+		}
+	},
+	destroyPostID () {
+		document.cookie = `postID=; max-age=0; expires=0;`
+	},
+	getAllCookies() {
+		const cookies = document.cookie.split("; ");
+		const cookieObj = {};
+
+		for (let i = 0; i< cookies.length; i++) {
+			let nameAndValue = cookies[i].split("=");
+			nameAndValue = nameAndValue.filter(item => item !== "");
+			cookieObj[nameAndValue[0]] = nameAndValue[1];
+		}
+		console.log(cookieObj);
+		return cookieObj
+	},
+	getCookie(name) {
+		const all = g.getAllCookies();
+
+		if (all[name]) {
+			return all[name]
+		} else {
+			throw TypeError(`Cookie '${name}' does not exist`)
+		}
+
 	}
+
 };
-function getObjCopy(obj) { // for whatever fucking reason objects saved to variables are essentially links instead of behaving like variables
+
+function getObjCopy(obj) { // for whatever fucking reason objects saved to variables are essentially symlinks instead of behaving like variables
 	let newObj = {};
 	for (let key in obj){
 		newObj[key] = obj[key];
@@ -99,6 +188,7 @@ export function resetGlobals() {
 	for (let key in oldG){
 		g[key] = oldG[key]
 	}
+	g.highScore = tempNewScore;
 	return g;
 }
 export function getRandomInt(min, max = min + 1) {

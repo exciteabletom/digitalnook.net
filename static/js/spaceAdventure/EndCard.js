@@ -11,17 +11,18 @@ export default class EndCard extends Phaser.Scene {
 		this.explosionAudio = this.sound.add("explosionAudio");
 		this.levelUp = this.sound.add("levelUp");
 
+		g.updateScore();
+
 		let resultMessage;
 		if (g.gameResult === "loss") {
 			resultMessage= "You Died...";
 			this.explosionAudio.play();
 		} else if (g.gameResult === "win") {
 			resultMessage = "You Won!";
-			console.log(g.gameScore);
+
 			const winningBonus = Math.floor(g.gameScore / 6);
-			console.log(winningBonus);
 			g.addScore(winningBonus);
-			console.log(g.gameScore);
+
 			this.levelUp.play();
 		} else {
 			throw new TypeError("g.gameResult is neither 'loss' or 'win'"); // ensures that g.gameResult is always set

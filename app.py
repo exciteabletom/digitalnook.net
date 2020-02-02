@@ -50,7 +50,7 @@ def loginRequired(appRoute):
 
 			username = decryptString(encryptedUsername)
 			password = decryptString(encryptedPassword)
-			validLogin = checkTable.checkFromMain(username, password)  # true if login cookies are valid credentials
+			validLogin = checkTable.checkIfLoginCorrect(username, password)  # true if login cookies are valid credentials
 
 			if validLogin:
 				return appRoute(*args, **kwargs)
@@ -124,10 +124,10 @@ def login():
 		username = str(request.form.get("username"))
 		password = str(request.form.get("password"))
 
-		if request.cookies.get("USERNAME") :
+		if request.cookies.get("USERNAME"):
 			return render_template("login.html", error="You are already logged in, would you like to logout?")
 
-		if checkTable.checkFromMain(username, password):  # returns true if login is valid
+		if checkTable.checkIfLoginCorrect(username, password):  # returns true if login is valid
 			resp = app.make_response(redirect("/"))
 
 			resp.set_cookie("USERNAME", encryptString(username))
@@ -151,8 +151,6 @@ def register():
 		username = request.form.get("username")
 		password = request.form.get("password")
 
-		print(password)
-
 		if type(username) is None or type(password) is None:
 			return render_template("register.html", error="Please fill in all fields")
 
@@ -161,7 +159,7 @@ def register():
 		if "_" in testForIllegalChars or " " in testForIllegalChars:
 			return render_template("register.html", error="Underscores and spaces are not allowed")
 
-		if not modifyTable.checkForUsername(username):  # if username is already in use
+		if not checkTable.checkIfUsernameAvailable(username):  # if username is already in use
 			return render_template("register.html", error="This username is already in use")
 
 		if len(password) < 8:
@@ -255,7 +253,6 @@ def drawSomething():
 
 			if not data[3]:
 				modifyTable.updateDrawGuess(gameId, 4)
-			print(data)
 			if data and (userNames[1] == currentUser):
 				return render_template("drawSomething/guessDrawing.html", currentUser=currentUser, gameId=gameId,
 				                       otherUser=userNames[0], image=data[2], word=data[1], guess=data[3])
@@ -297,13 +294,12 @@ def drawSomething():
 
 			if checkTable.checkFromDraw(gameId):
 				data = checkTable.checkFromDraw(gameId)
-				print("data, ", data)
 				if data[2]:
 					return render_template("drawSomething/newGame.html",
 					                       error="You have already started a game with this user!",
 					                       currentUser=currentUser)
 
-			if checkTable.checkFromMain(requestedUser):
+			if checkTable.checkIfLoginCorrect(requestedUser):
 				randWord = None
 				data = checkTable.checkFromDraw(gameId)
 
@@ -359,7 +355,6 @@ def drawSomething():
 
 				guessNum = modifyTable.updateDrawGuess(gameId)  # increments guesses remaining down by one
 				if guessNum != 0:
-					print(image)
 					return render_template("drawSomething/guessDrawing.html", guess=guessNum, image=image,
 					                       currentUser=currentUser,
 					                       otherUser=otherUser, word=word, gameId=gameId)
@@ -455,9 +450,66 @@ def reactionLeaderboard():
 	return render_template("reactionLeaderboard.html")
 
 
-@app.route("/games/doctorb/")
-def spaceORama():
-	return render_template("doctorB.html")
+@app.route("/games/doctorb/", methods=["GET", "POST"])
+@loginRequired
+def doctorB():
+	username = decryptString(request.cookies.get("USERNAME"))
+	storedData = checkTable.checkFromSpace(username)
+	storedScore = 0
+	if storedData:
+		storedScore = storedData[1]
+
+	if request.method == "GET":
+		return render_template("doctorB.html", username=username, score=storedScore)
+
+	elif request.method == "POST":  # Handle XMLHTTPRequests
+		correctPostID = checkTable.getFromMain(username)[3] == request.form.get("postID")
+		if correctPostID:
+			# changePostID
+			modifyTable.addPostID(username)
+			newScore = int(request.form.get("score"))
+			if newScore > storedScore:
+				modifyTable.updateSpaceScore(username, newScore)
+
+				return str(newScore)
+
+			return str(storedScore)
+		else:
+			raise ValueError("Incorrect postID")
+
+
+@app.route("/games/doctorbLevel", methods=["POST"])
+@loginRequired
+def doctorBLevels():
+	username = decryptString(request.cookies.get("USERNAME"))
+	postID = request.form.get("postID")
+	postIDCorrect = checkTable.getFromMain(username)[3] == postID
+	action = request.form.get("action")
+	storedLevel = checkTable.checkFromSpace(username)[2]
+	if postIDCorrect:
+		if action == "get":
+			return str(storedLevel)
+
+		elif action == "set":
+			newLevel = request.form.get("level")
+			if newLevel > storedLevel + 2:
+				raise ValueError("Levels can only be incremented by 1")
+			else:
+				modifyTable.updateSpaceScore(username, level=newLevel)
+				return str(newLevel)
+
+	else:
+		raise ValueError("postID is incorrect");
+
+
+@app.route("/getPostID/", methods=["POST"])
+@loginRequired
+def getPostId():
+	username = decryptString(request.cookies.get("USERNAME"))
+	postID = modifyTable.addPostID(username)
+
+	return str(postID)
+
 
 # Handles 404 errors
 @app.errorhandler(404)

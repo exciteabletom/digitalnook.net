@@ -18,14 +18,12 @@ export default class Load extends Phaser.Scene {
 
 		this.load.on("progress", value => {
 			this.loadProgress = value;
-			console.log(this.loadProgress);
 			this.loadingRectangle.clear();
 			this.loadingRectangle.fillStyle(0xffffff, 1);
 			this.loadingRectangle.fillRect(0, 200, this.game.canvas.width * value, 200);
 		});
 
 		this.load.on("complete", () => {
-			console.log("HELLO");
 			this.loadingRectangle.destroy();
 			this.loadingText.destroy();
 		});
