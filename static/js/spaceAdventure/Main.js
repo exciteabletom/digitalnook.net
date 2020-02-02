@@ -211,17 +211,6 @@ export default class Main extends Phaser.Scene {
 	}
 	fireGun() {
 		if (g.firingCooldown === 0) {
-			/*const randAudio = Phaser.Math.Between(0, 2);
-			switch (randAudio){
-				case 0:
-					this.fireGunAudio.play();
-					break;
-				case 1:
-					this.fireGun1Audio.play();
-					break;
-				case 2:
-					this.fireGun2Audio.play();
-			}*/
 			this.fireGunAudio.play({volume: "0.8"});
 			g.firingCooldown = g.firingSpeed;
 			const shipX = this.sprites.ship.body.x;

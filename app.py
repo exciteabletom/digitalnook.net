@@ -499,7 +499,7 @@ def doctorBLevels():
 				return str(newLevel)
 
 	else:
-		raise ValueError("postID is incorrect");
+		raise ValueError("postID is incorrect")
 
 
 @app.route("/getPostID/", methods=["POST"])

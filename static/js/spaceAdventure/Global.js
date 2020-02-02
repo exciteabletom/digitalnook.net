@@ -90,7 +90,6 @@ export let g = { // g stands for 'global'
 		return audio;
 	},
 	updateScore () {
-		g.updatePostID();
 		let formData = new FormData();
 		formData.append("score", g.gameScore.toString());
 		formData.append("postID", g.getCookie("postID"));
@@ -104,8 +103,21 @@ export let g = { // g stands for 'global'
 			g.destroyPostID();
 		}
 	},
+	runXHR (func) {
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", "/getPostID/");
+		xhr.send();
+
+		xhr.onload = () => {
+			const newPostID = xhr.responseText;
+			document.cookie = `postID=${newPostID};`;
+			func();
+		}
+	},
+	destroyPostID () {
+		document.cookie = `postID=;`
+	},
 	getLevel () {
-		g.updatePostID();
 		let formData = new FormData();
 		formData.append("action", "get");
 		formData.append("postID", g.getCookie("postID"));
@@ -120,7 +132,6 @@ export let g = { // g stands for 'global'
 		}
 	},
 	sendLevel (level) {
-		g.updatePostID();
 		let formData=  new FormData();
 		formData.append("action", "set");
 		formData.append("postID", g.getCookie("postID"));
@@ -134,20 +145,6 @@ export let g = { // g stands for 'global'
 			g.currentLevel = parseInt(xhr.responseText);
 			g.destroyPostID();
 		}
-	},
-	updatePostID () {
-		let xhr = new XMLHttpRequest();
-		xhr.open("POST", "/getPostID/");
-		xhr.send();
-
-		xhr.onload = () => {
-			const newPostID = xhr.responseText;
-			document.cookie = `postID=${newPostID}; max-age=100`;
-			g.updateScore();
-		}
-	},
-	destroyPostID () {
-		document.cookie = `postID=; max-age=0; expires=0;`
 	},
 	getAllCookies() {
 		const cookies = document.cookie.split("; ");
@@ -167,6 +164,7 @@ export let g = { // g stands for 'global'
 		if (all[name]) {
 			return all[name]
 		} else {
+			console.log(all);
 			throw TypeError(`Cookie '${name}' does not exist`)
 		}
 
