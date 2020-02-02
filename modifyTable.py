@@ -10,7 +10,7 @@ def addToMain(name, password):
 	cursor = connection.cursor()
 	try:
 
-		if checkTable.checkForUsername(name):  # returns false if name is already in use
+		if checkTable.checkIfUsernameAvailable(name):  # returns false if name is already in use
 			intId = None
 
 			with open("./static/latestId.txt", "r") as latestId:
@@ -32,7 +32,7 @@ def addToMain(name, password):
 		connection.close()
 
 
-def addPostId(name):
+def addPostID(name):
 	from time import time
 	from cyrpto import encryptString
 	conn = sqlite3.connect("userdata.db")
@@ -43,7 +43,11 @@ def addPostId(name):
 
 	if data:
 		postID = encryptString(str(time()))
+		postID = postID.replace("=", "")  # The equals here screws up my cookie parsing
 		cur.execute("""UPDATE main SET 'postID' = (?) WHERE name=(?)""", (postID, name))
+
+		conn.commit()
+		conn.close()
 
 		return postID
 
@@ -160,18 +164,26 @@ def deleteDrawGame(gameId):
 		return False
 
 
-def updateSpaceScore(name, score):
+def updateSpaceScore(name, score=None, level=None):
 	conn = sqlite3.connect("userdata.db")
 	cur = conn.cursor()
 
 	cur.execute("""SELECT * FROM space WHERE name=(?)""", (name,))
 	data = cur.fetchone()
 
-	if data:
-		cur.execute("""UPDATE space SET score = (?) WHERE name = (?)""", (score, name))
+	if score != None:
+		if data:
+			cur.execute("""UPDATE space SET score = (?) WHERE name = (?)""", (score, name))
 
-	else:
-		cur.execute("""INSERT INTO space ('name', 'score') VALUES (?, ?)""", (name, score))
+		else:
+			cur.execute("""INSERT INTO space ('name', 'score') VALUES (?, ?)""", (name, score))
+
+	if level != None:
+		if data:
+			cur.execute("""UPDATE space SET level = (?) WHERE name = (?)""", (level, name))
+
+		else:
+			cur.execute("""INSERT INTO space ('name', 'level') VALUES (?, ?)""", (name, level))
 
 	conn.commit()
 	conn.close()

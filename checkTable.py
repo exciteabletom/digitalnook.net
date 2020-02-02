@@ -6,25 +6,36 @@ from loginKey import key
 
 cipher = Fernet(key)
 
-def checkForUsername(name):
+
+def getFromMain(name):
+	conn = sqlite3.connect("userdata.db")
+	cur = conn.cursor()
+
+	cur.execute("""SELECT * FROM main WHERE name = (?)""", (name,))
+	data = cur.fetchone()
+
+	return data
+
+
+def checkIfUsernameAvailable(name):
 	"""
 	This function checks to see if the name the user has entered is already in the mainTable
 	"""
 
-	connection = sqlite3.connect("userdata.db")
-	cursor = connection.cursor()
+	conn = sqlite3.connect("userdata.db")
+	cur = conn.cursor()
 
-	cursor.execute("""SELECT name From main WHERE name = (?)""", (name,))
-	names = cursor.fetchall()
+	cur.execute("""SELECT * From main WHERE name = (?)""", (name,))
+	data = cur.fetchone()
 
-	if name.upper() not in str(names).upper():
+	if data:
 		return True
 
 	else:
 		return False
 
 
-def checkFromMain(name, password=None):
+def checkIfLoginCorrect(name, password=None):
 	"""
 	Returns True if username and password (optional) match table data.
 

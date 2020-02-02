@@ -9,7 +9,8 @@ export let g = { // g stands for 'global'
 	username: window.username,
 	gameTick: 0,
 	gameResult: null,
-	cookieTimeout: 2000,
+	postID: undefined,
+	currentLevel: 0,
 
 	aliensKilled: 0,
 	playerLife: 3,
@@ -88,12 +89,11 @@ export let g = { // g stands for 'global'
 
 		return audio;
 	},
-	updateScore (score) {
+	updateScore () {
+		g.updatePostID();
 		let formData = new FormData();
-		formData.append("score", score.toString());
-
-		const postID = g.getCookie("postID");
-		formData.append("postID", postID);
+		formData.append("score", g.gameScore.toString());
+		formData.append("postID", g.getCookie("postID"));
 
 		let xhr = new XMLHttpRequest();
 		xhr.open("POST", "/games/doctorb/");
@@ -101,7 +101,38 @@ export let g = { // g stands for 'global'
 
 		xhr.onload = () => {
 			tempNewScore = xhr.responseText;
-			console.log(xhr.responseText);
+			g.destroyPostID();
+		}
+	},
+	getLevel () {
+		g.updatePostID();
+		let formData = new FormData();
+		formData.append("action", "get");
+		formData.append("postID", g.getCookie("postID"));
+
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", "/games/doctorbLevel/");
+		xhr.send(formData);
+
+		xhr.onload = () => {
+			g.currentLevel = parseInt(xhr.responseText);
+			g.destroyPostID();
+		}
+	},
+	sendLevel (level) {
+		g.updatePostID();
+		let formData=  new FormData();
+		formData.append("action", "set");
+		formData.append("postID", g.getCookie("postID"));
+		formData.append("level", level);
+
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", "/games/doctorbLevel/");
+		xhr.send(formData);
+
+		xhr.onload = () => {
+			g.currentLevel = parseInt(xhr.responseText);
+			g.destroyPostID();
 		}
 	},
 	updatePostID () {
@@ -111,25 +142,24 @@ export let g = { // g stands for 'global'
 
 		xhr.onload = () => {
 			const newPostID = xhr.responseText;
-			document.cookie = `postID=${newPostID}; max-age=${g.cookieTimeout}`;
+			document.cookie = `postID=${newPostID}; max-age=100`;
+			g.updateScore();
 		}
+	},
+	destroyPostID () {
+		document.cookie = `postID=; max-age=0; expires=0;`
 	},
 	getAllCookies() {
 		const cookies = document.cookie.split("; ");
 		const cookieObj = {};
 
-		console.log(cookies);
-
 		for (let i = 0; i< cookies.length; i++) {
 			let nameAndValue = cookies[i].split("=");
 			nameAndValue = nameAndValue.filter(item => item !== "");
-
-			console.log(nameAndValue);
 			cookieObj[nameAndValue[0]] = nameAndValue[1];
 		}
 		console.log(cookieObj);
 		return cookieObj
-
 	},
 	getCookie(name) {
 		const all = g.getAllCookies();
@@ -143,10 +173,6 @@ export let g = { // g stands for 'global'
 	}
 
 };
-
-setInterval(() => {
-	g.updatePostID();
-}, 2000);
 
 function getObjCopy(obj) { // for whatever fucking reason objects saved to variables are essentially symlinks instead of behaving like variables
 	let newObj = {};
@@ -162,9 +188,7 @@ export function resetGlobals() {
 	for (let key in oldG){
 		g[key] = oldG[key]
 	}
-
 	g.highScore = tempNewScore;
-
 	return g;
 }
 export function getRandomInt(min, max = min + 1) {

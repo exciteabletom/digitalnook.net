@@ -139,10 +139,6 @@ export default class Main extends Phaser.Scene {
 			this.hud.highScore.text = `High Score:\n${g.highScore}`;
 		}
 
-		if (g.gameTick % 400 === 0) {
-			g.updatePostID();
-		}
-
 		if (g.gameResult) {
 				this.bgAudio.destroy();
 				this.scene.stop();
