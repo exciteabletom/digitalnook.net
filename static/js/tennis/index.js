@@ -32,7 +32,7 @@ let config = { // config obj for creating Phaser.Game() instance
 	type: Phaser.AUTO,
 	scale: {
 		parent: "game", // container div
-		mode: Phaser.Scale.ENVELOP, //fit div
+		mode: Phaser.Scale.FIT, //fit div
 		width: 1000, // 1000px
 		height: 600, // 600px
 
