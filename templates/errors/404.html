@@ -3,13 +3,15 @@
 <head>
 	<title>404 page not found</title>
 
-	{% include "/includes/meta.html" %}
+	{% include "./includes/meta.html" %}
 </head>
 
 <body>
 <h1> Sorry there doesn't appear to be anything here. <br/> Please check the url. </h1>
+<br>
+<p>Error: {{ error }}</p>
 
-<p><a href='/'>Back To Home</p>
+<a href='/'>Back To Home</a>
 </body>
 
 </html>

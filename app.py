@@ -50,7 +50,8 @@ def loginRequired(appRoute):
 
 			username = decryptString(encryptedUsername)
 			password = decryptString(encryptedPassword)
-			validLogin = checkTable.checkIfLoginCorrect(username, password)  # true if login cookies are valid credentials
+			validLogin = checkTable.checkIfLoginCorrect(username,
+			                                            password)  # true if login cookies are valid credentials
 
 			if validLogin:
 				return appRoute(*args, **kwargs)
@@ -188,6 +189,7 @@ def register():
 def drawSomething():
 	"""
 	Interprets user actions to render different templates, allows the game to work with different templates on one URL
+	BTW, this is messy as hell, my newer code is better
 	"""
 	if request.method == "GET":
 		return render_template("drawSomething/drawSomething.html")
@@ -356,8 +358,8 @@ def drawSomething():
 				guessNum = modifyTable.updateDrawGuess(gameId)  # increments guesses remaining down by one
 				if guessNum != 0:
 					return render_template("drawSomething/guessDrawing.html", guess=guessNum, image=image,
-					                       currentUser=currentUser,
-					                       otherUser=otherUser, word=word, gameId=gameId)
+					                            currentUser=currentUser,
+					                            otherUser=otherUser, word=word, gameId=gameId)
 
 				else:
 					return render_template("drawSomething/outOfGuesses.html", otherUser=otherUser, word=word)
@@ -478,7 +480,7 @@ def doctorB():
 			raise ValueError("Incorrect postID")
 
 
-@app.route("/games/doctorbLevel", methods=["POST"])
+@app.route("/games/doctorbLevel/", methods=["POST"])
 @loginRequired
 def doctorBLevels():
 	username = decryptString(request.cookies.get("USERNAME"))
@@ -502,6 +504,14 @@ def doctorBLevels():
 		raise ValueError("postID is incorrect")
 
 
+@app.route("/games/interrogation/")
+@loginRequired
+def interrogation():
+	if request.method == "GET":
+		return render_template("interrogation.html")
+	pass
+
+
 @app.route("/getPostID/", methods=["POST"])
 @loginRequired
 def getPostId():
@@ -520,7 +530,7 @@ def notFound(e):
 # Handles 5** errors
 @app.errorhandler(500)
 def internalError(e):
-	return render_template("errors/500.html"), 500
+	return render_template("errors/500.html", error=e), 500
 
 
 if __name__ == "__main__":
