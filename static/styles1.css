@@ -37,7 +37,7 @@ a, .link {
 }
 
 body {
-	/* border: 20px orange groove;/* RIP TO THE OG BORDER */
+	/* border: 20px orange groove;*/ /* RIP TO THE OG BORDER */
 	min-height: 100vh;
 	text-align: center;
 	background-color: #FF6F00;

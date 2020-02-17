@@ -7,7 +7,7 @@ check = input("Are you sure you want to generate a new private key? Please type:
 
 def newKey():
 	key = Fernet.generate_key()  # make new private key
-	with open("./static/loginKey.py", "wb") as loginKey:
+	with open("./loginKey.py", "wb") as loginKey:
 		loginKey.write("key = ?".format(key))  # write new key to file
 
 
