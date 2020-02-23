@@ -12,6 +12,7 @@ export default class Load extends Phaser.Scene {
 
 	}
 	init(config) {
+		console.log(config);
 		this.name = config.name;
 		this.loadItems = config.items;
 		this.nextScene = config.scene;
@@ -28,9 +29,7 @@ export default class Load extends Phaser.Scene {
 
 		this.loadingText = this.add.text(950, 300, "loading . . .", {fontWeight: "bold", fontFamily: '"Lucida Console", Monaco, monospace', fontSize: "50px", align: "center", color: "#FF0000"});
 		this.loadingText.setOrigin(this.loadingText.halfWidth, this.loadingText.halfHeight);
-
 		this.load.on("progress", value => {
-			this.loadProgress = value;
 			this.loadingRectangle.clear();
 			this.loadingRectangle.fillStyle(0xffffff, 1);
 			this.loadingRectangle.fillRect(0, 200, this.game.canvas.width * value, 200);
@@ -45,7 +44,7 @@ export default class Load extends Phaser.Scene {
 	}
 	create() {
 		this.loadAudio = this.sound.add("loadingSound", {volume: "0.9"});
-		this.digitalnook = this.sound.add("digitalnook.net", {volume: "1.5", detune: ""});
+		this.digitalnook = this.sound.add("digitalnook.net", {volume: "1.5"});
 		this.intro = this.sound.add("intro", {volume: "0.4", detune: "100"});
 		//this.loadAudio.play();
 		this.intro.play();

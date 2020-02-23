@@ -47,7 +47,7 @@ class Game extends Phaser.Game {
 				this.load.audio("boss0", "/static/audio/spaceAdventure/boss.ogg");
 				this.load.audio("boss1", "/static/audio/spaceAdventure/boss1.ogg");
 				this.load.audio("boss2", "/static/audio/spaceAdventure/boss2.ogg");
-				`
+			`
 		});
 	}
 }
