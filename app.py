@@ -4,6 +4,7 @@ from functools import wraps
 from string import Template
 
 from flask import Flask, render_template, request, redirect, send_from_directory
+from flask_talisman import Talisman
 
 import modifyTable
 import checkTable
@@ -12,15 +13,13 @@ from loginKey import key
 from nocache import nocache
 
 app = Flask(__name__)
-Flask.secret_key = key
+# SECURITY HEADERS
+# for PRODUCTION SERVER ONLY
+Talisman(app, content_security_policy=None)
 
 #  encryption functions in jinja2 templating
 app.jinja_env.globals.update(decryptString=decryptString)
 app.jinja_env.globals.update(encryptString=encryptString)
-
-
-# PROD ONLY, THIS BREAKS DEV because of localhost
-# app.config["SERVER_NAME"] = "digitalnook.net"
 
 
 def loginRequired(appRoute):
@@ -534,4 +533,4 @@ def internalError(e):
 
 
 if __name__ == "__main__":
-	app.run(host="::1", port=5000, debug=True)
+	app.run(host="127.0.0.1", port=5000, debug=True)

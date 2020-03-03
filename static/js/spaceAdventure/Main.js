@@ -27,7 +27,6 @@ export default class Main extends Phaser.Scene {
 		this.bgAudio = this.sound.add(g.getRandTrack("main"));
 		this.bgAudio.play({loop: true, rate: 1, detune: 200, volume : "0.4"});
 
-		new Rectan
 		this.background = new Background({
 			scene: this,
 			x: 0,
