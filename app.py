@@ -49,10 +49,11 @@ def loginRequired(appRoute):
 
 			username = decryptString(encryptedUsername)
 			password = decryptString(encryptedPassword)
-			validLogin = checkTable.checkIfLoginCorrect(username,
-			                                            password)  # true if login cookies are valid credentials
 
-			if validLogin:
+ 			# true if login cookies are valid credentials
+			isValidLogin = checkTable.checkIfLoginCorrect(username, password) 
+
+			if isValidLogin:
 				return appRoute(*args, **kwargs)
 			else:
 				return errorResp
