@@ -13,8 +13,8 @@ from loginKey import key
 from nocache import nocache
 
 app = Flask(__name__)
-# SECURITY HEADERS
-# for PRODUCTION SERVER ONLY
+# SECURITY HEADER WRAPPER
+# PRODUCTION SERVER ONLY
 Talisman(app, content_security_policy=None)
 
 #  encryption functions in jinja2 templating
@@ -29,8 +29,6 @@ def loginRequired(appRoute):
 	Works by checking cookies to see if they already exist.
 	If cookies already exist and are correct. don't interrupt request.
 	If there is no cookies, redirect to login page
-	This will be used for the new draw something game that will require a login.
-	Reaction game will also be ported over to use this system
 	"""
 
 	@wraps(appRoute)

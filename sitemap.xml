@@ -1,49 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
-<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-    <url>
-        <loc>http://digitalnook.net/</loc>
-        <changefreq>weekly</changefreq>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>http://digitalnook.net/games/</loc>
-        <changefreq>weekly</changefreq>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>http://digitalnook.net/about/</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    <url>
-        <loc>http://digitalnook.net/bruh/</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    <url>
-        <loc>http://digitalnook.net/games/tennis/</loc>
-        <changefreq>weekly</changefreq>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>http://digitalnook.net/games/rps/</loc>
-        <changefreq>weekly</changefreq>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>http://digitalnook.net/games/reactionleaderboard/</loc>
-        <changefreq>weekly</changefreq>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>http://digitalnook.net/games/reaction/</loc>
-        <changefreq>weekly</changefreq>
-        <priority>1.0</priority>
-    </url>
-         <url>
-        <loc>http://digitalnook.net/games/doctorb/</loc>
-        <changefreq>weekly</changefreq>
-        <priority>1.0</priority>
-    </url>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://digitalnook.net/</loc>
+  <lastmod>2020-05-22T03:54:42+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://digitalnook.net/login/</loc>
+  <lastmod>2020-05-22T03:54:42+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://digitalnook.net/register/</loc>
+  <lastmod>2020-05-22T03:54:42+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://digitalnook.net/games/</loc>
+  <lastmod>2020-05-22T03:54:42+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://digitalnook.net/bruh/</loc>
+  <lastmod>2020-05-22T03:54:42+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://digitalnook.net/whatsnew/</loc>
+  <lastmod>2020-05-22T03:54:42+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://digitalnook.net/games/tennis/</loc>
+  <lastmod>2020-05-22T03:54:42+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://digitalnook.net/games/reaction/</loc>
+  <lastmod>2020-05-22T03:54:42+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://digitalnook.net/games/reactionleaderboard/</loc>
+  <lastmod>2020-05-22T03:54:42+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://digitalnook.net/games/rps/</loc>
+  <lastmod>2020-05-22T03:54:42+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
 </urlset>
