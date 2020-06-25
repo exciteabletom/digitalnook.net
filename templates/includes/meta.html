@@ -1,6 +1,13 @@
 <!-- begin metadata template -->
 <link href="/static/styles1.css" type="text/css" rel="stylesheet"/>
 <link href="/static/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
-<meta name="viewport" content="width=device-width, initial-scale=2"/>
+<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1"/>
 <meta charset="UTF-8"/>
+
+<script>
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+	document.getElementById("viewport").setAttribute("content", "width=device-width, initial-scale=0.5");
+}
+</script>
 <!-- end metadata template -->
+
