@@ -34,9 +34,6 @@ def loginRequired(appRoute):
 	@wraps(appRoute)
 
 	def wrapper(*args, **kwargs):
-		with open("lastcookies", "w") as f:
-			f.write(str(request.cookies))
-
 		loginErrorMessage = Template("$page requires you to be logged in")
 		errorResp = app.make_response(redirect("/login/"))
 		pathList = str(request.path).split("/")
