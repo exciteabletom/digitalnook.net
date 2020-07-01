@@ -1,11 +1,16 @@
+# Digitalnook.net app.py - Tommy Dougiamas
+
+# Libraries
 import json
 import operator
 from functools import wraps
 from string import Template
 
+# Flask
 from flask import Flask, render_template, request, redirect, send_from_directory
 from flask_talisman import Talisman
 
+# Local modules
 import modifyTable
 import checkTable
 from cyrpto import encryptString, decryptString

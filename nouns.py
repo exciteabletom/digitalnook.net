@@ -6,4 +6,4 @@ nouns = ["cup", "gravy", "swimsuit", "cat", "dog", "wheel", "car", "crime", "pol
          "pistol", "apple", "banana", "gold", "camera", "dirt", "oil", "party", "van", "hat", "oven", "pan", "rabbit",
          "sock", "arm", "toes", "scarf", "mountain", "bat", "baseball", "tennis", "swimming", "star", "line", "ear",
          "basketball", "calculator", "plane", "square", "bed", "smile", "scissors", "wing", "bath", "water", "women",
-         "men", "door", "bell", "shovel", "hill"]
+         "men", "door", "bell", "shovel", "hill", "interview", "laptop"]
