@@ -45,8 +45,6 @@ def loginRequired(appRoute):
 		if "USERNAME" in request.cookies and "PASSWORD" in request.cookies:
 			encryptedUsername = request.cookies.get("USERNAME")
 			encryptedPassword = request.cookies.get("PASSWORD")
-			with open("up", "w") as f:
-				f.write(f"{encryptedUsername}, {encryptedPassword}")
 			username = decryptString(encryptedUsername)
 			password = decryptString(encryptedPassword)
 
