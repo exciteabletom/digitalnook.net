@@ -1,2 +1,2 @@
 User-agent: *
-Disallow: /logout/
+Disallow: /logout/ /login/
