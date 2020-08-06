@@ -9,6 +9,10 @@
 	border-bottom: 2px black dashed;
 }
 
+.splitList > a, .splitListBottom > a {
+	display: block;
+}
+
 h1 {
 	color: black;
 	font-size: 50px;
