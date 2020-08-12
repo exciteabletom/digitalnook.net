@@ -1,4 +1,4 @@
-<!-- begin header template -->
+<!-- HEADER TEMPLATE -->
 <style>
 #mainHeader{
 	box-shadow: 10px 10px #D3D3D3;
@@ -91,13 +91,12 @@
 }</style>
 
 <div id="mainHeader">
-	<!--<img alt="banner for the site" id="mainHeaderImg" src="/static/images/banner.webp" onclick="window.location = '/'"/>-->
-	<div id="mainHeaderLogoWrapper">
-		<div id="mainHeaderLogo" class="clickToHome">
+	<div id="mainHeaderLogoWrapper" onclick="window.location = '/'" >
+		<div id="mainHeaderLogo">
 			<h2 id="mainHeaderLogoTitle">Digital Nook</h2>
 			<p id="mainHeaderLogoSub">Australian game servers</p>
 		</div>
-		<img alt="logo fire image" id="mainHeaderLogoImage" src="/static/images/logo/fire.png" class="clickToHome"/>
+		<img alt="logo fire image" id="mainHeaderLogoImage" src="/static/images/logo/fire.png"/>
 	</div>
 	<div id="mainHeaderLinkDiv">
 		{% if request.cookies["USERNAME"] is defined %}
@@ -108,12 +107,4 @@
 		{% endif %}
 	</div>
 </div>
-<script>
-	(function () {
-		const toHome = document.getElementsByClassName("clickToHome");
-		for (let i = 0; i < toHome.length; i++){
-			toHome[i].setAttribute("onclick", "window.location = '/'");
-		}
-	})()
-</script>
-<!-- end header template -->
+<!--END HEADER TEMPLATE-->
