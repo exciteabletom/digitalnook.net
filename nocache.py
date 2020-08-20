@@ -16,3 +16,4 @@ def nocache(view):
 		return response
 
 	return update_wrapper(no_cache, view)
+
