@@ -233,5 +233,5 @@ export default class Main extends Phaser.Scene {
 		} if (this.keys.F.isDown || this.keys.Space.isDown) {
 			this.fireGun();
 		}
-		}
+	}
 }

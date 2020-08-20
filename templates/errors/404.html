@@ -3,11 +3,18 @@
 <head>
 	<title>404 page not found</title>
 
-	{% include "./includes/meta.html" %}
+	{% include "/includes/meta.html" %}
 </head>
 
 <body>
-<h1> Sorry there doesn't appear to be anything here. <br/> Please check the url. </h1>
+<header>
+	{% include "/includes/header.html" %}
+	<h1> Sorry there doesn't appear to be anything here. </h1>
+</header>
+<main>
+<p>If this is in error, please contact <a href="mailto:admin@digitalnook.net">admin@digitalnook.net</a>.</p>
+
+</main>
 <br>
 
 <a href='/'>Back To Home</a>

@@ -524,7 +524,7 @@ def getPostId():
 # Handles 404 errors
 @app.errorhandler(404)
 def notFound(e):
-	return render_template("errors/404.html"), 404
+	return render_template("errors/404.html", error=e), 404
 
 
 # Handles 5** errors
