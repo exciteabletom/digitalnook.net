@@ -4,7 +4,7 @@
 	<title>Doctor 🅱 | DigitalNook</title>
 	{% include "/includes/meta.html" %}
 
-	<script src="//cdn.jsdelivr.net/npm/phaser@3.22.0/dist/phaser.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
 	<script src="/static/js/spaceAdventure/Index.js" type="module"></script>
 	<style>
 		canvas {
@@ -22,6 +22,7 @@
 	</style>
 </head>
 <body>
+{% include "/includes/cdn_licenses.html" %}
 <header>
 	{% include "/includes/header.html" %}
 	<h1>Doctor 🅱️</h1>
@@ -44,6 +45,7 @@
 	highScore = parseInt("{{ score }}");
 	console.log(highScore);
 	username = "{{ username }}";
+	loadJsLicenses()
 </script>
 <script src="/static/js/phaserResize.js"></script>
 </html>

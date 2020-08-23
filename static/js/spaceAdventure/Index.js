@@ -36,7 +36,7 @@ class Game extends Phaser.Game {
 		this.scene.add("endCard", EndCard);
 
 		this.scene.start("load", {
-			name: "Doctor 🅱",
+			name: "Doctor 🅱️",
 			scene: "main",
 			items: `
 				// GAME ASSETS
