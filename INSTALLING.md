@@ -19,7 +19,7 @@ This is all automated in the `install.sh` script (Linux Only). EXPERIMENTAL!!
 Otherwise: 
 - Create the tables with the schemas at `install/create_tables.sql`
 - Install dependencies with pip using `install/requirements.txt`
-- Create a long, randomised, byte string with the name `key` in loginKey.py    
+- Create a long, randomised, byte string with the name `key` in `/loginKey.py`   
 
 ## Running a development environment
 - Comment out the `Talisman()` wrapper at the top of `app.py`
