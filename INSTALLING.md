@@ -23,6 +23,6 @@ Otherwise:
 
 ## Running a development environment
 - Comment out the `Talisman()` wrapper at the top of `app.py`
-- Run `python3 -m flask run`     
+- Run `python3 -m flask run` or `python3 app.py`
 
 Have Fun!
