@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
 ########################################################################
-# add_js_licenses.sh - Copyright 2020, Thomas Chris Dougiamas
+# {filename} - Copyright 2020, Thomas Chris Dougiamas
 #
 # This file is part of Digital Nook.
 #
@@ -11,26 +10,10 @@
 #
 # Digital Nook is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
-
-# This script prepends the GPLv3 license to all js files that don't already have it
-# ref: https://www.gnu.org/software/librejs/free-your-javascript.html
-
-# Allow use of '**'
-shopt -s globstar
-
-
-for file in ./static/**/*.js; do
-	printf '%s' "$file"
-	if ! grep '@licstart' "$file"; then
-		printf '%s\n\n' "$(cat static/js/license.js)" | cat - "$file" > '/tmp/license_added'
-		cat '/tmp/license_added' > "$file"
-	fi
-done
-
 

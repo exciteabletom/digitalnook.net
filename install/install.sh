@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ########################################################################
-# add_js_licenses.sh - Copyright 2020, Thomas Chris Dougiamas
+# install.sh - Copyright 2020, Thomas Chris Dougiamas
 #
 # This file is part of Digital Nook.
 #
@@ -18,19 +18,28 @@
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
 
-# This script prepends the GPLv3 license to all js files that don't already have it
-# ref: https://www.gnu.org/software/librejs/free-your-javascript.html
+printf \
+'------------------------------
+This program will overwrite existing databases!
 
-# Allow use of '**'
-shopt -s globstar
+*EXIT NOW* IF YOU HAVE ALREADY MADE A DATABASE
+------------------------------'
+sleep 5
+
+# If not in root dir of project
+if ! find 'app.py'; then
+	1>&2 printf 'Please run this script from the project root directory. E.g "install/install.sh"'
+	exit 1
+fi
+
+rm -f userdata.db
+
+printf ':: CREATING NEW DATABASE'
+sqlite3 userdata.db <<< "$(cat create_tables.sql)"
+printf ':: DONE'
 
 
-for file in ./static/**/*.js; do
-	printf '%s' "$file"
-	if ! grep '@licstart' "$file"; then
-		printf '%s\n\n' "$(cat static/js/license.js)" | cat - "$file" > '/tmp/license_added'
-		cat '/tmp/license_added' > "$file"
-	fi
-done
 
+
+	
 
