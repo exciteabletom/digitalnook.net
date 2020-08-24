@@ -42,7 +42,7 @@ from nocache import nocache
 app = Flask(__name__)
 # SECURITY HEADER WRAPPER
 # PRODUCTION SERVER ONLY
-Talisman(app, content_security_policy=None)
+#Talisman(app, content_security_policy=None)
 
 #  encryption functions in jinja2 templating
 app.jinja_env.globals.update(decryptString=decryptString)

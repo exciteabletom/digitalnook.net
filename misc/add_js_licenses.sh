@@ -25,10 +25,10 @@
 shopt -s globstar
 
 
-for file in ./static/**/*.js; do
+for file in ../static/**/*.js; do
 	printf '%s' "$file"
 	if ! grep '@licstart' "$file"; then
-		printf '%s\n\n' "$(cat static/js/license.js)" | cat - "$file" > '/tmp/license_added'
+		printf '%s\n\n' "$(cat ../static/js/license.js)" | cat - "$file" > '/tmp/license_added'
 		cat '/tmp/license_added' > "$file"
 	fi
 done
