@@ -19,24 +19,34 @@
 ########################################################################
 
 printf \
-'------------------------------
-This program will overwrite existing databases!
+'------------------------------\n
+This program will overwrite existing databases!\n\n
 
-*EXIT NOW* IF YOU HAVE ALREADY MADE A DATABASE
-------------------------------'
+THIS SCRIPT IS NOT PRODUCTION READY!!!\n
+*EXIT NOW* IF YOU HAVE ALREADY MADE A DATABASE\n
+------------------------------\n\n'
 sleep 5
 
 # If not in root dir of project
 if ! find 'app.py'; then
-	1>&2 printf 'Please run this script from the project root directory. E.g "install/install.sh"'
+	1>&2 printf 'Please run this script from the project root directory. E.g "./install.sh"'
 	exit 1
 fi
 
+printf ':: CREATING NEW DATABASE\n'
 rm -f userdata.db
+sqlite3 userdata.db <<< "$(cat './install/create_tables.sql')"
+printf ':: DONE\n'
 
-printf ':: CREATING NEW DATABASE'
-sqlite3 userdata.db <<< "$(cat create_tables.sql)"
-printf ':: DONE'
+printf ':: CREATING LOGIN KEY\n'
+rand_bytes = $(od -A n -t d -N 40 /dev/urandom | tr -d ' ' | tr -d "\n")
+printf 'key = b"%s"' "$rand_bytes" > loginKey.py
+printf ':: DONE\n'
+
+printf ':: INSTALLING DEPENDENCIES\n'
+env python3 -m pip install -r install/requirements.txt
+printf ':: DONE\n'
+
 
 
 
