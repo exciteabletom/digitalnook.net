@@ -34,13 +34,12 @@ export default class Load extends Phaser.Scene {
 	 */
 	constructor() {
 		super("load");
-
 	}
 	init(config) {
-		console.log(config);
 		this.name = config.name;
 		this.loadItems = config.items;
 		this.nextScene = config.scene;
+		this.frameTime = 0;
 	}
 	preload() {
 		// LOADING SCREEN ASSETS
@@ -78,9 +77,13 @@ export default class Load extends Phaser.Scene {
 		this.tick = 0;
 		const logo = this.add.image(600, 300, "logo");
 		//logo.setOrigin(logo.width /2, logo.height /2);
-		this.add.text(logo.x + 200, logo.y -50 , `DigitalNook presents:\n${this.name}️`, {fontSize: "50px", fontFamily: '"Lucida Console", Monaco, monospace', align: "center"});
+		this.add.text(logo.x + 200, logo.y -50 , `DigitalNook presents:\n${this.name}`, {fontSize: "50px", fontFamily: '"Lucida Console", Monaco, monospace', align: "center"});
 
-		this.events.on("update", () => {
+	}
+	update(time, delta) {
+		this.frameTime += delta;
+		if (this.frameTime >= 16.6) {
+			this.frameTime = 0;
 			this.tick++;
 			if (this.loadAudio.volume > 0){
 				this.loadAudio.volume -= 0.0005;
@@ -90,7 +93,7 @@ export default class Load extends Phaser.Scene {
 				this.loadAudio.destroy();
 				this.scene.start(`${this.nextScene}`);
 			}
-		})
+		}
 	}
 };
 

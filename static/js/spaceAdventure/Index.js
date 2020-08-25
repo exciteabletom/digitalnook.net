@@ -91,6 +91,10 @@ let config = {
 			//debug: true,
 		},
 	},
+	fps: {
+		target: 60,
+		min: 50
+	},
 	pixelArt: true,
 };
 new Game(); // init game

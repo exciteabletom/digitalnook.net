@@ -37,11 +37,13 @@ export default class Main extends Phaser.Scene {
 		this.sprites = {};
 		this.hud = {}; // Heads Up Display Elements
 		this.keys = {};
+		this.frameTime = 0.0;
 	}
 
 	create() {
 		const {sprites} = this;
-		this.physics.world.setFPS(60); // sets update to run at 60hz doesn't change render fps
+		// Set physics simulation to 60hz
+		this.physics.world.setFPS(60)
 		this.powerupAudio = this.sound.add("powerUp");
 		this.playerHitAudio = this.sound.add("playerHit");
 
@@ -61,7 +63,11 @@ export default class Main extends Phaser.Scene {
 			key: "background"
 		}).setZ(-1); // make background always underneath everything
 
-		this.sprites.ship = new Ship({scene: this, x: 150, y: 300});
+		this.sprites.ship = new Ship({
+			scene: this, 
+			x: 150, 
+			y: 300
+		});
 
 
 		this.keys.W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -153,12 +159,8 @@ export default class Main extends Phaser.Scene {
 		g.hud = this.hud;
 	}
 
-	update() {
-		g.Main = this;
-		g.sprites = this.sprites;
-		g.hud = this.hud;
-		g.gameTick++;
-
+	update(time, delta) {
+		// Code that doesn't need 60hz update rate
 		if (g.gameScore > g.highScore) {
 			g.highScore = g.gameScore;
 			this.hud.highScore.text = `High Score:\n${g.highScore}`;
@@ -168,53 +170,66 @@ export default class Main extends Phaser.Scene {
 				this.bgAudio.destroy();
 				this.scene.stop();
 				this.scene.start("endCard");
-		}
-		else if (g.playerLife === 0) {
+		} else if (g.playerLife === 0) {
 			g.gameResult = "loss";
 		}
-		if (g.distanceToBoss > 0){ // boss not active
-			this.hud.boss.text = `Dr. 🅱️'s ship:\n${g.distanceToBoss}m`;
-			g.distanceToBoss -= 9;
 
-			if (g.gameTick % g.alienSpawnRate === 0) {
-				if (g.alienSpawnRate > 100) {
-					g.alienSpawnRate -= 1;
-				}
-				this.generateNewAliens();
-			}
-		}
-		else { // boss battle active
-			if (!g.boss){
-				this.bgAudio.pause();
-				this.scene.launch("bossBattle"); // starts boss battle alongside Main mechanics
-			}
-			g.boss = true;
-			this.hud.boss.text = `Dr. 🅱️:\n${g.bossLife}hp`;
-			const aliens = this.sprites.aliens.getChildren();
-			for (let i=0; i< aliens.length;i++){
-				aliens[i].removeAllListeners();
-				aliens[i].destroy();
-			}
-			const eBullets= this.sprites.enemyBullets.getChildren();
-			for (let i=0; i< eBullets.length;i++){
-				eBullets[i].removeAllListeners();
-				eBullets[i].destroy();
-			}
-		}
-
-		if (g.gameTick % 50 === 0) {
-			g.addScore(10);
-		}
-		if  (g.gameTick % 100 === 0 && g.playerLife <= 2 && Math.random() < 0.2){
-			this.spawnPowerUp();
-		}
-
-		if (g.firingCooldown > 0) {
-			g.firingCooldown--;
-		}
 		this.hud.scoreText.text = `Score:\n${g.gameScore}`;
-		this.background.updateBackground(); // scrolls background image
+
 		this.checkCursors();
+
+		// Code that relies on a consistent 60hz update
+		// This is a hack that forces these updates to only run
+		// at 60 hz. So if a user has an 144hz monitor it
+		// doesn't break the game timings
+		this.frameTime += delta;
+
+		if (this.frameTime >= 16) {  
+			this.frameTime = 0;
+			g.gameTick++;
+
+			if (g.distanceToBoss > 0){ // boss not active
+				this.hud.boss.text = `Dr. 🅱️'s ship:\n${g.distanceToBoss}m`;
+				g.distanceToBoss -= 9;
+
+				if (g.gameTick % g.alienSpawnRate === 0) {
+					if (g.alienSpawnRate > 100) {
+						g.alienSpawnRate -= 1;
+					}
+					this.generateNewAliens();
+				}
+			}
+			else { // boss battle active
+				if (!g.boss){
+					this.bgAudio.pause();
+					this.scene.launch("bossBattle"); // starts boss battle alongside Main mechanics
+				}
+				g.boss = true;
+				this.hud.boss.text = `Dr. 🅱️:\n${g.bossLife}hp`;
+				const aliens = this.sprites.aliens.getChildren();
+				for (let i=0; i< aliens.length;i++){
+					aliens[i].removeAllListeners();
+					aliens[i].destroy();
+				}
+				const eBullets= this.sprites.enemyBullets.getChildren();
+				for (let i=0; i< eBullets.length;i++){
+					eBullets[i].removeAllListeners();
+					eBullets[i].destroy();
+				}
+			}
+
+			if (g.gameTick % 50 === 0) {
+				g.addScore(10);
+			}
+			if  (g.gameTick % 100 === 0 && g.playerLife <= 2 && Math.random() < 0.2){
+				this.spawnPowerUp();
+			}
+
+			if (g.firingCooldown > 0) {
+				g.firingCooldown--;
+			}
+			this.background.updateBackground(); // scrolls background image
+		}
 	}
 
 	spawnPowerUp(type=null) { // TODO different types of powerups
