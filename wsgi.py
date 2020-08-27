@@ -18,7 +18,7 @@
 ########################################################################
 
 """
-This file allows gunicorn to act as reverse proxy to nginx
+This module allows gunicorn to act as reverse proxy to nginx
 """
 from app import app
 
