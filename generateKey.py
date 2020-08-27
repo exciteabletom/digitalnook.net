@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 ########################################################################
 # generateKey.py - Copyright 2020, Thomas Chris Dougiamas
 #
@@ -18,24 +19,31 @@
 ########################################################################
 """
 Generates a new login key, used for decryption and encryption.
+
+Use -f to avoid the are you sure check.
 """
 
 # RUNNING THIS WILL MAKE ALL PASSWORDS *NOT* ACCESSIBLE!!
 # BE CAREFUL!!
 from cryptography.fernet import Fernet
+import sys
 
-check = input("Are you sure you want to generate a new private key? Please type: 'yes i am sure' ")
+check = ""
+if len(sys.argv) != 1:
+	if sys.argv[1] == "-f":
+		check = "yes i am sure"
+if not check:
+	check = input("Are you sure you want to generate a new private key? Please type: 'yes i am sure' ")
 
 
 def newKey():
 	key = Fernet.generate_key()  # make new private key
-	with open("./loginKey.py", "wb") as loginKey:
-		loginKey.write("key = ?".format(key))  # write new key to file
+	with open("./loginKey.py", "w") as loginKey:
+		loginKey.write(f"# Never give out this information to anyone!\nkey = {key}")  # write new key to file
 
 
 if check.lower() == "yes i am sure":
 	newKey()
 	print("A new Key has been generated")
-
 else:
 	print("No private Keys were generated")
