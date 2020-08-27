@@ -39,7 +39,7 @@ if not check:
 def newKey():
 	key = Fernet.generate_key()  # make new private key
 	with open("./loginKey.py", "w") as loginKey:
-		loginKey.write(f"key = {key}")  # write new key to file
+		loginKey.write(f"# Never give out this information to anyone!\nkey = {key}")  # write new key to file
 
 
 if check.lower() == "yes i am sure":
