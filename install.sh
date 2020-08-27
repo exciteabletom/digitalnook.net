@@ -26,6 +26,8 @@ THIS SCRIPT IS NOT PRODUCTION READY!!!\n
 *EXIT NOW* IF YOU HAVE ALREADY MADE A DATABASE\n
 ------------------------------\n\n'
 
+sleep 45
+
 # If not in root dir of project
 if ! find 'app.py'; then
 	1>&2 printf 'Please run this script from the project root directory. E.g "./install.sh"'
