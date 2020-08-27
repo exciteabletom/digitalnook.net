@@ -18,14 +18,13 @@
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
 
-printf \
+printf -- \
 '------------------------------\n
 This program will overwrite existing databases!\n\n
 
 THIS SCRIPT IS NOT PRODUCTION READY!!!\n
 *EXIT NOW* IF YOU HAVE ALREADY MADE A DATABASE\n
 ------------------------------\n\n'
-sleep 5
 
 # If not in root dir of project
 if ! find 'app.py'; then
@@ -35,12 +34,11 @@ fi
 
 printf ':: CREATING NEW DATABASE\n'
 rm -f userdata.db
-sqlite3 userdata.db <<< "$(cat './install/create_tables.sql')"
+sqlite3 -line userdata.db "$(cat ./install/create_tables.sql)"
 printf ':: DONE\n'
 
 printf ':: CREATING LOGIN KEY\n'
-rand_bytes = $(od -A n -t d -N 40 /dev/urandom | tr -d ' ' | tr -d "\n")
-printf 'key = b"%s"' "$rand_bytes" > loginKey.py
+python3 ./generate_key.py -f
 printf ':: DONE\n'
 
 printf ':: INSTALLING DEPENDENCIES\n'
