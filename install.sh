@@ -26,7 +26,7 @@ THIS SCRIPT IS NOT PRODUCTION READY!!!\n
 *EXIT NOW* IF YOU HAVE ALREADY MADE A DATABASE\n
 ------------------------------\n\n'
 
-sleep 45
+sleep 2
 
 # If not in root dir of project
 if ! find 'app.py'; then
@@ -39,8 +39,12 @@ rm -f userdata.db
 sqlite3 -line userdata.db "$(cat ./install/create_tables.sql)"
 printf ':: DONE\n'
 
+printf ':: CREATING latestId.txt\n'
+printf '0' > static/latestId.txt
+printf ':: DONE\n'
+
 printf ':: CREATING LOGIN KEY\n'
-python3 ./generate_key.py -f
+python3 ./generateKey.py -f
 printf ':: DONE\n'
 
 printf ':: INSTALLING DEPENDENCIES\n'

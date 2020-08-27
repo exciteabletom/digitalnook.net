@@ -50,10 +50,11 @@ def checkIfUsernameAvailable(name):
 	data = cur.fetchone()
 
 	if data:
-		return True
-
-	else:
+		# Username not available
 		return False
+	else:
+		# Username is available
+		return True
 
 
 def checkIfLoginCorrect(name, password=None):
