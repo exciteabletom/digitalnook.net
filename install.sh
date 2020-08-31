@@ -52,6 +52,7 @@ fi
 
 if check 'Do you want to create a virtualenv?'; then
 	printf ':: CREATING VIRTUALENV ".venv"\n'
+	venv=1
 	rm -rf .venv
 	python3 -m venv .venv
 	source .venv/bin/activate
@@ -74,8 +75,12 @@ printf ':: DONE\n\n'
 
 printf ':: CREATING LOGIN KEY\n'
 python3 ./generateKey.py -f
-printf ':: DONE\n\n'
-printf ':: ENTER THE virtualenv with "source .venv/bin/activate"\n'
+printf ':: DONE\n'
+
+if [[ "$venv" ]]; then
+	printf ':: Use the virtualenv with "source .venv/bin/activate"\n'
+fi
+printf ':: Run the server with "python3 -m flask run"\n'
 
 
 
