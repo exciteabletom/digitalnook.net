@@ -54,6 +54,7 @@ if check 'Do you want to create a virtualenv?'; then
 	printf ':: CREATING VIRTUALENV ".venv"\n'
 	rm -rf .venv
 	python3 -m venv .venv
+	source .venv/bin/activate
 	printf ':: DONE\n\n'
 fi
 	
@@ -74,6 +75,7 @@ printf ':: DONE\n\n'
 printf ':: INSTALLING DEPENDENCIES\n'
 env python3 -m pip install -r install/requirements.txt
 printf ':: DONE\n\n'
+printf ':: ENTER THE virtualenv with "source .venv/bin/activate"'
 
 
 
