@@ -18,38 +18,62 @@
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
 
-printf -- \
-'------------------------------\n
-This program will overwrite existing databases!\n\n
-
-THIS SCRIPT IS NOT PRODUCTION READY!!!\n
-*EXIT NOW* IF YOU HAVE ALREADY MADE A DATABASE\n
-------------------------------\n\n'
-
-sleep 2
-
 # If not in root dir of project
-if ! find 'app.py'; then
+# TODO: There has to be a better way to do this
+if ! find 'app.py' &>/dev/null; then
 	1>&2 printf 'Please run this script from the project root directory. E.g "./install.sh"'
 	exit 1
 fi
 
+check() {
+	message="$1"
+	printf '%s (y/n) ' "$message"
+
+	read confirm
+	if ! [[ "$confirm" == 'y' || "$confirm" == 'Y' ]]; then
+		return 1
+	else
+		return 0
+	fi
+
+}
+
+printf -- \
+'===============================================
+This program will overwrite existing databases!
+ALL YOUR DATA AND LOGIN KEY *WILL* BE DELETED
+===============================================
+'
+
+if ! check 'Are you sure you want to continue?'; then
+	exit 1
+fi
+
+
+if check 'Do you want to create a virtualenv?'; then
+	printf ':: CREATING VIRTUALENV ".venv"\n'
+	rm -rf .venv
+	python3 -m venv .venv
+	printf ':: DONE\n\n'
+fi
+	
+
 printf ':: CREATING NEW DATABASE\n'
 rm -f userdata.db
 sqlite3 -line userdata.db "$(cat ./install/create_tables.sql)"
-printf ':: DONE\n'
+printf ':: DONE\n\n'
 
 printf ':: CREATING latestId.txt\n'
 printf '0' > static/latestId.txt
-printf ':: DONE\n'
+printf ':: DONE\n\n'
 
 printf ':: CREATING LOGIN KEY\n'
 python3 ./generateKey.py -f
-printf ':: DONE\n'
+printf ':: DONE\n\n'
 
 printf ':: INSTALLING DEPENDENCIES\n'
 env python3 -m pip install -r install/requirements.txt
-printf ':: DONE\n'
+printf ':: DONE\n\n'
 
 
 

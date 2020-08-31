@@ -12,17 +12,16 @@ If you want to install your own instance of this site for some reason, you will 
 ## Creating a virtual environment (optional)
 Do <a href='https://docs.python.org/3/library/venv.html'>this</a> before any of the other steps.    
 
-## Automatic Install (experimental)
-This is all automated in the `install.sh` script (Linux Only). EXPERIMENTAL!!     
+## Automatic Install
+If you are on a unix-based system just run `install.sh` from the root directory and the install will be automatically done.
 
 ## Manual Install
 Otherwise: 
 - Create the tables with the schemas at `install/create_tables.sql`
 - Install dependencies with pip using `install/requirements.txt`
-- Create a long, randomised, byte string with the name `key` in `/loginKey.py`   
+- Create a long, randomised, byte string with the name `key` in `loginKey.py`   
 
-## Running a development environment
-- Comment out the `Talisman()` wrapper at the top of `app.py`
-- Run `python3 -m flask run` or `python3 app.py`
+## Running a development environment   
+Run `python3 -m flask run` or `python3 app.py`
 
 Have Fun!
