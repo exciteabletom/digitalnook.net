@@ -22,6 +22,7 @@ Otherwise:
 - Create a long, randomised, byte string with the name `key` in `loginKey.py`   
 
 ## Running a development environment   
+If you created a virtualenv: run `source .venv/bin/activate`   
 Run `python3 -m flask run` or `python3 app.py`
 
 Have Fun!
