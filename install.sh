@@ -59,6 +59,10 @@ if check 'Do you want to create a virtualenv?'; then
 fi
 	
 
+printf ':: INSTALLING DEPENDENCIES\n'
+env python3 -m pip install -r install/requirements.txt
+printf ':: DONE\n\n'
+
 printf ':: CREATING NEW DATABASE\n'
 rm -f userdata.db
 sqlite3 -line userdata.db "$(cat ./install/create_tables.sql)"
@@ -71,11 +75,8 @@ printf ':: DONE\n\n'
 printf ':: CREATING LOGIN KEY\n'
 python3 ./generateKey.py -f
 printf ':: DONE\n\n'
+printf ':: ENTER THE virtualenv with "source .venv/bin/activate"\n'
 
-printf ':: INSTALLING DEPENDENCIES\n'
-env python3 -m pip install -r install/requirements.txt
-printf ':: DONE\n\n'
-printf ':: ENTER THE virtualenv with "source .venv/bin/activate"'
 
 
 
