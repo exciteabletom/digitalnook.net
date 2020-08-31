@@ -21,7 +21,7 @@
 # If not in root dir of project
 # TODO: There has to be a better way to do this
 if ! find 'app.py' &>/dev/null; then
-	1>&2 printf 'Please run this script from the project root directory. E.g "./install.sh"'
+	1>&2 out 'Please run this script from the project root directory. E.g "./install.sh"'
 	exit 1
 fi
 
@@ -29,7 +29,7 @@ check() {
 	message="$1"
 	printf '%s (y/n) ' "$message"
 
-	read confirm
+	read -r confirm
 	if ! [[ "$confirm" == 'y' || "$confirm" == 'Y' ]]; then
 		return 1
 	else
@@ -38,10 +38,15 @@ check() {
 
 }
 
-printf -- \
-'===============================================
+out() {
+	printf -- '\033[1;31m%s\033[0m\n' "$1"
+}
+
+
+out '===============================================
 This program will overwrite existing databases!
-ALL YOUR DATA AND LOGIN KEY *WILL* BE DELETED
+ALL YOUR DATA AND LOGIN KEY *WILL* BE DELETED.
+YOU WILL BE RESET TO A CLEAN INSTALL.
 ===============================================
 '
 
@@ -51,36 +56,40 @@ fi
 
 
 if check 'Do you want to create a virtualenv?'; then
-	printf ':: CREATING VIRTUALENV ".venv"\n'
+	out ':: CREATING VIRTUALENV ".venv"'
 	venv=1
 	rm -rf .venv
 	python3 -m venv .venv
 	source .venv/bin/activate
-	printf ':: DONE\n\n'
+	out ':: DONE'
 fi
 	
+out ':: UPDATING PIP'
+python3 -m pip install --upgrade pip
+out ':: DONE'
 
-printf ':: INSTALLING DEPENDENCIES\n'
-env python3 -m pip install -r install/requirements.txt
-printf ':: DONE\n\n'
+out ':: INSTALLING DEPENDENCIES'
+python3 -m pip install -r install/requirements.txt
+out ':: DONE'
 
-printf ':: CREATING NEW DATABASE\n'
+out ':: CREATING NEW DATABASE'
 rm -f userdata.db
 sqlite3 -line userdata.db "$(cat ./install/create_tables.sql)"
-printf ':: DONE\n\n'
+out ':: DONE'
 
-printf ':: CREATING latestId.txt\n'
-printf '0' > static/latestId.txt
-printf ':: DONE\n\n'
+out ':: CREATING latestId.txt'
+out '0' > static/latestId.txt
+out ':: DONE'
 
-printf ':: CREATING LOGIN KEY\n'
+out ':: CREATING LOGIN KEY'
 python3 ./generateKey.py -f
-printf ':: DONE\n'
+out ':: DONE
+'
 
 if [[ "$venv" ]]; then
 	printf ':: Use the virtualenv with "source .venv/bin/activate"\n'
 fi
-printf ':: Run the server with "python3 -m flask run"\n'
+printf ':: Run the server with "python3 -m flask run"'
 
 
 
