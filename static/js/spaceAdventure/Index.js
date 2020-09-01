@@ -77,7 +77,7 @@ class Game extends Phaser.Game {
 }
 
 let config = {
-	type: Phaser.AUTO,
+	type: Phaser.WEBGL,
 	backgroundColor: "#000",
 	scale: {
 		parent: "game",

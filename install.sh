@@ -78,7 +78,7 @@ sqlite3 -line userdata.db "$(cat ./install/create_tables.sql)"
 out ':: DONE'
 
 out ':: CREATING latestId.txt'
-out '0' > static/latestId.txt
+printf '0' > static/latestId.txt
 out ':: DONE'
 
 out ':: CREATING LOGIN KEY'
