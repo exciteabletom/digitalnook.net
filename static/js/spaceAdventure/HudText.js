@@ -44,3 +44,4 @@ export class PlusHudText extends Phaser.GameObjects.Text {
 		}
 	}
 }
+
