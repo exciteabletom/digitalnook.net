@@ -64,13 +64,14 @@ if check 'Do you want to create a virtualenv?'; then
 	out ':: DONE'
 fi
 	
-out ':: UPDATING PIP'
-python3 -m pip install --upgrade pip
+out ':: UPDATING pip AND setuptools'
+python3 -m pip install --upgrade pip setuptools
 out ':: DONE'
 
 out ':: INSTALLING DEPENDENCIES'
 python3 -m pip install -r install/requirements.txt
 out ':: DONE'
+
 
 out ':: CREATING NEW DATABASE'
 rm -f userdata.db
