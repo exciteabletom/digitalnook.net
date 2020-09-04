@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 ########################################################################
 # install.sh - Copyright 2020, Thomas Chris Dougiamas
 #
@@ -18,11 +18,25 @@
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
 
-# If not in root dir of project
-# TODO: There has to be a better way to do this
-if ! find 'app.py' &>/dev/null; then
-	1>&2 out 'Please run this script from the project root directory. E.g "./install.sh"'
-	exit 1
+# POSIX compatible install script:
+#  - Creates a venv
+#  - Installs pip
+#  - Installs dependencies
+#  - Creates a SQLite db
+#  - Creates static/latestId.txt 
+#  - Creates a login Key
+
+# Get the directory this script is in.
+if printf '%s' "$0" | grep '/' -; then
+	#script_dir="$( printf '%s' "$0" | rev | awk -F '/' 'BEGIN {OFS = FS}' '{for (i=2; i<=NF;++i) {print $i}}'| rev )"
+	script_dir="$( printf '%s' "$0" | rev | cut -d'/' -f2- | rev)"
+else
+	script_dir="$PWD"
+fi
+
+# If not in working directory of script, chdir into it
+if [ "$PWD" != "$script_dir" ]; then
+	cd "$script_dir" || printf 'Directory %s does not exist!' "$script_dir"; exit 1
 fi
 
 check() {
@@ -30,12 +44,11 @@ check() {
 	printf '%s (y/n) ' "$message"
 
 	read -r confirm
-	if ! [[ "$confirm" == 'y' || "$confirm" == 'Y' ]]; then
+	if ! [ "$confirm" = 'y' ] || ! [ "$confirm" = 'Y' ]; then
 		return 1
 	else
 		return 0
 	fi
-
 }
 
 out() {
@@ -60,7 +73,7 @@ if check 'Do you want to create a virtualenv?'; then
 	venv=1
 	rm -rf .venv
 	python3 -m venv .venv
-	source .venv/bin/activate
+	. .venv/bin/activate
 	out ':: DONE'
 fi
 	
@@ -87,7 +100,7 @@ python3 ./generateKey.py -f
 out ':: DONE
 '
 
-if [[ "$venv" ]]; then
+if [ "$venv" ]; then
 	printf ':: Use the virtualenv with "source .venv/bin/activate"\n'
 fi
 printf ':: Run the server with "python3 -m flask run"'
