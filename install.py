@@ -22,7 +22,9 @@ import sys
 import platform
 import venv
 import subprocess
+import shutil
 from pathlib import Path
+
 
 # OS agnostic file seperator
 fs_sep = str(Path("/"))
@@ -69,12 +71,12 @@ def create_venv():
 	"""
 	try:
 		# This might fail on FAT filesystems or windows
-		venv.create(".venv", symlinks=True)
+		venv.create(".venv", with_pip=True, symlinks=True)
 
 	except:
 		# Fallback command
 		try:
-			venv.create(".venv")
+			venv.create(".venv", with_pip=True)
 		except:
 			return False
 	
@@ -119,6 +121,11 @@ def main():
 	
 	if check("Do you want to create a virtual environment?\nThis is highly recommended."):
 		status("Creating virtual environment")
+		try:
+			shutil.rmtree('.venv')
+		except FileNotFoundError: 
+			pass
+
 		if not create_venv():
 			print("Error creating a virtual environment")
 			sys.exit(1)
@@ -135,7 +142,12 @@ def main():
 	status()
 
 	status("Creating new database")
-	os.remove("userdata.db")
+	try:
+		os.remove("userdata.db")
+	# If fresh install
+	except FileNotFoundError:
+		pass
+
 	subprocess.call([python_bin, "install/create_tables.py"])
 	status()
 
