@@ -140,7 +140,7 @@ def main():
 	status()
 
 	status("Creating latestId flatfile")
-	with open("static/latestId", "w") as f:
+	with open("static/latestId.txt", "w") as f:
 		f.write("0")
 	status()
 
