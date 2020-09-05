@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 ########################################################################
 # create_tables.py - Copyright 2020, Thomas Chris Dougiamas
 #

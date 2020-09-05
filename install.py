@@ -109,8 +109,6 @@ def main():
 
 		# Change to that directory
 		os.chdir(script_dir)
-		print(os.listdir())
-
 
 	# It is now safe to assume that the working directory
 	# is the project's root.
@@ -170,6 +168,7 @@ f"""All tasks done!
 
 If you made a virtual environment run it with '{source_instruct}'
 You can run the server with 'python3 -m flask run'""")	
+
 
 if __name__ == "__main__":
 	main()
