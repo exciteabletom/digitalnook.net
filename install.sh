@@ -18,6 +18,7 @@
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
 
+##
 # POSIX compatible install script:
 #  - Creates a venv
 #  - Installs pip
@@ -25,18 +26,20 @@
 #  - Creates a SQLite db
 #  - Creates static/latestId.txt 
 #  - Creates a login Key
+#
+# TODO: Make this a python script instead of sh
+##
 
 # Get the directory this script is in.
-if printf '%s' "$0" | grep '/' -; then
-	#script_dir="$( printf '%s' "$0" | rev | awk -F '/' 'BEGIN {OFS = FS}' '{for (i=2; i<=NF;++i) {print $i}}'| rev )"
-	script_dir="$( printf '%s' "$0" | rev | cut -d'/' -f2- | rev)"
+if printf '%s' "$0" | grep '/' - >/dev/null 2>&1; then
+	script_dir="$(printf '%s' "$0" | rev | cut -d'/' -f2- | rev)"
 else
 	script_dir="$PWD"
 fi
 
 # If not in working directory of script, chdir into it
 if [ "$PWD" != "$script_dir" ]; then
-	cd "$script_dir" || printf 'Directory %s does not exist!' "$script_dir"; exit 1
+	cd "$script_dir" || exit 1
 fi
 
 check() {
@@ -44,7 +47,7 @@ check() {
 	printf '%s (y/n) ' "$message"
 
 	read -r confirm
-	if ! [ "$confirm" = 'y' ] || ! [ "$confirm" = 'Y' ]; then
+	if [ "$confirm" != 'y' ] && [ "$confirm" != 'Y' ]; then
 		return 1
 	else
 		return 0
@@ -104,11 +107,4 @@ if [ "$venv" ]; then
 	printf ':: Use the virtualenv with "source .venv/bin/activate"\n'
 fi
 printf ':: Run the server with "python3 -m flask run"'
-
-
-
-
-
-
-	
 
