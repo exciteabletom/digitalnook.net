@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 ########################################################################
 # install.py - Copyright 2020, Thomas Chris Dougiamas
 #
@@ -16,6 +17,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
+"""
+Functions relating to the install process.
+
+main() is  the entrypoint for an interactive install.
+"""
 
 import os
 import sys
