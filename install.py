@@ -120,7 +120,7 @@ def main():
 	# is the project's root.
 
 	# Quick are you sure check
-	if not check("This script will delete any existing databases.\nAre you sure?"):
+	if not check("This script will delete any existing databases and login keys.\nAre you sure?"):
 		sys.exit(0)
 	
 	if check("Do you want to create a virtual environment?\nThis is highly recommended."):
