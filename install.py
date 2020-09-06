@@ -76,8 +76,12 @@ def create_venv():
 	:return: True on success, false otherwise
 	"""
 	try:
-		# This might fail on FAT filesystems or windows
-		venv.create(".venv", with_pip=True, symlinks=True)
+		print(unix_os)
+		if unix_os:
+			# This might fail on FAT filesystems or on windows
+			venv.create(".venv", with_pip=True, symlinks=True)
+		else:
+			venv.create(".venv", with_pip=True)
 
 	except:
 		# Fallback command
@@ -134,7 +138,10 @@ def main():
 			print("Error creating a virtual environment")
 			sys.exit(1)
 
-		python_bin = ".venv/bin/python3"
+		if unix_os:
+			python_bin = str(Path(".venv/bin/python3"))
+		else:
+			python_bin = str(Path(".venv/Scripts/python.exe"))
 
 		# Update pip and setuptools
 		subprocess.call([python_bin, "-m", "pip", "install", "--upgrade", "pip", "setuptools"])
@@ -171,7 +178,7 @@ def main():
 
 	print(f"""All tasks done!
 If you made a virtual environment activate it with '{source_instruct}'
-You can run the developmentserver with 'python3 -m flask run'
+You can run the developmentserver with 'python -m flask run'
 """)	
 
 
