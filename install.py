@@ -32,8 +32,6 @@ import shutil
 from pathlib import Path
 
 
-# OS agnostic file seperator
-fs_sep = str(Path("/"))
 
 def status(message=None):
 	"""
@@ -75,6 +73,7 @@ def create_venv():
 	:r_type: bool
 	:return: True on success, false otherwise
 	"""
+	# TODO: This try except nesting is messy
 	try:
 		print(unix_os)
 		if unix_os:
@@ -108,6 +107,10 @@ def main():
 
 	# Where the python binary is
 	python_bin = "python3"
+
+	# OS agnostic file seperator
+	# '/' on *nix '\\' on Windows
+	fs_sep = str(Path("/"))
 
 	script_path = sys.argv[0]
 	script_dir = ""
@@ -172,14 +175,15 @@ def main():
 	status()
 
 	if unix_os:
-		source_instruct = ". .venv/bin/activate"
+		source_instruct = ". " + str(Path(".venv/bin/activate"))
 	else:
-		source_instruct = ".venv\\Scripts\\activate.bat"
+		source_instruct = str(Path(".venv/Scripts/activate.bat"))
 
-	print(f"""All tasks done!
-If you made a virtual environment activate it with '{source_instruct}'
-You can run the developmentserver with 'python -m flask run'
-""")	
+	print(
+		f"All tasks done! The server is now installed.\n\n" 
+		f"If you made a virtual environment activate it with '{source_instruct}'\n" 
+		f"You can run the development server with 'python -m flask run'\n",
+	)
 
 
 if __name__ == "__main__":
