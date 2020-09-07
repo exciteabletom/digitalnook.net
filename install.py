@@ -169,11 +169,10 @@ def main():
 	else:
 		source_instruct = ".venv\\Scripts\\activate.bat"
 
-	print(
-f"""All tasks done!
-
-If you made a virtual environment run it with '{source_instruct}'
-You can run the server with 'python3 -m flask run'""")	
+	print(f"""All tasks done!
+If you made a virtual environment activate it with '{source_instruct}'
+You can run the developmentserver with 'python3 -m flask run'
+""")	
 
 
 if __name__ == "__main__":
