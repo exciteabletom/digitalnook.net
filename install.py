@@ -186,5 +186,6 @@ def main():
 	)
 
 
+# Only run if being run from command-line, not imported.
 if __name__ == "__main__":
 	main()

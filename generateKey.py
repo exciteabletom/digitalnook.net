@@ -20,7 +20,7 @@
 """
 Generates a new login key, used for decryption and encryption.
 
-Use -f to avoid the are you sure check.
+Use -f to skip interactive prompts
 """
 
 # RUNNING THIS WILL MAKE ALL PASSWORDS *NOT* ACCESSIBLE!!
