@@ -18,11 +18,14 @@
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
 """
-This is the main file for the flask app. 
-Run this using 'flask run' or 'python3 app.py'
+This is the entrypoint module for the flask app. 
+
+Start a dev server with 'python3 app.py'.
+For production run with --production.
 """
 
-# Libraries
+# Standard Libraries
+import sys
 import json
 import operator
 from functools import wraps
@@ -39,10 +42,17 @@ from cyrpto import encryptString, decryptString
 from loginKey import key
 from nocache import nocache
 
+# If the app is running in production or not
+if "--production" in sys.argv[1:]:
+	PRODUCTION = True	
+else:
+	PRODUCTION = False
+
 app = Flask(__name__)
+
 # SECURITY HEADER WRAPPER
-# PRODUCTION SERVER ONLY
-#Talisman(app, content_security_policy=None)
+if PRODUCTION:
+	Talisman(app, content_security_policy=None)
 
 #  encryption functions in jinja2 templating
 app.jinja_env.globals.update(decryptString=decryptString)
@@ -556,4 +566,11 @@ def internalError(e):
 
 
 if __name__ == "__main__":
-	app.run(host="127.0.0.1", port=5000, debug=True)
+	# debug=False for production
+	if PRODUCTION:
+		print(" * Production mode is active.")
+		app.run(host="127.0.0.1", port=5000, debug=False)
+	else:
+		print(" * Development mode is active. Use --production if you are not developing")
+		app.run(host="127.0.0.1", port=5000, debug=True)
+

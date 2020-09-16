@@ -31,6 +31,8 @@ import subprocess
 import shutil
 from pathlib import Path
 
+import constants
+
 
 
 def status(message=None):
@@ -95,8 +97,20 @@ def create_venv():
 
 def main():
 	"""
-	Main entrypoint. Installs a new Digital Nook dev environment.
+	Main entrypoint. 
+
+	Installs a new Digital Nook dev environment.
 	"""
+
+	# Get the version number as a float
+	# E.g. '3.6.5' becomes 3.6
+	py_ver = platform.python_version().split(".")
+	py_ver = float(".".join(py_ver[:2]))
+
+	# f strings not used here for compatibility with <3.6
+	if py_ver < constants.VERSION:
+		print("Your python version must be " + constants.VERSION + " or newer")
+		sys.exit(1)
 
 	# If the operating system is unix based or not
 	unix_os = False
