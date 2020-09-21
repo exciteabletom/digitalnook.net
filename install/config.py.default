@@ -1,5 +1,5 @@
 ########################################################################
-# wsgi.py - Copyright 2020, Thomas Chris Dougiamas
+# config.py - Copyright 2020, Thomas Chris Dougiamas
 #
 # This file is part of Digital Nook.
 #
@@ -17,10 +17,6 @@
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
 
-"""
-This module allows gunicorn to act as reverse proxy to nginx
-"""
-from app import app
-
-if __name__ == "__main__":
-	app.run()
+# True if development mode should be used
+# False for production environment (increased security)
+production=False

@@ -38,20 +38,15 @@ from flask_talisman import Talisman
 # Local modules
 import modifyTable
 import checkTable
+import config
 from cyrpto import encryptString, decryptString
 from loginKey import key
 from nocache import nocache
 
-# If the app is running in production or not
-if "--production" in sys.argv[1:]:
-	PRODUCTION = True	
-else:
-	PRODUCTION = False
-
 app = Flask(__name__)
 
 # SECURITY HEADER WRAPPER
-if PRODUCTION:
+if config.production:
 	Talisman(app, content_security_policy=None)
 
 #  encryption functions in jinja2 templating
@@ -567,10 +562,9 @@ def internalError(e):
 
 if __name__ == "__main__":
 	# debug=False for production
-	if PRODUCTION:
-		print(" * Production mode is active.")
-		app.run(host="127.0.0.1", port=5000, debug=False)
+	if config.production:
+		print("Turn off production mode to run a development server!", file=sys.stderr)
+		sys.exit(1)
 	else:
-		print(" * Development mode is active. Use --production if you are not developing")
 		app.run(host="127.0.0.1", port=5000, debug=True)
 

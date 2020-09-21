@@ -34,7 +34,6 @@ from pathlib import Path
 import constants
 
 
-
 def status(message=None):
 	"""
 	Void function
@@ -108,7 +107,7 @@ def main():
 	py_ver = float(".".join(py_ver[:2]))
 
 	# f strings not used here for compatibility with <3.6
-	if py_ver < constants.VERSION:
+	if py_ver < constants.PYTHON_VERSION:
 		print("Your python version must be " + constants.VERSION + " or newer")
 		sys.exit(1)
 
@@ -141,7 +140,7 @@ def main():
 	# is the project's root.
 
 	# Quick are you sure check
-	if not check("This script will delete any existing databases and login keys.\nAre you sure?"):
+	if not check("This script will delete any existing databases, configs, and login keys.\nAre you sure?"):
 		sys.exit(0)
 	
 	if check("Do you want to create a virtual environment?\nThis is highly recommended."):
@@ -188,15 +187,19 @@ def main():
 	subprocess.call([python_bin, "generateKey.py", "-f"])
 	status()
 
+	status("Copying default config file")
+	shutil.copyfile(str(Path("install/config.py.default")), "config.py")
+	status()
+
 	if unix_os:
-		source_instruct = ". " + str(Path(".venv/bin/activate"))
+		source_instruct = ". .venv/bin/activate"
 	else:
-		source_instruct = str(Path(".venv/Scripts/activate.bat"))
+		source_instruct = ".venv/Scripts/activate.bat"
 
 	print(
 		f"All tasks done! The server is now installed.\n\n" 
 		f"If you made a virtual environment activate it with '{source_instruct}'\n" 
-		f"You can run the development server with 'python -m flask run'\n",
+		f"You can run the development server with 'python app.py'\n",
 	)
 
 
