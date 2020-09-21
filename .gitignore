@@ -8,6 +8,7 @@ idea/
 errors.txt
 video/
 videos/
+config.py
 
 *.db
 
