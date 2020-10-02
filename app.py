@@ -27,14 +27,13 @@ For production run with --production.
 # Standard Libraries
 import sys
 import io
-import base64
 import json
 import operator
 from functools import wraps
 from string import Template
 
 # Flask
-from flask import Flask, render_template, request, redirect, send_from_directory
+from flask import Flask, render_template, request, redirect, send_from_directory, Response
 from flask_talisman import Talisman
 
 # Pip modules
@@ -45,7 +44,6 @@ import modifyTable
 import checkTable
 import config
 from cyrpto import encryptString, decryptString
-from loginKey import key
 from nocache import nocache
 
 app = Flask(__name__)
@@ -97,6 +95,7 @@ def loginRequired(appRoute):
 	return wrapper
 
 
+# This should be handled in NGINX instead for production.
 @app.route('/robots.txt')
 @app.route('/sitemap.xml')
 def staticFromRoot():
@@ -336,7 +335,6 @@ def drawSomething():
 										   currentUser=currentUser)
 
 			if checkTable.checkIfLoginCorrect(requestedUser):
-				randWord = None
 				data = checkTable.checkFromDraw(gameId)
 
 				if data:  # game already started therefore word already exists
@@ -550,23 +548,28 @@ def quote2ImagePage():
 
 @app.route("/quote2image/generate/")
 def newQuote2Image():
-	shadowCheck = bool(request.args.get("shadowCheck"))
-	elementCount = int(request.args.get("elementCount"))
-	quote = request.args.get("quote")
+	shadowCheck = bool(request.args.get("shadow", type=bool))
+
+	elementCount = request.args.get("elements", type=int)
+
+	quote = request.args.get("quote", type=str)
+
+	if not quote:
+		quote = ""
+
 	img = quoteGenerate.main(quote, shadow=shadowCheck, noise=elementCount)
 
+	# Empty byte array
 	byteArr = io.BytesIO()
-	img.save(byteArr, format="PNG")
-	# Get bytes
-	imgData = byteArr.getvalue()
-	# Base64 encode bytes
-	imgData = base64.b64encode(imgData)
-	# Bytes to str
-	imgData = imgData.decode()
-	# Create data URL
-	dataUrl = "data:image/png;base64," + imgData
 
-	return render_template("quote2imageGenerate.html", imageData=dataUrl)
+	# Save image data to byte array
+	img.save(byteArr, format="PNG")
+
+	# Get bytes from byte array
+	imgData = byteArr.getvalue()
+
+	# Return image to user
+	return Response(imgData, mimetype="image/png")
 
 
 @app.route("/getPostID/", methods=["POST"])

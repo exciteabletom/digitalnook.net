@@ -16,22 +16,28 @@
 	<h1>quote2image</h1>
 	<p class="italics">Generate inspirational quote images</p>
 </header>
-<main style="padding: 2%;">
-	<form action="/quote2image/generate/" method="get">
-		<label for="shadowCheck">Add shadow to text</label>
-		<input id="shadowCheck" name="shadowCheck" type="checkbox">
-		<br/>
+<main style="margin-bottom: 2%">
+	<div style="text-align: center;">
+		<form action="/quote2image/generate/" method="get">
+			<ul class="formListOuter">
+				<li>
+					<label for="shadowCheck">Add shadow to text</label>
+					<input id="shadowCheck" name="shadow" type="checkbox">
+				</li>
+				<li>
+					<label for="elementCount">Amount of background elements</label>
+					<input id="elementCount" name="elements" type="number" min="0" max="4" value="2" placeholder="number">
+				</li>
 
-		<label for="elementCount">How many background elements? </label>
-		<input id="elementCount" name="elementCount" type="number" min="0" max="4">
-		<br/>
+				<li>
+					<label for="quote">Quote for image</label>
+					<input id="quote" name="quote" type="text" maxlength="100">
+				</li>
 
-		<label for="quote">Text: </label>
-		<input id="quote" name="quote" type="text" maxlength="100">
-		<br/>
-
-		<input type="submit" value="Generate Image">
-	</form>
+			</ul>
+			<button type="submit">Generate Image</button>
+		</form>
+	</div>
 </main>
 <footer>
 	<a href="/">Back to Home</a>

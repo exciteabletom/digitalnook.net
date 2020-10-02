@@ -5,17 +5,17 @@
 <head>
 	<title>Rock, Paper, Scissors! | DigitalNook</title>
 	<meta content="Play Rock, Paper, Scissors at digitalnook.net!" name="Description"/>
-	{% include "/includes/meta.html" %}
+	{% include "includes/meta.html" %}
 
 	<!--sleep function-->
 	<script src="/static/js/sleep.js"></script>
 </head>
 <body>
-<section>
-	<h1 id=mainHeader> Rock Paper Scissors! </h1>
-</section>
-<div class='row' id=buttons style>
-	<div class='column' style='float:center;'>
+<header>
+	{% include "includes/header.html" %}
+</header>
+<div class='row' id=buttons>
+	<div class='column'>
 		<input alt='image of rock' id='rockButton' onclick="this.disabled=true; userChoice='rock'; runAllFunctions()"
 		       src='/static/images/rock.png' style='width: 100%' type='image'>
 	</div>
@@ -41,7 +41,8 @@
 	<br/>
 	<p> Click on Rock, Paper or scissors to make your choice. Wait for the computer to choose to see if you won!</p>
 	<br/>
-	<button class='greenButton' id='tutorialClose' onclick="document.getElementById('tutorialPopup').style.display = 'none'"
+	<button class='greenButton' id='tutorialClose'
+	        onclick="document.getElementById('tutorialPopup').style.display = 'none'"
 	        type='button'>Let's Play!
 	</button>
 </div>
@@ -60,7 +61,7 @@
 
 <script>
 	// Makes variable accessable to the DOM
-	var userChoice;
+	let userChoice;
 
 	// Gets computer random choice
 	let computerChoice;
