@@ -17,6 +17,6 @@
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
 
-# True if development mode should be used
+# True if development mode should be used (better debugging)
 # False for production environment (increased security)
 production=False
