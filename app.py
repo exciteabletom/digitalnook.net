@@ -26,6 +26,8 @@ For production run with --production.
 
 # Standard Libraries
 import sys
+import io
+import base64
 import json
 import operator
 from functools import wraps
@@ -34,6 +36,9 @@ from string import Template
 # Flask
 from flask import Flask, render_template, request, redirect, send_from_directory
 from flask_talisman import Talisman
+
+# Pip modules
+from quote2image import generate as quoteGenerate
 
 # Local modules
 import modifyTable
@@ -64,7 +69,6 @@ def loginRequired(appRoute):
 	"""
 
 	@wraps(appRoute)
-
 	def wrapper(*args, **kwargs):
 		loginErrorMessage = Template("$page requires you to be logged in")
 		errorResp = app.make_response(redirect("/login/"))
@@ -80,8 +84,8 @@ def loginRequired(appRoute):
 			username = decryptString(encryptedUsername)
 			password = decryptString(encryptedPassword)
 
- 			# true if login cookies are valid credentials
-			isValidLogin = checkTable.checkIfLoginCorrect(username, password) 
+			# true if login cookies are valid credentials
+			isValidLogin = checkTable.checkIfLoginCorrect(username, password)
 
 			if isValidLogin:
 				return appRoute(*args, **kwargs)
@@ -276,7 +280,7 @@ def drawSomething():
 					sent.append(newLst)
 
 			return render_template("drawSomething/continueGame.html", currentUser=currentUser, sent=sent,
-			                       received=received)
+								   received=received)
 
 		elif request.form.get("ACTIONrequestForGuessingDrawing"):  # guessDrawing.html
 			gameId = request.form.get("gameId")
@@ -287,7 +291,7 @@ def drawSomething():
 				modifyTable.updateDrawGuess(gameId, 4)
 			if data and (userNames[1] == currentUser):
 				return render_template("drawSomething/guessDrawing.html", currentUser=currentUser, gameId=gameId,
-				                       otherUser=userNames[0], image=data[2], word=data[1], guess=data[3])
+									   otherUser=userNames[0], image=data[2], word=data[1], guess=data[3])
 
 		elif request.form.get("ACTIONrequestForViewingGame"):  # viewGame.html
 			gameId = request.form.get("gameId")
@@ -300,9 +304,9 @@ def drawSomething():
 
 			if data and (userNames[0] == currentUser):
 				return render_template("drawSomething/viewGame.html", currentUser=currentUser, gameId=gameId,
-				                       otherUser=userNames[1], image=data[2], word=data[1], guess=data[3],
-				                       deletion=deletion,
-				                       gameResult=bool(data[4]))
+									   otherUser=userNames[1], image=data[2], word=data[1], guess=data[3],
+									   deletion=deletion,
+									   gameResult=bool(data[4]))
 
 		elif request.form.get("ACTIONdeleteGame"):  # requested from viewGame.html
 			gameId = request.form.get("gameId")
@@ -313,14 +317,14 @@ def drawSomething():
 				if data and userNames[0] == currentUser:
 					modifyTable.deleteDrawGame(gameId)
 					return render_template("drawSomething/drawSomething.html",
-					                       error="The game was successfully deleted")
+										   error="The game was successfully deleted")
 
 		elif request.form.get("ACTIONnewGameRequest"):  # drawNewPicture.html
 			requestedUser = request.form.get("newGameRequestUsername")
 
 			if requestedUser.strip() == currentUser.strip():
 				return render_template("drawSomething/newGame.html", error="You can't request a game with yourself!",
-				                       currentUser=currentUser)
+									   currentUser=currentUser)
 
 			gameId = currentUser + "_" + requestedUser
 
@@ -328,8 +332,8 @@ def drawSomething():
 				data = checkTable.checkFromDraw(gameId)
 				if data[2]:
 					return render_template("drawSomething/newGame.html",
-					                       error="You have already started a game with this user!",
-					                       currentUser=currentUser)
+										   error="You have already started a game with this user!",
+										   currentUser=currentUser)
 
 			if checkTable.checkIfLoginCorrect(requestedUser):
 				randWord = None
@@ -348,17 +352,17 @@ def drawSomething():
 				if checkTable.checkFromDraw(gameId):  # game already exists
 
 					return render_template("drawSomething/newGame.html",
-					                       error="You have already started a game with this user!",
-					                       currentUser=currentUser)
+										   error="You have already started a game with this user!",
+										   currentUser=currentUser)
 				else:
 					modifyTable.addToDraw(gameId, randWord)
 					return render_template("drawSomething/drawNewPicture.html", gameId=gameId,
-					                       requestedUser=requestedUser,
-					                       randomWord=randWord.title())
+										   requestedUser=requestedUser,
+										   randomWord=randWord.title())
 
 			else:
 				return render_template("drawSomething/newGame.html", error="This user doesn't exist",
-				                       currentUser=currentUser)
+									   currentUser=currentUser)
 
 		elif request.form.get("ACTIONcheckGuess"):
 			gameId = request.form.get("gameId")
@@ -388,8 +392,8 @@ def drawSomething():
 				guessNum = modifyTable.updateDrawGuess(gameId)  # increments guesses remaining down by one
 				if guessNum != 0:
 					return render_template("drawSomething/guessDrawing.html", guess=guessNum, image=image,
-					                            currentUser=currentUser,
-					                            otherUser=otherUser, word=word, gameId=gameId)
+										   currentUser=currentUser,
+										   otherUser=otherUser, word=word, gameId=gameId)
 
 				else:
 					return render_template("drawSomething/outOfGuesses.html", otherUser=otherUser, word=word)
@@ -421,6 +425,7 @@ def bruh():
 @app.route("/whatsnew/")
 def whatsnew():
 	return render_template("whatsNew.html")
+
 
 @app.route("/servers/")
 def servers():
@@ -538,6 +543,31 @@ def doctorBLevels():
 		raise ValueError("postID is incorrect")
 
 
+@app.route("/quote2image/")
+def quote2ImagePage():
+	return render_template("quote2image.html")
+
+
+@app.route("/quote2image/generate/")
+def newQuote2Image():
+	shadowCheck = bool(request.args.get("shadowCheck"))
+	elementCount = int(request.args.get("elementCount"))
+	quote = request.args.get("quote")
+	img = quoteGenerate.main(quote, shadow=shadowCheck, noise=elementCount)
+
+	byteArr = io.BytesIO()
+	img.save(byteArr, format="PNG")
+	# Get bytes
+	imgData = byteArr.getvalue()
+	# Base64 encode bytes
+	imgData = base64.b64encode(imgData)
+	# Bytes to str
+	imgData = imgData.decode()
+	# Create data URL
+	dataUrl = "data:image/png;base64," + imgData
+
+	return render_template("quote2imageGenerate.html", imageData=dataUrl)
+
 
 @app.route("/getPostID/", methods=["POST"])
 @loginRequired
@@ -567,4 +597,3 @@ if __name__ == "__main__":
 		sys.exit(1)
 	else:
 		app.run(host="127.0.0.1", port=5000, debug=True)
-

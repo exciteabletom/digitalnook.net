@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>quote2image | Digital Nook</title>
+	{% include "includes/meta.html" %}
+	<style>
+		label, input {
+			margin-bottom: 1%;
+		}
+	</style>
+</head>
+<body>
+<header>
+	{% include "includes/header.html" %}
+	<h1>quote2image</h1>
+	<p class="italics">Generate inspirational quote images</p>
+</header>
+<main style="padding: 2%;">
+	<form action="/quote2image/generate/" method="get">
+		<label for="shadowCheck">Add shadow to text</label>
+		<input id="shadowCheck" name="shadowCheck" type="checkbox">
+		<br/>
+
+		<label for="elementCount">How many background elements? </label>
+		<input id="elementCount" name="elementCount" type="number" min="0" max="4">
+		<br/>
+
+		<label for="quote">Text: </label>
+		<input id="quote" name="quote" type="text" maxlength="100">
+
+		<input type="submit" value="submit">
+	</form>
+</main>
+<footer>
+	<a href="/">Back to Home</a>
+</footer>
+</body>
+</html>

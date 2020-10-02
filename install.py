@@ -34,6 +34,21 @@ from pathlib import Path
 import constants
 
 
+def is_unix():
+	"""
+	Check if the OS is unix-based or not.
+
+	:r_type: bool
+	:return: True if unix-based, False otherwise
+	"""
+
+	# TODO: More operating systems covered here
+	if platform.system() in ("Linux", "Darwin"):
+		return True
+	else:
+		return False
+
+
 def status(message=None):
 	"""
 	Void function
@@ -45,7 +60,6 @@ def status(message=None):
 		message = "Done\n"
 
 	print(f">>> {message}")
-
 
 
 def check(question: str):
@@ -70,14 +84,13 @@ def create_venv():
 	"""
 	Void Function
 	Creates a new virtual environment with name .venv in the working directory.
-
 	:r_type: bool
 	:return: True on success, false otherwise
 	"""
+
 	# TODO: This try except nesting is messy
 	try:
-		print(unix_os)
-		if unix_os:
+		if is_unix():
 			# This might fail on FAT filesystems or on windows
 			venv.create(".venv", with_pip=True, symlinks=True)
 		else:
@@ -111,12 +124,6 @@ def main():
 		print("Your python version must be " + constants.VERSION + " or newer")
 		sys.exit(1)
 
-	# If the operating system is unix based or not
-	unix_os = False
-
-	# TODO: More operating systems covered here
-	if platform.system() in ("Linux", "Darwin"):
-		unix_os = True
 
 	# Where the python binary is
 	python_bin = "python3"
@@ -154,7 +161,7 @@ def main():
 			print("Error creating a virtual environment")
 			sys.exit(1)
 
-		if unix_os:
+		if is_unix():
 			python_bin = str(Path(".venv/bin/python3"))
 		else:
 			python_bin = str(Path(".venv/Scripts/python.exe"))
@@ -191,7 +198,7 @@ def main():
 	shutil.copyfile(str(Path("install/config.py.default")), "config.py")
 	status()
 
-	if unix_os:
+	if is_unix():
 		source_instruct = ". .venv/bin/activate"
 	else:
 		source_instruct = ".venv/Scripts/activate.bat"
@@ -206,3 +213,4 @@ def main():
 # Only run if being run from command-line, not imported.
 if __name__ == "__main__":
 	main()
+
