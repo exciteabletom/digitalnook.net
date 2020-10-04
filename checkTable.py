@@ -20,13 +20,13 @@
 Functions for getting information from SQL tables.
 """
 import sqlite3
+import os
 
 from cryptography.fernet import Fernet
 
 from loginKey import key
 
 cipher = Fernet(key)
-
 
 def getFromMain(name):
 	conn = sqlite3.connect("userdata.db")
@@ -65,7 +65,7 @@ def checkIfLoginCorrect(name, password=None):
 	"""
 	conn = sqlite3.connect("userdata.db")
 	cur = conn.cursor()
-
+	print(os.getcwd())
 	cur.execute("SELECT * from main WHERE name = (?)", (name,))  # this method prevents SQL injection
 
 	data = cur.fetchone()
