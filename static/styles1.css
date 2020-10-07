@@ -1,10 +1,10 @@
 .splitList {
-	padding: 20px;
+	padding: 30px;
 	border-top: 2px black dashed;
 }
 
 .splitListBottom {
-	padding: 20px;
+	padding: 30px;
 	border-top: 2px black dashed;
 	border-bottom: 2px black dashed;
 }
@@ -32,7 +32,6 @@ h2, .resultsHeader {
 
 a, .link {
 	color: #0066ff;
-	font-size: 30px;
 	font-family: sans-serif;
 	text-align: center;
 	font-style: italic;
@@ -45,12 +44,11 @@ body {
 	min-height: 100vh;
 	text-align: center;
 	background-color: #F6F9FC;
-	margin: 0 0; /*no margins */
-	margin-bottom:2%; /* Except for bottom of page */
+	margin: 0 0 2%;
+	font-size: 30px; /* Default font-size for all elements*/
 }
 .blueP {
 	color: blue;
-	font-size: 30px;
 	font-family: sans-serif;
 	text-align: center;
 	font-weight: normal;
@@ -58,7 +56,6 @@ body {
 
 p {
 	color: black;
-	font-size: 30px;
 	font-family: sans-serif;
 	text-align: center;
 	font-weight: normal;
@@ -181,7 +178,6 @@ p {
 	cursor: pointer;
 	color: #ffffff;
 	font-family: Arial, serif;
-	font-size: 23px;
 	font-weight: bold;
 	padding: 16px 31px;
 	text-decoration: none;
@@ -227,8 +223,8 @@ p {
 	cursor: pointer;
 	color: #ffffff;
 	font-family: Arial, serif;
-	font-size: 30px;
 	padding: 16px 31px;
+	margin: 15px;
 	text-decoration: none;
 	text-shadow: 0 1px 0 #2f6627;
 	text-align: center;
@@ -257,82 +253,73 @@ p {
 	border-bottom-left-radius: 10px;
 
 	top:0;
-	min-height:5%;
-	min-width:80%;
-	padding-top: 10px;
-	padding-bottom:20px;
+	max-height: 5%;
+	max-width: 90%;
+	padding: 1vh 2vw;
 
-	margin-bottom:5%;
-	margin-left:10%;
-	margin-right:10%;
+	margin: 0 auto;
+	align-items: center;
 
 	background:linear-gradient(0deg, #FF6F00 5%, rgba(255,173,0,1) 90%);
 	display:flex;
-	justify-content:center;
+	justify-content: space-between;
 
 }
 #mainHeaderLinkDiv{
 	display:flex;
-	align-items:center;
-	justify-items:center;
+	align-content:center;
+	justify-content:flex-end;
 	flex-direction:row;
-	max-width:10%;
-	margin: auto;
+
+	width: 30%;
 }
 .mainHeaderLink{
-	align-self:center;
 	padding: 10px;
 }
-/* desktop screens */
-@media screen and (orientation: landscape) and (min-width: 1000px){
-	.mainHeaderLink {
-		margin-left: 10%;
-		margin-right: 10%;
-	}
-}
-/* vertical mobile screens */
-@media screen and (orientation:portrait ){
-	#mainHeaderLinkDiv {
-		flex-direction: column;
-		margin-left:5%;
-	}
-}
 #mainHeaderLogoImage{
-	/*height:100%*/
-	margin-top:1%;
-	max-height:100px;
+	object-fit: contain;
+	height: 100px;
+	width: 100px;
 }
-@media screen and (orientation: landscape) and (min-width: 1000px){
-	#mainHeaderLogoImage {
-		margin-right: 100px;
-	}
-}
+
 #mainHeaderLogoTitle{
 	font-family:monospace;
-	font-size:30px;
-	padding:0;
+	padding: 5px;
+	margin: 0 auto;
 	border-bottom:#000000 dashed 3px;
 	text-decoration:none;
-	align-self:center;
-	margin-bottom:10px;
-	font-weight:bold
+	font-weight:bold;
+
+	max-width: 100%;
 }
 #mainHeaderLogoSub{
 	font-family:monospace;
 	font-size:20px;
-	margin:0;
-	padding:0
+	margin: 0;
+	padding: 4px;
 }
 #mainHeaderLogo{
 	display:flex;
 	flex-direction:column;
-	margin-right:20px
+	align-content: flex-start;
+	width:30%;
 }
-#mainHeaderLogoWrapper {
-	display:flex;
-	flex-direction: row;
-	margin-right:auto;
-	margin-left: 7vw;
+/* Mobile screens */
+@media only screen and (hover: none) and (pointer: coarse) {
+	.mainHeaderLink {
+		font-size: 12px;
+	}
+	#mainHeaderLogoTitle {
+		font-size: 15px;
+		border-bottom: none;
+	}
+	#mainHeaderLogoSub{
+		display: none;
+	}
+	#mainHeaderLogoImage {
+		height: 40px;
+		width: 40px;
+	}
 }
 /* END HEADER STYLES*/
 
@@ -341,57 +328,77 @@ p {
 }
 
 input, textarea, select, button {
-	width : 250px;
-	padding: 0;
+	padding: 10px;
 	margin: 0;
 	box-sizing: border-box;
 }
 
-form {
+#flexForm {
 	display: flex;
-	flex-flow: column wrap;
-	align-items: center;
-
-	width: 600px;
-	margin: auto;
+	flex-flow: row wrap;
+	align-content: flex-start;
+	justify-content: flex-start;
+}
+.formListOuter {
+	margin:10px auto;
+	padding:0 10px;
 }
 
 .formListOuter li {
 	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-}
-.formListOuter > li > label,
-.formListOuter li p {
-	flex: 1 0 120px;
-	max-width: 400px;
-	padding: 15px;
-	border: 2px solid #000;
-	margin-right: 10px;
-	background: #FF6F00;
+	flex-flow: row nowrap;
+	align-content: flex-start;
+	justify-content: flex-start;
 }
 
-.formListOuter > li > label + * {
-	flex: 1 0 400px;
+.formListOuter label {
+	padding: 5px;
+	border: 2px solid #000;
+	border-radius: 5px;
+	background: #FF6F00;
+	width: 38%;
+	margin-bottom: 10px;
+	margin-right: 2%;
+	font-size: 20px;
 }
 
 .formListOuter input {
-	padding: 2%;
+	width: 60%;
+}
+
+.formListOuter input[type="checkbox"] {
+	width: auto;
 }
 
 form button {
-	margin: auto;
-	width: 35%;
-	max-width: 100%;
-	padding: 8px;
 	border: none;
 	background: #333;
 	color: #fff;
-	text-transform: uppercase;
-	letter-spacing: .09em;
-	border-radius: 2px;
+	border-radius: 5px;
+	margin: 0 auto;
 }
 
-.formListOuter input {
-	max-width: 200px;
+footer {
+	margin-top: 5%;
+}
+
+/* Media Queries */
+/* Mobile devices */
+@media only screen and (hover: none) and (pointer: coarse) {
+	body {
+		font-size: 20px;
+	}
+
+	label, button, textarea, input {
+		font-size: 15px;
+	}
+
+	h1 {
+		font-size: 30px;
+	}
+
+	h2 {
+		font-size: 20px;
+	}
+
 }

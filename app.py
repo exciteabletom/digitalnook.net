@@ -599,4 +599,4 @@ if __name__ == "__main__":
 		print("Turn off production mode to run a development server!", file=sys.stderr)
 		sys.exit(1)
 	else:
-		app.run(host="127.0.0.1", port=5000, debug=True)
+		app.run(host="0.0.0.0", port=5000, debug=True)

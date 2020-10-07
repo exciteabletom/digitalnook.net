@@ -1,12 +1,11 @@
 <!-- HEADER TEMPLATE -->
 <div id="mainHeader" data-nosnippet>
-	<div id="mainHeaderLogoWrapper" onclick="window.location = '/'" style="cursor:pointer;" >
-		<div id="mainHeaderLogo">
-			<h2 id="mainHeaderLogoTitle">Digital Nook</h2>
-			<p id="mainHeaderLogoSub">Australian game servers</p>
-		</div>
-		<img alt="logo fire image" id="mainHeaderLogoImage" src="/static/images/logo/fire.png"/>
+	<div id="mainHeaderLogo" onclick="window.location = '/'" style="cursor:pointer;" >
+		<h2 id="mainHeaderLogoTitle">Digital Nook</h2>
+		<p id="mainHeaderLogoSub">Australian game servers</p>
 	</div>
+	<img alt="logo fire image" id="mainHeaderLogoImage" src="/static/images/logo/fire.png"/>
+
 	<div id="mainHeaderLinkDiv">
 		{% if request.cookies["USERNAME"] is defined %}
 		<a class="mainHeaderLink" href="/logout/">Logout "{{ decryptString(request.cookies.get("USERNAME")) }}"</a>

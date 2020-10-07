@@ -18,7 +18,7 @@
 </header>
 <main style="margin-bottom: 2%">
 	<div style="text-align: center;">
-		<form action="/quote2image/generate/" method="get">
+		<form action="/quote2image/generate/" method="get" id="flexForm">
 			<ul class="formListOuter">
 				<li>
 					<label for="shadowCheck">Add shadow to text</label>
@@ -34,8 +34,10 @@
 					<input id="quote" name="quote" type="text" maxlength="100">
 				</li>
 
+				<li>
+					<button type="submit" style="margin-top: 10px;">Generate Image</button>
+				</li>
 			</ul>
-			<button type="submit">Generate Image</button>
 		</form>
 	</div>
 </main>

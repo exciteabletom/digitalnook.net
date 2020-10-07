@@ -1,5 +1,5 @@
 wheel
 Flask==1.1.2
 flask_talisman==0.7.0
-cryptography==2.8
-quote2image==0.3
+cryptography==3.1.1
+quote2image==0.4

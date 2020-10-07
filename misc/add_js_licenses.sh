@@ -22,7 +22,7 @@
 # ref: https://www.gnu.org/software/librejs/free-your-javascript.html
 
 if ! find add_js_licenses.sh &>/dev/null; then
-	1>&2 printf 'Please run this script from it'"'"'s working directory E.g "./add_js_licenses.sh"\n'
+  1>&2 printf 'Please run this script from it'"'"'s working directory E.g "./add_js_licenses.sh"\n'
 	exit 1
 fi
 
