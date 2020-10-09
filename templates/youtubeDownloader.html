@@ -43,7 +43,7 @@ function formSubmit(event) {
 
 	request.onprogress = function() {
 		if (processing.innerText.length > 13) {
-			processing.innerText = "Processing"
+			processing.innerText = "Downloading"
 		} else {
 			processing.innerText = processing.innerText + "."
 		}
