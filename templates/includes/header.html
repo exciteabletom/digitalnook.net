@@ -11,7 +11,7 @@
 		{% if request.cookies["USERNAME"] is defined %}
 		<a class="mainHeaderLink" href="/logout/">Logout "{{ decryptString(request.cookies.get("USERNAME")) }}"</a>
 		{% else %}
-		<a class="mainHeaderLink" href="/login/">Login</a>
+		<a id="mainHeaderLinkLeft" class="mainHeaderLink" href="/login/">Login</a>
 		<a class= "mainHeaderLink" href="/register/">Register</a>
 		{% endif %}
 	</div>

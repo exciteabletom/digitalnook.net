@@ -554,10 +554,21 @@ def newQuote2Image():
 
 	quote = request.args.get("quote", type=str)
 
+	textColor = request.args.get("textColor", type=str)
+	shadowColor = request.args.get("shadowColor", type=str)
+	backgroundColor = request.args.get("backgroundColor", type=str)
+	flairColor = request.args.get("flairColor", type=str)
+
+	randomColors = request.args.get("randomColors", type=bool)
+
 	if not quote:
 		quote = ""
 
-	img = quoteGenerate.main(quote, shadow=shadowCheck, noise=elementCount)
+	if randomColors:
+		img = quoteGenerate.main(quote, shadow=shadowCheck, noise=elementCount)
+	else:
+		img = quoteGenerate.main(quote, shadow=shadowCheck, noise=elementCount, noise_tint=flairColor,
+							 background_color=backgroundColor, text_color=textColor, shadow_color=shadowColor)
 
 	# Empty byte array
 	byteArr = io.BytesIO()

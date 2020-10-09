@@ -10,7 +10,7 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 	<!--sleep function-->
 	<script src="/static/js/sleep.js"></script>
 	<style>
-		.leftButton, .rightButton, .centerButton {
+		.leftButtona, .rightButton, .centerButtona {
 			margin: 5px;
 			height: 45px;
 			width: 45px;
@@ -80,9 +80,9 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 	<br/>
 	<p id="finalTime"></p>
 	<br/>
-	<button class='greenButton' id='submitButton' onclick="submitToLeaderboard.style.display = 'block'"
-	        style="width:30%; margin-left: 35%; margin-left: 35%; display: none;"
-	        type="button">Submit score to Leaderboard
+	<button class='greenButtona' id='submitButton' onclick="submitToLeaderboard.style.display = 'block'"
+			style="width:30%; margin-left: 35%; margin-left: 35%; display: none;"
+			type="button">Submit score to Leaderboard
 	</button>
 </div>
 <br/>
@@ -100,7 +100,7 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 	<input id='scoreInput' name='score' readonly='readonly'
 	       style='height:10vh; width: 30vw; margin-left:35vw;margin-right:35vw;' type='text' value='please finish a game before submitting'> <br/>
 	<br/>
-	<input class="greenButton" type='submit' value='Submit'>
+	<input class="greenButtona" type='submit' value='Submit'>
 </form>
 <div class='overlay' id='tutorialPopup' style="display:block; background:#FF6F00;">
 	<h1>How to Play</h1>
@@ -110,8 +110,8 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 		<br/><br/>
 		Get under 600ms average to be a champion!
 	</p>
-	<button class='greenButton' id="tutorialClose" onclick='tutorialPopup.style.display = "none"'
-	        style="margin-right:40%;margin-left:40%;width:20%;">Let's Play!
+	<button class='greenButtona' id="tutorialClose" onclick='tutorialPopup.style.display = "none"'
+			style="margin-right:40%;margin-left:40%;width:20%;">Let's Play!
 	</button>
 </div>
 <div class='overlay' id='lowTimePopup' style="display:none; background:#FF6F00;">
@@ -119,7 +119,7 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 	<br/>
 	<p id="lowTime"></p>
 	<br/>
-	<button class="greenButton" id="lowTimeClose" onclick="lowTimePopup.style.display = 'none';">Back to Game</button>
+	<button class="greenButtona" id="lowTimeClose" onclick="lowTimePopup.style.display = 'none';">Back to Game</button>
 </div>
 <script>
 	// Variables for easy access of DOM elements

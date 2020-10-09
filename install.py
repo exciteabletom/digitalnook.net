@@ -55,7 +55,7 @@ def status(message=None):
 	Prints a formatted status message. 
 	If no status message prints 'done'
 	"""
-	
+
 	if not message:
 		message = "Done\n"
 
@@ -70,7 +70,7 @@ def check(question: str):
 	:r_type: bool
 	:return: True if user said yes, false otherwise
 	"""
-	
+
 	yes_or_no = input(f"{question} (y/n): ").lower()
 
 	if yes_or_no == "y":
@@ -88,23 +88,14 @@ def create_venv():
 	:return: True on success, false otherwise
 	"""
 
-	# TODO: This try except nesting is messy
 	try:
-		if is_unix():
-			# This might fail on FAT filesystems or on windows
-			venv.create(".venv", with_pip=True, symlinks=True)
-		else:
-			venv.create(".venv", with_pip=True)
+		venv.create(".venv", with_pip=True, symlinks=True)
 
 	except:
-		# Fallback command
-		try:
-			venv.create(".venv", with_pip=True)
-		except:
-			return False
-	
-	return True
+		shutil.rmtree(".venv")
+		venv.create(".venv", with_pip=True)
 
+	return True
 
 
 def main():
@@ -121,9 +112,8 @@ def main():
 
 	# f strings not used here for compatibility with <3.6
 	if py_ver < constants.PYTHON_VERSION:
-		print("Your python version must be " + constants.VERSION + " or newer")
+		print("Your python version must be " + constants.PYTHON_VERSION + " or newer")
 		sys.exit(1)
-
 
 	# Where the python binary is
 	python_bin = "python3"
@@ -133,7 +123,6 @@ def main():
 	fs_sep = str(Path("/"))
 
 	script_path = sys.argv[0]
-	script_dir = ""
 
 	if fs_sep in script_path:
 		# Get the directory the script is in
@@ -149,12 +138,12 @@ def main():
 	# Quick are you sure check
 	if not check("This script will delete any existing databases, configs, and login keys.\nAre you sure?"):
 		sys.exit(0)
-	
+
 	if check("Do you want to create a virtual environment?\nThis is highly recommended."):
 		status("Creating virtual environment")
 		try:
 			shutil.rmtree('.venv')
-		except FileNotFoundError: 
+		except FileNotFoundError:
 			pass
 
 		if not create_venv():
@@ -170,7 +159,7 @@ def main():
 		subprocess.call([python_bin, "-m", "pip", "install", "--upgrade", "pip", "setuptools"])
 
 		status()
-	
+
 	status("Installing dependencies")
 	subprocess.call([python_bin, "-m", "pip", "install", "-r", "install/requirements.txt"])
 	status()
@@ -204,8 +193,8 @@ def main():
 		source_instruct = ".venv/Scripts/activate.bat"
 
 	print(
-		f"All tasks done! The server is now installed.\n\n" 
-		f"If you made a virtual environment activate it with '{source_instruct}'\n" 
+		f"All tasks done! The development server is now installed.\n\n"
+		f"If you made a virtual environment activate it with '{source_instruct}'\n"
 		f"You can run the development server with 'python app.py'\n",
 	)
 
@@ -213,4 +202,3 @@ def main():
 # Only run if being run from command-line, not imported.
 if __name__ == "__main__":
 	main()
-

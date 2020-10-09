@@ -4,11 +4,6 @@
 	<meta charset="UTF-8">
 	<title>quote2image | Digital Nook</title>
 	{% include "includes/meta.html" %}
-	<style>
-		label, input {
-			margin-bottom: 1%;
-		}
-	</style>
 </head>
 <body>
 <header>
@@ -18,20 +13,40 @@
 </header>
 <main style="margin-bottom: 2%">
 	<div style="text-align: center;">
-		<form action="/quote2image/generate/" method="get" id="flexForm">
+		<form action="/quote2image/generate/" method="get" class="flexForm">
 			<ul class="formListOuter">
 				<li>
-					<label for="shadowCheck">Add shadow to text</label>
-					<input id="shadowCheck" name="shadow" type="checkbox">
+					<label for="quote">Inspirational quote</label>
+					<input id="quote" name="quote" type="text" maxlength="100">
 				</li>
 				<li>
 					<label for="elementCount">Amount of background elements</label>
 					<input id="elementCount" name="elements" type="number" min="0" max="7" value="2" placeholder="number">
 				</li>
-
 				<li>
-					<label for="quote">Quote for image</label>
-					<input id="quote" name="quote" type="text" maxlength="100">
+					<label for="shadowCheck">Add shadow to text?</label>
+					<input id="shadowCheck" name="shadow" type="checkbox">
+				</li>
+				<li>
+					<label for="randomColors">Random Colors?</label>
+					<input id="randomColors" name="randomColors" type="checkbox" onclick="randomColorsOnClick()">
+				</li>
+
+				<li style="padding-top: 2%; border-top: 1px black dashed" class="colorSelector">
+					<label for="textColor">Text colour</label>
+					<input id="textColor" name="textColor" type="color" value="#FF6F00">
+				</li>
+				<li class="colorSelector">
+					<label for="backgroundColor">Background colour</label>
+					<input id="backgroundColor" name="backgroundColor" type="color" value="#FFFFFF">
+				</li>
+				<li class="colorSelector">
+					<label for="flairColor">Alternate background colour</label>
+					<input id="flairColor" name="flairColor" type="color" value="#FF4444">
+				</li>
+				<li class="colorSelector">
+					<label for="shadowColor">Shadow color</label>
+					<input id="shadowColor" name="shadowColor" type="color" value="#454545">
 				</li>
 
 				<li>
@@ -44,5 +59,21 @@
 <footer>
 	<a href="/">Back to Home</a>
 </footer>
+<script>
+	randomColorsOnClick = () => {
+		const elements = document.getElementsByClassName("colorSelector")
+		let displayValue;
+		if (document.getElementById("randomColors").checked) {
+			displayValue = "none";
+		} else {
+			displayValue = "flex";
+		}
+		for (let i = 0; i < elements.length; i++) {
+			// the current element
+			const cur = elements[i];
+			cur.style.display = displayValue;
+		}
+	}
+</script>
 </body>
 </html>
