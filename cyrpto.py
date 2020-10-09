@@ -36,3 +36,4 @@ def decryptString(encryptedString):
 	byteString = str.encode(encryptedString)
 	decryptedString = cipher.decrypt(byteString)
 	return decryptedString.decode("UTF-8")
+

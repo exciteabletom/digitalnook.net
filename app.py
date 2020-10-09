@@ -25,19 +25,24 @@ For production run with --production.
 """
 
 # Standard Libraries
+import os
 import sys
 import io
 import json
 import operator
+import tempfile
+import time
+import base64
 from functools import wraps
 from string import Template
 
 # Flask
-from flask import Flask, render_template, request, redirect, send_from_directory, Response
+from flask import Flask, render_template, request, redirect, send_from_directory, Response, send_file
 from flask_talisman import Talisman
 
 # Pip modules
 from quote2image import generate as quoteGenerate
+import pytube
 
 # Local modules
 import modifyTable
@@ -479,7 +484,7 @@ def submission():
 			finalData = json.dumps(leaderboardData)  # dump json to string
 			leaderboard.write(finalData)  # replaces leaderboard.json with new values
 
-		return redirect("/games/reactionleaderboard/", 302)
+		return redirect("/games/reactionleaderboard/")
 
 	return render_template("errors/404.html")
 
@@ -568,7 +573,7 @@ def newQuote2Image():
 		img = quoteGenerate.main(quote, shadow=shadowCheck, noise=elementCount)
 	else:
 		img = quoteGenerate.main(quote, shadow=shadowCheck, noise=elementCount, noise_tint=flairColor,
-							 background_color=backgroundColor, text_color=textColor, shadow_color=shadowColor)
+								 background_color=backgroundColor, text_color=textColor, shadow_color=shadowColor)
 
 	# Empty byte array
 	byteArr = io.BytesIO()
@@ -581,6 +586,37 @@ def newQuote2Image():
 
 	# Return image to user
 	return Response(imgData, mimetype="image/png")
+
+
+@app.route("/youtubeDownloader/")
+def youtubeDownloader():
+	return render_template("youtubeDownloader.html")
+
+
+@app.route("/youtubeDownloader/download/", methods=["POST"])
+def youtubeDownloaderAction():
+	tmpDir = tempfile.gettempdir()
+	filename = f"{time.time_ns()}"
+
+	url = request.form.get("url")
+	yt = pytube.YouTube(url)
+
+	if int(yt.length) / 60 > 20:
+		return "Cannot download videos longer than 20 minutes..."
+
+	stream = yt.streams.filter(mime_type="video/mp4", progressive=True, res="720p").first()
+
+	fullPath = stream.download(tmpDir, filename=filename)
+
+	# Load file into RAM
+	with open(fullPath, "rb") as vid:
+		data = vid.read()
+
+	# Delete the temp file
+	os.remove(fullPath)
+
+	# Send the file
+	return base64.b64encode(data)
 
 
 @app.route("/getPostID/", methods=["POST"])

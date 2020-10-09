@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Youtube Downloader | Digital Nook</title>
+	{% include "includes/meta.html" %}
+</head>
+<body>
+<header>
+	{% include "includes/header.html" %}
+	<h1>YouTube Downloader</h1>
+	<p class="italics">Download videos shorter than 20 minutes.</p>
+</header>
+<main style="margin-bottom: 2%">
+	<pre id="processing" style="display: none;">Processing...</pre>
+	<form action="/youtubeDownloader/download/" method="post" class="flexForm" id="form">
+		<ul class="formListOuter">
+			<li>
+				<label for="url">YouTube URL</label>
+				<input id="url" name="url" type="url" maxlength="100">
+			</li>
+			<li>
+				<button type="submit" style="margin-top: 10px;">Download Video!</button>
+			</li>
+		</ul>
+	</form>
+</main>
+<footer>
+	<a href="/">Back to Home</a>
+</footer>
+<script>
+const processing = document.getElementById("processing")
+
+function formSubmit(event) {
+	const url = "/youtubeDownloader/download/";
+	const request = new XMLHttpRequest();
+
+	event.target.style.display = "none";
+	processing.style.display = "block";
+
+
+	request.open('POST', url);
+
+	request.onprogress = function() {
+		if (processing.innerText.length > 15) {
+			processing.innerText = "Processing."
+		} else {
+			processing.innerText = processing.innerText + "."
+		}
+	}
+	request.onload = function() { // request successful
+		const downloadAnchor = document.createElement("a");
+		downloadAnchor.setAttribute("href", "data:image/mp4;base64," + request.responseText);
+		downloadAnchor.setAttribute("download", "video.mp4");
+		downloadAnchor.style.display = "none";
+
+		console.log("here");
+		document.body.appendChild(downloadAnchor)
+		downloadAnchor.click()
+		document.body.removeChild(downloadAnchor)
+
+		event.target.style.display = "block";
+		processing.style.display = "none";
+	};
+
+	request.send(new FormData(event.target)); // create FormData from form that triggered event
+	event.preventDefault();
+}
+
+document.getElementById("form").addEventListener("submit", formSubmit);
+
+</script>
+</body>
+</html>
