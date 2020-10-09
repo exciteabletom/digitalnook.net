@@ -42,7 +42,7 @@ function formSubmit(event) {
 	request.open('POST', url);
 
 	request.onprogress = function() {
-		if (processing.innerText.length > 14) {
+		if (processing.innerText.length > 13) {
 			processing.innerText = "Processing"
 		} else {
 			processing.innerText = processing.innerText + "."
