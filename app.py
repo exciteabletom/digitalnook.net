@@ -33,11 +33,13 @@ import operator
 import tempfile
 import time
 import base64
+import threading
+from pathlib import Path
 from functools import wraps
 from string import Template
 
 # Flask
-from flask import Flask, render_template, request, redirect, send_from_directory, Response, send_file
+from flask import Flask, render_template, request, redirect, send_from_directory, Response
 from flask_talisman import Talisman
 
 # Pip modules
@@ -595,28 +597,64 @@ def youtubeDownloader():
 
 @app.route("/youtubeDownloader/download/", methods=["POST"])
 def youtubeDownloaderAction():
+
+	# get OS-agnostic temp directory
 	tmpDir = tempfile.gettempdir()
+	# Get unique filename using unix epoch
 	filename = f"{time.time_ns()}"
 
+	# The URL the user wants to download
 	url = request.form.get("url")
+
 	yt = pytube.YouTube(url)
 
-	if int(yt.length) / 60 > 20:
-		return "Cannot download videos longer than 20 minutes..."
+	# Disallow youtube videos > 30 mins to save processing power from being drained by a massive video.
+	if int(yt.length) / 60 > 30:
+		return "Cannot download videos longer than 30 minutes..."
 
+	# Get a 720p youtube stream.
 	stream = yt.streams.filter(mime_type="video/mp4", progressive=True, res="720p").first()
 
-	fullPath = stream.download(tmpDir, filename=filename)
+	# The full path to the video
+	fullPath = str(Path(f"{tmpDir}/{filename}.mp4"))
 
-	# Load file into RAM
-	with open(fullPath, "rb") as vid:
-		data = vid.read()
+	def ytDownload(ytStream, dir, fn):
+		ytStream.download(dir, filename=fn)
 
-	# Delete the temp file
-	os.remove(fullPath)
+	# A thread for downloading the video.
+	videoThread = threading.Thread(target=ytDownload, args=(stream, tmpDir, filename))
 
-	# Send the file
-	return base64.b64encode(data)
+	# A generator function is used here to check if the client
+	# is still connected. If the user disconnects the process is
+	# aborted and the file is deleted.
+	def generator(t: threading.Thread):
+		# Start the background thread to download the video
+		videoThread.start()
+		try:
+			while True:
+				# If video downloading is still in progress
+				if t.is_alive():
+					time.sleep(0.5)
+					# Send empty data, will fail if user has disconnected.
+					yield ""
+				else:
+					# Open video as binary blob
+					with open(fullPath, "rb") as vid:
+						# Send the video data to flask
+						yield vid.read()
+						# Exit the function
+						return
+
+		finally:
+			# Always delete the file afterwards.
+			# This is triggered if:
+			#   the client disconnects,
+			#   there is an error,
+			#   video creation is successful.
+			os.remove(fullPath)
+
+	# Return the video data to the user
+	return Response(generator(videoThread), mimetype="video/mp4")
 
 
 @app.route("/getPostID/", methods=["POST"])

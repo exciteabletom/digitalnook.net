@@ -9,7 +9,7 @@
 <header>
 	{% include "includes/header.html" %}
 	<h1>YouTube Downloader</h1>
-	<p class="italics">Download videos shorter than 20 minutes.</p>
+	<p>Download videos up to 30 minutes long.</p>
 </header>
 <main style="margin-bottom: 2%">
 	<pre id="processing" style="display: none;">Processing...</pre>
@@ -17,10 +17,10 @@
 		<ul class="formListOuter">
 			<li>
 				<label for="url">YouTube URL</label>
-				<input id="url" name="url" type="url" maxlength="100">
+				<input id="url" name="url" type="url" minlength="10" maxlength="100">
 			</li>
 			<li>
-				<button type="submit" style="margin-top: 10px;">Download Video!</button>
+				<button id="submit" type="submit">Download Video</button>
 			</li>
 		</ul>
 	</form>
@@ -29,45 +29,52 @@
 	<a href="/">Back to Home</a>
 </footer>
 <script>
-const processing = document.getElementById("processing")
+const processing = document.getElementById("processing");
+const form = document.getElementById("form");
 
 function formSubmit(event) {
+	if (!document.getElementById("url").value) {
+		return false;
+	}
+
 	const url = "/youtubeDownloader/download/";
 	const request = new XMLHttpRequest();
+	request.responseType = "blob";
 
 	event.target.style.display = "none";
 	processing.style.display = "block";
 
-
 	request.open('POST', url);
 
-	request.onprogress = function() {
-		if (processing.innerText.length > 13) {
-			processing.innerText = "Downloading"
-		} else {
-			processing.innerText = processing.innerText + "."
+	const progressHandler = e => {
+		if (e.lengthComputable) {
+			let percent = (e.loaded / e.total) * 100;
+			processing.innerText = `Downloading: ${percent}%`;
 		}
 	}
+
+	request.addEventListener('loadstart', progressHandler);
+	request.addEventListener('progress', progressHandler);
+
 	request.onload = function() { // request successful
+		event.target.style.display = "initial";
+		processing.style.display = "none";
+
 		const downloadAnchor = document.createElement("a");
-		downloadAnchor.setAttribute("href", "data:image/mp4;base64," + request.responseText);
+		downloadAnchor.setAttribute("href", window.URL.createObjectURL(request.response));
 		downloadAnchor.setAttribute("download", "video.mp4");
 		downloadAnchor.style.display = "none";
 
-		console.log("here");
 		document.body.appendChild(downloadAnchor)
 		downloadAnchor.click()
 		document.body.removeChild(downloadAnchor)
-
-		event.target.style.display = "initial";
-		processing.style.display = "none";
 	};
 
 	request.send(new FormData(event.target)); // create FormData from form that triggered event
 	event.preventDefault();
 }
 
-document.getElementById("form").addEventListener("submit", formSubmit);
+form.onsubmit = formSubmit;
 
 </script>
 </body>
