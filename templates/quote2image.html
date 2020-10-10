@@ -66,12 +66,13 @@
 		} else {
 			displayValue = "flex";
 		}
+
 		for (let i = 0; i < elements.length; i++) {
-			// the current element
-			const cur = elements[i];
-			cur.style.display = displayValue;
+			elements[i].style.display = displayValue;
 		}
 	}
+	// For when the page is reloaded
+	randomColorsOnClick()
 </script>
 </body>
 </html>

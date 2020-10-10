@@ -32,7 +32,6 @@ import json
 import operator
 import tempfile
 import time
-import base64
 import threading
 from pathlib import Path
 from functools import wraps
@@ -470,10 +469,10 @@ def submission():
 		if username.replace(" ", "") == "":
 			return "ERROR: Please enter a username"
 
-		time = request.form.get("score")
+		rpsTime = request.form.get("score")
 
 		try:
-			nameScoreDict = {"name": str(username), "time": int(time)}
+			nameScoreDict = {"name": str(username), "time": int(rpsTime)}
 		except ValueError:
 			return "ERROR: You cannot enter the same score twice..."
 
