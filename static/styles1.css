@@ -26,44 +26,31 @@ h1 {
 
 h2, .resultsHeader {
 	color: black;
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 	font-family: impact, serif;
 	text-align: center;
-	font-weight: normal;
-	text-decoration: underline;
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
 }
 
 a {
 	color: #0066ff;
-	font-family: sans-serif;
+	font-family: Verdana, sans-serif;
 	text-align: center;
-	font-style: italic;
-	display: inline-block;
 }
 
 body {
-	/* border: 20px orange groove;*/ /* RIP TO THE OG BORDER */
-	min-height: 100vh;
 	text-align: center;
 	background-color: #F6F9FC;
-	margin: 0 0 2%;
-}
-.blueP {
-	color: blue;
-	font-family: sans-serif;
-	text-align: center;
-	font-weight: normal;
+	margin: 0;
 }
 
 p {
 	color: black;
-	font-family: sans-serif;
+	font-family: Verdana, sans-serif;
 	text-align: center;
 	font-weight: normal;
-}
-
-.italics {
-	font-style: italic;
 }
 
 .popup {
@@ -135,7 +122,7 @@ p {
 .mainHeaderLink{
 	font-size: 0.9rem;
 	/*padding-right: 0.1rem;*/
-	padding: 0.3em;
+	padding: 0.3rem;
 }
 
 #mainHeaderLogoImage{
@@ -145,7 +132,7 @@ p {
 }
 
 #mainHeaderLogoTitle{
-	font-family:monospace;
+	font-family: Verdana, sans-serif;
 	padding: 5px;
 	margin: 0 auto;
 	border-bottom:#000000 dashed 3px;
@@ -156,8 +143,9 @@ p {
 	max-width: 100%;
 }
 #mainHeaderLogoSub{
-	font-family:monospace;
+	font-family: Verdana, sans-serif;
 	font-size:0.5rem;
+	letter-spacing: 0.03rem;
 	margin: 0;
 	padding: 4px;
 }
@@ -186,7 +174,7 @@ label, input, textarea, select, button {
 	padding: 10px;
 	margin: 0;
 	box-sizing: border-box;
-	font: 0.66em sans-serif;
+	font-size: 0.66em;
 }
 
 .flexForm {
@@ -197,13 +185,13 @@ label, input, textarea, select, button {
 	width: 100vw;
 	margin: 0 auto;
 }
-.formListOuter {
-	margin:10px auto;
-	padding: 10px;
+.flexFormInner {
+	margin:0 auto;
+	padding:  0 10px;
 	width: 70%;
 }
 
-.formListOuter li {
+.flexFormInner li {
 	display: flex;
 	flex-flow: row nowrap;
 	align-content: center;
@@ -212,7 +200,7 @@ label, input, textarea, select, button {
 	box-sizing: border-box;
 }
 
-.formListOuter label {
+.flexFormInner label {
 	padding: 10px;
 	border: 2px solid #000;
 	border-radius: 5px;
@@ -222,20 +210,20 @@ label, input, textarea, select, button {
 	box-sizing: border-box;
 }
 
-.formListOuter input {
+.flexFormInner input {
 	width: 50%;
 	height: 90%;
 	margin: auto 0;
 	box-sizing: border-box;
 }
 
-.formListOuter input[type="checkbox"] {
+.flexFormInner input[type="checkbox"] {
 	height: 25px;
 	width: 25px;
 	cursor: pointer;
 	margin-right: auto;
 }
-.formListOuter input[type="color"] {
+.flexFormInner input[type="color"] {
 	height: 50px;
 	padding: 5px;
 	background: none;
@@ -258,8 +246,63 @@ label, input, textarea, select, button {
 	margin: 10px auto 0;
 }
 
+/* flex box navigation menus */
+.mainNav {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+	width: 100vw;
+	margin: 0;
+	padding: 0;
+}
+
+.mainNav * {
+	padding: 0.3rem;
+	margin: 0;
+}
+
+.mainNav a {
+	height: auto;
+	text-decoration: none;
+	padding: 0 0.4em;
+	font-weight: bold;
+}
+
+.mainNav li {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	width: 100%;
+	padding: 1em;
+}
+.mainNav li i {
+	margin: 0;
+}
+
+.mainNav li:nth-child(even) {
+	background: #BFBFBF;
+}
+/* Easily make tweaks to flex containers.
+Mostly used to make mainNav more versatile. */
+.wrap {
+	flex-wrap: wrap !important;
+}
+.nowrap {
+	flex-wrap: nowrap !important;
+}
+.row {
+	flex-direction: row !important;
+}
+.column {
+	flex-direction: column !important;
+}
+
 footer {
-	margin: 2% 0;
+	margin: 2rem 0;
 }
 
 /* Media Queries */
@@ -269,7 +312,7 @@ footer {
 		font-size: 20px;
 	}
 
-	.formListOuter {
+	.flexFormInner {
 		width: 100%;
 	}
 

@@ -9,12 +9,12 @@
 <header>
 	{% include "includes/header.html" %}
 	<h1>YouTube Downloader</h1>
-	<p>Download videos up to 30 minutes long.</p>
+	<p style="font-style: italic;">Convert videos up to 30 minutes long into HD mp4 files.</p>
 </header>
-<main style="margin-bottom: 2%">
+<main>
 	<pre id="processing" style="display: none;">Processing...</pre>
 	<form action="/youtubeDownloader/download/" method="post" class="flexForm" id="form">
-		<ul class="formListOuter">
+		<ul class="flexFormInner">
 			<li>
 				<label for="url">YouTube URL</label>
 				<input id="url" name="url" type="url" minlength="10" maxlength="100">
