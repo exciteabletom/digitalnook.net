@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"> 
 <url>
+  <loc>https://digitalnook.net/quote2image/</loc>
+  <priority>1.0</priority>
+  <changefreq>weekly</changefreq>
+  <lastmod>2020-08-04</lastmod>
+</url>
+<url>
+  <loc>https://digitalnook.net/youtubeDownloader/</loc>
+  <priority>1.0</priority>
+  <changefreq>weekly</changefreq>
+  <lastmod>2020-08-04</lastmod>
+</url>
+<url>
   <loc>https://digitalnook.net/servers/</loc>
   <priority>1.0</priority>
-  <changefreq>daily</changefreq>
+  <changefreq>weekly</changefreq>
   <lastmod>2020-08-04</lastmod>
 </url>
 <url>
