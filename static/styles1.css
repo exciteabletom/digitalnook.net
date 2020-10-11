@@ -120,44 +120,38 @@ p {
 	margin-right: 4%;
 }
 .mainHeaderLink{
-	font-size: 0.9rem;
-	/*padding-right: 0.1rem;*/
+	font-size: 0.8rem;
 	padding: 0.3rem;
 }
 
 #mainHeaderLogoImage{
 	object-fit: contain;
-	height: 2.5rem;
-	width: 2.5rem;
+	height: 2.3rem;
+	width: 2.3rem;
 }
 
 #mainHeaderLogoTitle{
-	padding: 5px;
-	margin: 0 auto;
-	border-bottom:#000000 dashed 3px;
 	text-decoration:none;
 	font-weight:bold;
-	font-size: 0.9rem;
-
+	font-size: 1rem;
 	max-width: 100%;
 }
 #mainHeaderLogoSub{
-	font-size:0.5rem;
+	font-size:0.6rem;
 	letter-spacing: 0.03rem;
-	margin: 0;
-	padding: 4px;
+	border-top:#000000 dashed 3px;
+	margin: 0 auto;
+	padding: 0.1rem;
 }
 #mainHeaderLogo{
 	display:flex;
 	flex-direction:column;
-	align-content: flex-start;
-	width:30%;
+	align-content: center;
+	margin-left: 2%;
+	width:28%;
 }
 /* Mobile screens and small desktop screens*/
 @media only screen and (hover: none) and (pointer: coarse), screen and (max-width: 1050px){
-	#mainHeaderLogoTitle {
-		border-bottom: none;
-	}
 	#mainHeaderLogoSub{
 		display: none;
 	}
