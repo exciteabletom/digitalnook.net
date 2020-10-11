@@ -38,9 +38,9 @@
 </form>
 <script>
 	// games user has received from others
-	let receivedGames = {{ received | tojson }}
+	let receivedGames = {{ received | tojson }};
 
-	let currentUser = {{ currentUser | tojson }}
+	let currentUser = {{ currentUser | tojson }};
 
 	const receivedGamesDiv = document.getElementById("receivedGames");
 	if (receivedGames.length > 0) {
@@ -116,6 +116,4 @@
 	}
 </script>
 </body>
-<!--suppress BadExpressionStatementJS -->
-
 </html>

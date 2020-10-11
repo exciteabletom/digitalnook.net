@@ -136,7 +136,10 @@ def about():
 @nocache
 @app.route("/logout/")
 def logout():
-	resp = app.make_response(render_template("logout.html"))
+	if returnURL := request.args.get("return"):
+		resp = app.make_response(redirect(returnURL))
+	else:
+		resp = app.make_response(redirect("/"))
 
 	# replaces cookies with empty strings that expire instantly
 	resp.set_cookie("USERNAME", "", expires=0)
@@ -187,11 +190,10 @@ def register():
 		return render_template("register.html")
 
 	elif request.method == "POST":
-
 		username = request.form.get("username")
 		password = request.form.get("password")
 
-		if type(username) is None or type(password) is None:
+		if not username or not password:
 			return render_template("register.html", error="Please fill in all fields")
 
 		testForIllegalChars = username + password
@@ -420,12 +422,6 @@ def drawSomethingSubmission():
 		return redirect("/games/drawsomethingsubmission/")
 
 
-# bruh
-@app.route("/bruh/")
-def bruh():
-	return render_template("bruh.html")
-
-
 @app.route("/whatsnew/")
 def whatsnew():
 	return render_template("whatsNew.html")
@@ -634,7 +630,7 @@ def youtubeDownloaderAction():
 				# If video downloading is still in progress
 				if t.is_alive():
 					time.sleep(0.5)
-					# Send empty data, will fail if user has disconnected.
+					# Send empty data, will exit if user has disconnected.
 					yield ""
 				else:
 					# Open video as binary blob

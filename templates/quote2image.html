@@ -9,11 +9,11 @@
 <header>
 	{% include "includes/header.html" %}
 	<h1>quote2image</h1>
-	<p class="italics">Generate inspirational quote images</p>
+	<p style="font-style: italic;">Generate inspirational quote images</p>
 </header>
 <main>
 	<form action="/quote2image/generate/" method="get" class="flexForm">
-		<ul class="formListOuter">
+		<ul class="flexFormInner">
 			<li>
 				<label for="quote">Inspirational quote</label>
 				<input id="quote" name="quote" type="text" maxlength="100">
