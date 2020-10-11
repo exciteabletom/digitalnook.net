@@ -132,7 +132,6 @@ p {
 }
 
 #mainHeaderLogoTitle{
-	font-family: Verdana, sans-serif;
 	padding: 5px;
 	margin: 0 auto;
 	border-bottom:#000000 dashed 3px;
@@ -143,7 +142,6 @@ p {
 	max-width: 100%;
 }
 #mainHeaderLogoSub{
-	font-family: Verdana, sans-serif;
 	font-size:0.5rem;
 	letter-spacing: 0.03rem;
 	margin: 0;
@@ -266,7 +264,7 @@ label, input, textarea, select, button {
 .mainNav a {
 	height: auto;
 	text-decoration: none;
-	padding: 0 0.4em;
+	padding: 0 0.6em;
 	font-weight: bold;
 }
 
@@ -281,6 +279,7 @@ label, input, textarea, select, button {
 }
 .mainNav li i {
 	margin: 0;
+	padding: 0;
 }
 
 .mainNav li:nth-child(even) {
@@ -309,6 +308,7 @@ footer {
 /* Mobile devices */
 @media only screen and (hover: none) and (pointer: coarse), screen and (max-width: 650px){
 	html {
+		/* also adjusts any rem sizing */
 		font-size: 20px;
 	}
 
