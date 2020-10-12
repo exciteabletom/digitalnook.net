@@ -63,6 +63,7 @@ if config.production:
 			"default-src": "'self'",
 			"script-src": "'self'",
 			"img-src": "*",
+			"unsafe-inline": True,
 		},
 	)
 
