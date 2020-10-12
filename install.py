@@ -29,6 +29,7 @@ import platform
 import venv
 import subprocess
 import shutil
+from urllib.request import urlopen
 from pathlib import Path
 
 import constants
@@ -96,6 +97,38 @@ def create_venv():
 		venv.create(".venv", with_pip=True)
 
 	return True
+
+
+def download_javascript():
+	"""
+	Download javascript libraries to reduce dependency on CDNs.
+	Not included in the main repository because it inflates the size and messes with stats.
+	"""
+	try:
+		os.mkdir(str(Path("static/js/lib/")))
+	except FileExistsError:
+		pass
+
+	libs = (
+		"https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js",
+		"https://code.jquery.com/jquery.min.js",
+	)
+
+	for lib in libs:
+		# Get the name of the file
+		name = lib.split("/")[-1]
+		print(f"Downloading '{name}' from '{lib}'")
+
+		# Open url
+		with urlopen(lib) as js_url:
+			# Get byte data from url
+			js_bytes = js_url.read()
+			# bytes to unicode
+			js = js_bytes.decode("utf-8")
+
+			with open(str(Path(f"static/js/lib/{name}")), "w") as f:
+				# Write unicode to file
+				f.write(js)
 
 
 def main():
@@ -172,6 +205,10 @@ def main():
 		pass
 
 	subprocess.call([python_bin, "install/create_tables.py"])
+	status()
+
+	status("Installing JavaScript libraries")
+	download_javascript()
 	status()
 
 	status("Creating latestId flatfile")

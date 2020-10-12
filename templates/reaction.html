@@ -10,10 +10,11 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 	<!--sleep function-->
 	<script src="/static/js/sleep.js"></script>
 	<style>
-		.leftButtona, .rightButton, .centerButtona {
+		.leftButton, .rightButton, .centerButton {
 			margin: 5px;
 			height: 45px;
 			width: 45px;
+			visibility: hidden;
 		}
 
 		/*fits red dots inside of div without overflow*/
@@ -25,6 +26,12 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 			bottom: 0;
 			top: 0;
 		}
+		li {
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: space-around;
+			align-content: space-around;
+		}
 
 		/*formatting for leaderboard form */
 	</style>
@@ -35,43 +42,40 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 	<h1>Test your reactions!</h1>
 </header>
 <!-- All buttons for game and start button -->
-<div id="game"
-     style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center;  background: white; height: 200px; width: 20%; margin-left: 40%; margin-right: 40%; border: 5px solid black;">
-	<div id='start'>
-		<button id="startButton" onclick="resetVars(); this.style.display = 'none'; submitButton.style.display = 'none'; startGame()" style="visibility: visible; "
-		        type="button">
-			Start
-		</button>
-	</div>
-	<!-- sections the page into three vertical stacks, buttons floated left/right -->
-	<div id="mainGame" style="display: none; width: 100%; ">
-		<div id="top" style="height:33%">
-			<input alt="Button is not loading.." class="leftButton" id="topLeft" onclick="endTimer(); this.style.visibility = 'hidden'"
-			       src="/static/images/dot.png" type="image"/>
-			<input alt="Button is not loading.." class="centerButton" id="topCenter" onclick="endTimer(); this.style.visibility = 'hidden'"
-			       src="/static/images/dot.png" type="image"/>
-			<input alt="Button is not loading.." class="rightButton" id="topRight" onclick="endTimer(); this.style.visibility = 'hidden'"
-			       src="/static/images/dot.png" type="image"/>
-		</div>
-		<div id="middle" style="height:33%;">
-			<input alt="Button is not loading.." class="leftButton" id="middleLeft" onclick="endTimer(); this.style.visibility = 'hidden'"
-			       src="/static/images/dot.png" type="image"/>
-			<input alt="Button is not loading.." class="rightButton" id="middleRight" onclick="endTimer(); this.style.visibility = 'hidden'"
-			       src="/static/images/dot.png" style="margin-right: 50px" type="image"/>
-			<input alt="Button is not loading.." class="centerButton" id="middleCenter" onclick="endTimer(); this.style.visibility = 'hidden'"
-			       src="/static/images/dot.png" type="image"/>
-		</div>
-		<div id="bottom" style="height:33%;">
-			<input alt="Button is not loading.." class="centerButton" id="bottomCenter" onclick="endTimer(); this.style.visibility = 'hidden'"
-			       src="/static/images/dot.png" type="image"/>
-			<input alt="Button is not loading.." class="leftButton" id="bottomLeft" onclick="endTimer(); this.style.visibility = 'hidden'"
-			       src="/static/images/dot.png" type="image"/>
-			<input alt="Button is not loading.." class="rightButton" id="bottomRight" onclick="endTimer(); this.style.visibility = 'hidden'"
-			       src="/static/images/dot.png" type="image"/>
-		</div>
-	</div>
+<div id='start'>
+	<button id="startButton" onclick="resetVars(); this.style.display = 'none'; submitButton.style.display = 'none'; startGame()" style="visibility: visible; "
+	        type="button">
+		Start
+	</button>
 </div>
-<br/>
+<!-- sections the page into three vertical stacks, buttons floated left/right -->
+<ul id="mainGame" style="display: flex; justify-content: space-around; align-content: space-around; flex-flow: column nowrap; margin-left: auto; padding: 0" >
+	<li id="top">
+		<input alt="Button is not loading.." class="leftButton" id="topLeft" onclick="endTimer(); this.style.visibility = 'hidden'"
+		       src="/static/images/dot.png" type="image"/>
+		<input alt="Button is not loading.." class="centerButton" id="topCenter" onclick="endTimer(); this.style.visibility = 'hidden'"
+		       src="/static/images/dot.png" type="image"/>
+		<input alt="Button is not loading.." class="rightButton" id="topRight" onclick="endTimer(); this.style.visibility = 'hidden'"
+		       src="/static/images/dot.png" type="image"/>
+	</li>
+	<li id="middle">
+		<input alt="Button is not loading.." class="leftButton" id="middleLeft" onclick="endTimer(); this.style.visibility = 'hidden'"
+		       src="/static/images/dot.png" type="image"/>
+		<input alt="Button is not loading.." class="rightButton" id="middleRight" onclick="endTimer(); this.style.visibility = 'hidden'"
+		       src="/static/images/dot.png" style="margin-right: 50px" type="image"/>
+		<input alt="Button is not loading.." class="centerButton" id="middleCenter" onclick="endTimer(); this.style.visibility = 'hidden'"
+		       src="/static/images/dot.png" type="image"/>
+	</li>
+	<li id="bottom">
+		<input alt="Button is not loading.." class="centerButton" id="bottomCenter" onclick="endTimer(); this.style.visibility = 'hidden'"
+		       src="/static/images/dot.png" type="image"/>
+		<input alt="Button is not loading.." class="leftButton" id="bottomLeft" onclick="endTimer(); this.style.visibility = 'hidden'"
+		       src="/static/images/dot.png" type="image"/>
+		<input alt="Button is not loading.." class="rightButton" id="bottomRight" onclick="endTimer(); this.style.visibility = 'hidden'"
+		       src="/static/images/dot.png" type="image"/>
+	</li>
+</ul>
+	<br/>
 <div id="results" style="position: relative; margin: 0px; height: 100%; width:100%">
 	<h2>Results</h2>
 	<p id="firstTime"></p>
@@ -80,7 +84,7 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 	<br/>
 	<p id="finalTime"></p>
 	<br/>
-	<button class='greenButtona' id='submitButton' onclick="submitToLeaderboard.style.display = 'block'"
+	<button class='greenButton' id='submitButton' onclick="submitToLeaderboard.style.display = 'block'"
 			style="width:30%; margin-left: 35%; margin-left: 35%; display: none;"
 			type="button">Submit score to Leaderboard
 	</button>
@@ -91,7 +95,7 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 </div>
 <br/>
 <form action="/games/leaderboardsubmission/" autocomplete="off" id='submitToLeaderboard' method="post"
-      style="position:fixed; height: 100vh; width: 100vw; display: none; z-index: 3; text-align: center; visiblity">
+      style="position:fixed; height: 100vh; width: 100vw; display: none; z-index: 3; text-align: center;">
 	<legend><h1>Send score to leaderboards</h1></legend>
 	<p>Name:</p> <br/>
 	<input id='nameInput' name='username' placeholder='Enter Username'
@@ -100,27 +104,8 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 	<input id='scoreInput' name='score' readonly='readonly'
 	       style='height:10vh; width: 30vw; margin-left:35vw;margin-right:35vw;' type='text' value='please finish a game before submitting'> <br/>
 	<br/>
-	<input class="greenButtona" type='submit' value='Submit'>
+	<input type='submit' value='Submit'>
 </form>
-<div class='overlay' id='tutorialPopup' style="display:block; background:#FF6F00;">
-	<h1>How to Play</h1>
-	<br/>
-	<p>
-		Click on the 3 dots as they appear. Try to get a good score!
-		<br/><br/>
-		Get under 600ms average to be a champion!
-	</p>
-	<button class='greenButtona' id="tutorialClose" onclick='tutorialPopup.style.display = "none"'
-			style="margin-right:40%;margin-left:40%;width:20%;">Let's Play!
-	</button>
-</div>
-<div class='overlay' id='lowTimePopup' style="display:none; background:#FF6F00;">
-	<h1>Nice Job! that is a very low time!</h1>
-	<br/>
-	<p id="lowTime"></p>
-	<br/>
-	<button class="greenButtona" id="lowTimeClose" onclick="lowTimePopup.style.display = 'none';">Back to Game</button>
-</div>
 <script>
 	// Variables for easy access of DOM elements
 	const game = document.getElementById('game');
@@ -229,7 +214,7 @@ TODO: redesign flex-boxes, stop leaderboard injection, use login system-->
 		randomWaitNum = Math.floor((Math.random() * 4000) + 1000);
 		console.log(`random num is ${randomNum}. random wait num is ${randomWaitNum}`)// for debugging
 		sleep(randomWaitNum).then(() => {
-			document.getElementById("mainGame").style.display = "block";
+			document.getElementById("mainGame").style.display = "flex";
 			switch (randomNum) { // TODO: reaction time game rewrite?
 				case 1:
 					document.getElementById("topLeft").style.visibility = "visible";
