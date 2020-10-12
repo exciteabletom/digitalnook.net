@@ -1,5 +1,6 @@
 #tom custom
-static/js/libs/
+static/js/lib/*
+
 latestId.txt
 .swo/
 .swp/

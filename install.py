@@ -104,8 +104,10 @@ def downloadJavascript():
 	Download javascript libraries to reduce dependency on CDNs.
 	Not included in the main repository because it inflates the size and messes with stats.
 	"""
+	os.mkdir(str(Path("static/js/lib/")))
+
 	libs = [
-		"https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"
+		"https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js",
 	]
 
 	for lib in libs:
