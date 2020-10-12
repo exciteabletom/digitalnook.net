@@ -270,7 +270,7 @@ label, input, textarea, select, button {
 	align-items: center;
 	align-content: center;
 	width: 100%;
-	padding: 1em;
+	padding: 1em 0;
 }
 .mainNav li i {
 	margin: 0;
