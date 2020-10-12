@@ -109,15 +109,20 @@ def downloadJavascript():
 	]
 
 	for lib in libs:
+		# Get the name of the file
 		name = lib.split("/")[-1]
-		print(f"Downloading '{name}'")
+		print(f"Downloading '{name}' from '{lib}'")
+		
+		# Open url
+		with urlopen(lib) as js_url:
+			# Get byte data from url
+			js_bytes = js_url.read()
+			# bytes to unicode
+			js = js_bytes.decode("utf-8")
 
-		with urlopen(lib) as js:
-			js_data = js.read
-			js_data = js_data.decode("utf-8")
-
-			with open(str(Path(f"static/libs/{name}")), "w") as file:
-				file.write(js_data)
+			with open(str(Path(f"static/js/libs/{name}")), "w") as f:
+				# Write unicode to file
+				f.write(js)
 
 
 def main():
