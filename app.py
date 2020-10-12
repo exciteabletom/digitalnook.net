@@ -56,7 +56,15 @@ app = Flask(__name__)
 
 # SECURITY HEADER WRAPPER
 if config.production:
-	Talisman(app, content_security_policy=None)
+	Talisman(
+		app,
+		force_https=True,
+		content_security_policy={
+			"default-src": "'self'",
+			"script-src": "'self'",
+			"img-src": "*",
+		},
+	)
 
 #  encryption functions in jinja2 templating
 app.jinja_env.globals.update(decryptString=decryptString)
@@ -592,7 +600,6 @@ def youtubeDownloader():
 
 @app.route("/youtubeDownloader/download/", methods=["POST"])
 def youtubeDownloaderAction():
-
 	# get OS-agnostic temp directory
 	tmpDir = tempfile.gettempdir()
 	# Get unique filename using unix epoch
