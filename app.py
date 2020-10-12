@@ -59,12 +59,7 @@ if config.production:
 	Talisman(
 		app,
 		force_https=True,
-		content_security_policy={
-			"default-src": "'self'",
-			"script-src": "'self'",
-			"img-src": "*",
-			"unsafe-inline": True,
-		},
+		content_security_policy=None
 	)
 
 #  encryption functions in jinja2 templating
