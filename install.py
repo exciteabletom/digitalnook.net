@@ -122,7 +122,7 @@ def downloadJavascript():
 			# bytes to unicode
 			js = js_bytes.decode("utf-8")
 
-			with open(str(Path(f"static/js/libs/{name}")), "w") as f:
+			with open(str(Path(f"static/js/lib/{name}")), "w") as f:
 				# Write unicode to file
 				f.write(js)
 
