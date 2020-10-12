@@ -621,35 +621,40 @@ def youtubeDownloaderAction():
 
 	# A generator function is used here to check if the client
 	# is still connected. If the user disconnects the process is
-	# aborted and the file is deleted.
-	def generator(t: threading.Thread):
+	# aborted and the file is deleted. This is necessary because
+	# otherwise infinite temp files are created if a user spams the
+	# form.
+	def generator():
 		# Start the background thread to download the video
 		videoThread.start()
 		try:
 			while True:
 				# If video downloading is still in progress
-				if t.is_alive():
+				if videoThread.is_alive():
 					time.sleep(0.5)
-					# Send empty data, will exit if user has disconnected.
+					# Send empty string, this will throw a 'GeneratorExit' exception
+					# if user has disconnected.
 					yield ""
+				# If video has finished downloading
 				else:
 					# Open video as binary blob
 					with open(fullPath, "rb") as vid:
 						# Send the video data to flask
 						yield vid.read()
-						# Exit the function
+						# Exit the generator function
 						return
 
 		finally:
-			# Always delete the file afterwards.
 			# This is triggered if:
-			#   the client disconnects,
-			#   there is an error,
-			#   video creation is successful.
+			#     the client disconnects,
+			#     there is any errors,
+			#     video sending is successful.
+			# This ensures that no cruft is left
+			# behind in the temp directory
 			os.remove(fullPath)
 
-	# Return the video data to the user
-	return Response(generator(videoThread), mimetype="video/mp4")
+	# Return the video to the user
+	return Response(generator(), mimetype="video/mp4")
 
 
 @app.route("/getPostID/", methods=["POST"])
