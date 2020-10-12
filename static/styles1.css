@@ -42,7 +42,7 @@ a {
 
 body {
 	text-align: center;
-	background-color: #F6F9FC;
+	background-color: #FAFAFA;
 	margin: 0;
 }
 
@@ -150,6 +150,7 @@ p {
 	margin-left: 2%;
 	width:28%;
 }
+
 /* Mobile screens and small desktop screens*/
 @media only screen and (hover: none) and (pointer: coarse), screen and (max-width: 1050px){
 	#mainHeaderLogoSub{
