@@ -29,6 +29,7 @@ import platform
 import venv
 import subprocess
 import shutil
+from urllib.request import urlopen
 from pathlib import Path
 
 import constants
@@ -96,6 +97,27 @@ def create_venv():
 		venv.create(".venv", with_pip=True)
 
 	return True
+
+
+def downloadJavascript():
+	"""
+	Download javascript libraries to reduce dependency on CDNs.
+	Not included in the main repository because it inflates the size and messes with stats.
+	"""
+	libs = [
+		"https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"
+	]
+
+	for lib in libs:
+		name = lib.split("/")[-1]
+		print(f"Downloading '{name}'")
+
+		with urlopen(lib) as js:
+			js_data = js.read
+			js_data = js_data.decode("utf-8")
+
+			with open(str(Path(f"static/libs/{name}")), "w") as file:
+				file.write(js_data)
 
 
 def main():
@@ -172,6 +194,10 @@ def main():
 		pass
 
 	subprocess.call([python_bin, "install/create_tables.py"])
+	status()
+
+	status("Installing JavaScript libraries")
+	downloadJavascript()
 	status()
 
 	status("Creating latestId flatfile")
