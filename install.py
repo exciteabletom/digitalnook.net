@@ -99,7 +99,7 @@ def create_venv():
 	return True
 
 
-def downloadJavascript():
+def download_javascript():
 	"""
 	Download javascript libraries to reduce dependency on CDNs.
 	Not included in the main repository because it inflates the size and messes with stats.
@@ -109,15 +109,16 @@ def downloadJavascript():
 	except FileExistsError:
 		pass
 
-	libs = [
+	libs = (
 		"https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js",
-	]
+		"https://code.jquery.com/jquery.min.js",
+	)
 
 	for lib in libs:
 		# Get the name of the file
 		name = lib.split("/")[-1]
 		print(f"Downloading '{name}' from '{lib}'")
-		
+
 		# Open url
 		with urlopen(lib) as js_url:
 			# Get byte data from url
@@ -207,7 +208,7 @@ def main():
 	status()
 
 	status("Installing JavaScript libraries")
-	downloadJavascript()
+	download_javascript()
 	status()
 
 	status("Creating latestId flatfile")
