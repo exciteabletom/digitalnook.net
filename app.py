@@ -672,38 +672,68 @@ def steganography():
 @app.route("/steganography/generate/", methods=["POST"])
 def steganographyAction():
 
+	def badImageError(msg=None):
+		"""
+		Get an error response about how the image was invalid.
+
+		:param msg: Optional message override.
+		:r_type: Tuple
+		:return: (msg, 500)
+		"""
+		if not msg:
+			return "File was corrupt ot not an image", 500
+		else:
+			return msg, 500
+
 	method = request.form.get("method")
 	image = request.files.get("image")
 
 	if not image:
-		return "Image not found. Try uploading it in the form again"
+		return badImageError("Image not found. Try uploading it in the form again")
 
-	imageHandler = io.BytesIO(image.getvalue())
+	try:
+		# Load image into memory.
+		imageHandler = io.BytesIO(image.getvalue())
+	except AttributeError:
+		return badImageError()
 
 	if method == "hide":
 		message = request.form.get("message")
 
-		secretImage = stegano.lsb.hide(imageHandler, message=message)
+		try:
+			# Hide message in image
+			secretImage = stegano.lsb.hide(imageHandler, message=message)
+		except (OSError, AttributeError, ValueError):
+			return badImageError()
 
+		# Load secret image into memory
 		secretImageHandler = io.BytesIO()
 		secretImage.save(secretImageHandler, format="PNG")
 
-		# Cannot return the image data with Response() because fucking
+		# I cannot return the image data with Response() because fucking
 		# FireFox requests the image again when you try and save
 		# it instead of getting the image that is already in cache.
 		# Since the image is served through POST this breaks
-		# functionality on FF unless I use this ugly hack.
-		# Image data is instead encoded into a data uri and embedded
+		# functionality on FF unless I use this ugly hack where:
+		# image data is instead encoded into a data uri and embedded
 		# into a html page.
 
+		# Get the image bytes
 		imgData = secretImageHandler.getvalue()
+		# base64 encoded bytes -> base64 utf string
 		imgData = base64.b64encode(imgData).decode()
+		# Create data uri
 		imgData = f"data:image/png;base64,{imgData}"
 
+		# Template the image into a html page
 		return render_template("displayImage.html", imgData=imgData, imgName="steganography_encoded.png")
 
 	elif method == "show":
-		secretMessage = stegano.lsb.reveal(imageHandler)
+		try:
+			# Get the message from the image
+			secretMessage = stegano.lsb.reveal(imageHandler)
+		except (OSError, AttributeError, ValueError):
+			return badImageError()
 
 		if secretMessage is None:
 			secretMessage = "No secret message detected"
