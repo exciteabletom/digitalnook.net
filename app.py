@@ -18,13 +18,17 @@
 # along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
 ########################################################################
 """
-This is the entrypoint module for the flask app. 
+This is the entrypoint for the flask app.
 
 Start a dev server with 'python3 app.py'.
-For production run with --production.
+
+For production servers use a wsgi stack like gunicorn/nginx, and
+change PRODUCTION to True in the config. Make sure you serve static content
+with your production server and not Flask.
 """
 
 # Standard Libraries
+import base64
 import os
 import sys
 import io
@@ -35,7 +39,6 @@ import time
 import threading
 from pathlib import Path
 from functools import wraps
-from string import Template
 
 # Flask
 from flask import Flask, render_template, request, redirect, send_from_directory, Response
@@ -44,6 +47,7 @@ from flask_talisman import Talisman
 # Pip modules
 from quote2image import generate as quoteGenerate
 import pytube
+import stegano
 
 # Local modules
 import modifyTable
@@ -53,6 +57,9 @@ from cyrpto import encryptString, decryptString
 from nocache import nocache
 
 app = Flask(__name__)
+
+# 10 mebibyte request limit
+app.config['MAX_CONTENT_LENGTH'] = 10485760
 
 # SECURITY HEADER WRAPPER
 if config.production:
@@ -69,7 +76,7 @@ app.jinja_env.globals.update(encryptString=encryptString)
 
 def loginRequired(appRoute):
 	"""
-	Simple wrapper that checks to see if the user is logged in or not.
+	Wrapper that checks to see if the user is logged in or not.
 
 	Works by checking cookies to see if they already exist.
 	If cookies already exist and are correct. don't interrupt request.
@@ -78,13 +85,11 @@ def loginRequired(appRoute):
 
 	@wraps(appRoute)
 	def wrapper(*args, **kwargs):
-		loginErrorMessage = Template("$page requires you to be logged in")
 		errorResp = app.make_response(redirect("/login/"))
 		pathList = str(request.path).split("/")
-		newPathList = [i for i in pathList if i != ""]
-		currentPage = newPathList[-1]
+		currentPage = [i for i in pathList if i != ""][-1]
 
-		errorResp.set_cookie("LOGINERROR", loginErrorMessage.substitute(page=currentPage.title()))
+		errorResp.set_cookie("LOGINERROR", f"'{currentPage.title()}' requires you to be logged in!")
 
 		if "USERNAME" in request.cookies and "PASSWORD" in request.cookies:
 			encryptedUsername = request.cookies.get("USERNAME")
@@ -105,7 +110,6 @@ def loginRequired(appRoute):
 	return wrapper
 
 
-# This should be handled in NGINX instead for production.
 @app.route('/robots.txt')
 @app.route('/sitemap.xml')
 def staticFromRoot():
@@ -137,8 +141,8 @@ def about():
 
 
 # logout page
-@nocache
 @app.route("/logout/")
+@nocache
 def logout():
 	if returnURL := request.args.get("return"):
 		resp = app.make_response(redirect(returnURL))
@@ -153,8 +157,8 @@ def logout():
 
 
 # login page
-@nocache
 @app.route("/login/", methods=["GET", "POST"])
+@nocache
 def login():
 	if request.method == "GET":
 		if request.cookies.get("LOGINERROR"):
@@ -187,8 +191,8 @@ def login():
 
 
 # Registration page
-@nocache
 @app.route("/register/", methods=["GET", "POST"])
+@nocache
 def register():
 	if request.method == "GET":
 		return render_template("register.html")
@@ -234,7 +238,6 @@ def register():
 def drawSomething():
 	"""
 	Interprets user actions to render different templates, allows the game to work with different templates on one URL
-	BTW, this is messy as hell, my newer code is better
 	"""
 	if request.method == "GET":
 		return render_template("drawSomething/drawSomething.html")
@@ -427,7 +430,7 @@ def drawSomethingSubmission():
 
 
 @app.route("/whatsnew/")
-def whatsnew():
+def whatsNew():
 	return render_template("whatsNew.html")
 
 
@@ -642,22 +645,72 @@ def youtubeDownloaderAction():
 				else:
 					# Open video as binary blob
 					with open(fullPath, "rb") as vid:
-						# Send the video data to flask
+						# return the video data
 						yield vid.read()
 						# Exit the generator function
 						return
 
 		finally:
 			# This is triggered if:
-			#     the client disconnects,
-			#     there is any errors,
-			#     video sending is successful.
-			# This ensures that no cruft is left
+			#    the client disconnects,
+			#    there is any errors,
+			#    video sending is successful.
+			# This ensures that no downloaded videos are ever left
 			# behind in the temp directory
 			os.remove(fullPath)
 
 	# Return the video to the user
 	return Response(generator(), mimetype="video/mp4")
+
+
+@app.route("/steganography/")
+def steganography():
+	return render_template("steganography.html")
+	pass
+
+
+@app.route("/steganography/generate/", methods=["POST"])
+def steganographyAction():
+
+	method = request.form.get("method")
+	image = request.files.get("image")
+
+	if not image:
+		return "Image not found. Try uploading it in the form again"
+
+	imageHandler = io.BytesIO(image.getvalue())
+
+	if method == "hide":
+		message = request.form.get("message")
+
+		secretImage = stegano.lsb.hide(imageHandler, message=message)
+
+		secretImageHandler = io.BytesIO()
+		secretImage.save(secretImageHandler, format="PNG")
+
+		# Cannot return the image data with Response() because fucking
+		# FireFox requests the image again when you try and save
+		# it instead of getting the image that is already in cache.
+		# Since the image is served through POST this breaks
+		# functionality on FF unless I use this ugly hack.
+		# Image data is instead encoded into a data uri and embedded
+		# into a html page.
+
+		imgData = secretImageHandler.getvalue()
+		imgData = base64.b64encode(imgData).decode()
+		imgData = f"data:image/png;base64,{imgData}"
+
+		return render_template("displayImage.html", imgData=imgData, imgName="steganography_encoded.png")
+
+	elif method == "show":
+		secretMessage = stegano.lsb.reveal(imageHandler)
+
+		if secretMessage is None:
+			secretMessage = "No secret message detected"
+		else:
+			secretMessage = f"Secret Message: {secretMessage}"
+
+		return secretMessage
 
 
 @app.route("/getPostID/", methods=["POST"])

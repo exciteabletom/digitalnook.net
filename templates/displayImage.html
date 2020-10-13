@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="description" content="Hide messages in images at Digital Nook"/>
+	<title> {{ imgName }}| Digital Nook</title>
+	{% include "/includes/meta.html"%}
+</head>
+<body>
+	<p>Click on the image to download.</p>
+	<a download="{{ imgName }}" href="{{ imgData }}" style="margin-left: auto; margin-top: auto;">
+		<img src="{{ imgData }}"  alt="{{ imgName }}"/>
+	</a>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="description" content="Hide messages in images at Digital Nook"/>
+	<title>Steganography | Digital Nook</title>
+	{% include "/includes/meta.html"%}
+</head>
+<body>
+<header>
+	{% include "/includes/header.html" %}
+	<h1>Image-based steganography</h1>
+	<p style="font-style: italic;">Hide messages in images with
+		<a href="https://en.wikipedia.org/wiki/Steganography">steganography</a>
+	</p>
+</header>
+<form class="flexForm" action="/steganography/generate/" method="post" enctype="multipart/form-data">
+	<ul>
+		<li>
+			<label for="method">Hide a message or show a message?</label>
+			<select id="method" name="method">
+				<option id="hide" value="hide" onclick="showHide('show')">Hide a secret message</option>
+				<option id="show" value="show" onclick="showHide('hide')">Show a secret message</option>
+			</select>
+		</li>
+		<li id="messageContainer">
+			<label for="message">Message</label>
+			<textarea id="message" name="message" rows="3"></textarea>
+		</li>
+		<li>
+			<label for="image">Image</label>
+			<input id="image" name="image" type="file" accept="image/*">
+		</li>
+		<li>
+			<button type="submit">Submit Image</button>
+		</li>
+	</ul>
+</form>
+<footer>
+	<a href="/">Back to Home</a>
+</footer>
+<script>
+	message = document.getElementById("message");
+	messageContainer = document.getElementById("messageContainer");
+
+	showHide = mode => {
+		if (mode === "hide") {
+			messageContainer.style.display = "none";
+			message.disabled = true;
+		} else if (mode === "show") {
+			messageContainer.style.display = "flex";
+			message.disabled = false;
+		}
+	}
+
+</script>
+</body>
+</html>

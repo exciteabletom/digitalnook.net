@@ -1,3 +1,48 @@
+/*
+* styles1.css - Copyright 2020, Thomas Chris Dougiamas
+*
+* This file is part of Digital Nook.
+*
+* Digital Nook is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Digital Nook is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Digital Nook.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+/*
+ * Never adjust font-sizes in px, always use rem.
+ *
+ * For navigation menus use the mainNav class on a <ul>.
+ *
+ * For forms use the flexForm class and put every
+ * label/input combo in it's own <li> within a <ul>.
+ *
+ * E.g:
+ * <form class="flexForm" action="/foo" method="get">
+ *     <ul>
+ *         <li>
+ *             <label for="foo">foo</label>
+ *             <input id="foo" name="foo" type="text"></input>
+ *         </li>
+ *         <li>
+ *             <label for="bar">bar</label>
+ *             <input id="bar" name="bar" type="checkbox"></input>
+ *         </li>
+ *         <li>
+ *             <button type="submit">Submit foo</button>
+ *         </li>
+ *     <ul>
+ * </form>
+ */
+
 html {
 	font-size: 30px; /* Default font-size for all elements*/
 }
@@ -178,13 +223,13 @@ label, input, textarea, select, button {
 	width: 100vw;
 	margin: 0 auto;
 }
-.flexFormInner {
+.flexForm > ul {
 	margin:0 auto;
 	padding:  0 10px;
 	width: 70%;
 }
 
-.flexFormInner li {
+.flexForm > ul li {
 	display: flex;
 	flex-flow: row nowrap;
 	align-content: center;
@@ -193,7 +238,7 @@ label, input, textarea, select, button {
 	box-sizing: border-box;
 }
 
-.flexFormInner label {
+.flexForm > ul label {
 	padding: 10px;
 	border: 2px solid #000;
 	border-radius: 5px;
@@ -203,20 +248,24 @@ label, input, textarea, select, button {
 	box-sizing: border-box;
 }
 
-.flexFormInner input {
+.flexForm > ul input, textarea, select {
 	width: 50%;
 	height: 90%;
 	margin: auto 0;
 	box-sizing: border-box;
 }
+.flexForm > ul textarea {
+	font-size: 0.6rem;
+	font-family: inherit;
+}
 
-.flexFormInner input[type="checkbox"] {
+.flexForm > ul input[type="checkbox"] {
 	height: 25px;
 	width: 25px;
 	cursor: pointer;
 	margin-right: auto;
 }
-.flexFormInner input[type="color"] {
+.flexForm > ul input[type="color"] {
 	height: 50px;
 	padding: 5px;
 	background: none;
@@ -225,6 +274,9 @@ label, input, textarea, select, button {
 
 	border: none;
 	cursor: pointer;
+}
+.flexForm > ul input[type="file"], select {
+	padding: 0;
 }
 
 .flexForm button {
@@ -272,7 +324,9 @@ label, input, textarea, select, button {
 	width: 100%;
 	padding: 1em 0;
 }
+/* Font awesome icons*/
 .mainNav li i {
+	/* spaced with flex box so no margin/padding required */
 	margin: 0;
 	padding: 0;
 }
@@ -281,9 +335,13 @@ label, input, textarea, select, button {
 	background: #BFBFBF;
 }
 /* Easily make tweaks to flex containers.
-Mostly used to make mainNav more versatile. */
+Mostly used to make mainNav more versatile.
+*/
 .wrap {
 	flex-wrap: wrap !important;
+}
+.wrap p {
+	width: 60%;
 }
 .nowrap {
 	flex-wrap: nowrap !important;
@@ -307,7 +365,7 @@ footer {
 		font-size: 20px;
 	}
 
-	.flexFormInner {
+	.flexForm > ul {
 		width: 100%;
 	}
 
