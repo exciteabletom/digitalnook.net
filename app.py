@@ -718,7 +718,7 @@ def steganographyAction():
 		# because fucking FireFox requests the image again when you try
 		# and save it instead of getting the image that is already in cache.
 		# Since the image is served through POST this breaks functionality
-		# on FF unless this ugly hack is used.
+		# on FF UNLESS this ugly hack is used.
 
 		# Get the image bytes
 		imgData = secretImageHandler.getvalue()
