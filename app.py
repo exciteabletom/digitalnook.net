@@ -23,8 +23,8 @@ This is the entrypoint for the flask app.
 Start a dev server with 'python3 app.py'.
 
 For production servers use a wsgi stack like gunicorn/nginx, and
-change PRODUCTION to True in the config. Make sure you serve static content
-with your production server and not Flask.
+change 'production' to True in the config. Make sure you serve static
+content with a production server and not Flask.
 """
 
 # Standard Libraries
@@ -58,8 +58,8 @@ from nocache import nocache
 
 app = Flask(__name__)
 
-# 10 mebibyte request limit
-app.config['MAX_CONTENT_LENGTH'] = 10485760
+# 5 MB request limit
+app.config['MAX_CONTENT_LENGTH'] = 1000000 * 5
 
 # SECURITY HEADER WRAPPER
 if config.production:
@@ -609,7 +609,7 @@ def youtubeDownloaderAction():
 
 	yt = pytube.YouTube(url)
 
-	# Disallow youtube videos > 30 mins to save processing power from being drained by a massive video.
+	# Disallow youtube videos > 30 mins
 	if int(yt.length) / 60 > 30:
 		return "Cannot download videos longer than 30 minutes..."
 
@@ -652,11 +652,12 @@ def youtubeDownloaderAction():
 
 		finally:
 			# This is triggered if:
-			#    the client disconnects,
-			#    there is any errors,
-			#    video sending is successful.
-			# This ensures that no downloaded videos are ever left
-			# behind in the temp directory
+			#   1. the client disconnects OR
+			#   2. there is any errors OR
+			#   3. video sending is successful.
+			# This ensures that no downloaded videos are
+			# ever left behind in the temp directory when
+			# the request finishes
 			os.remove(fullPath)
 
 	# Return the video to the user
@@ -697,6 +698,8 @@ def steganographyAction():
 	except AttributeError:
 		return badImageError()
 
+	imageName = image.filename.split(".")[0]
+
 	if method == "hide":
 		message = request.form.get("message")
 
@@ -710,13 +713,12 @@ def steganographyAction():
 		secretImageHandler = io.BytesIO()
 		secretImage.save(secretImageHandler, format="PNG")
 
-		# I cannot return the image data with Response() because fucking
-		# FireFox requests the image again when you try and save
-		# it instead of getting the image that is already in cache.
-		# Since the image is served through POST this breaks
-		# functionality on FF unless I use this ugly hack where:
-		# image data is instead encoded into a data uri and embedded
-		# into a html page.
+		# Image data is instead encoded into a data uri and embedded
+		# into a html page. We cannot return the image data with Response()
+		# because fucking FireFox requests the image again when you try
+		# and save it instead of getting the image that is already in cache.
+		# Since the image is served through POST this breaks functionality
+		# on FF unless this ugly hack is used.
 
 		# Get the image bytes
 		imgData = secretImageHandler.getvalue()
@@ -726,7 +728,7 @@ def steganographyAction():
 		imgData = f"data:image/png;base64,{imgData}"
 
 		# Template the image into a html page
-		return render_template("displayImage.html", imgData=imgData, imgName="steganography_encoded.png")
+		return render_template("displayImage.html", imgData=imgData, imgName=f"{imageName}_secret.png")
 
 	elif method == "show":
 		try:

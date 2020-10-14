@@ -183,9 +183,9 @@ def main():
 			print("Error creating a virtual environment")
 			sys.exit(1)
 
-		if is_unix():
+		if is_unix():  # MacOS, Linux
 			python_bin = str(Path(".venv/bin/python3"))
-		else:
+		else:  # Windows
 			python_bin = str(Path(".venv/Scripts/python.exe"))
 
 		# Update pip and setuptools
@@ -227,7 +227,7 @@ def main():
 	if is_unix():
 		source_instruct = ". .venv/bin/activate"
 	else:
-		source_instruct = ".venv/Scripts/activate.bat"
+		source_instruct = ".venv\\Scripts\\activate.bat"
 
 	print(
 		f"All tasks done! The development server is now installed.\n\n"
