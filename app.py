@@ -704,6 +704,9 @@ def steganographyAction():
 	if method == "hide":
 		message = request.form.get("message")
 
+		if not message:
+			return "No message provided.", 500
+
 		try:
 			# Hide message in image
 			secretImage = stegano.lsb.hide(imageHandler, message=message)
