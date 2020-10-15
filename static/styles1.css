@@ -324,8 +324,9 @@ label, input, textarea, select, button {
 	width: 100%;
 	padding: 1em 0;
 }
+
 /* Font awesome icons*/
-.mainNav li i {
+.mainNav i {
 	/* spaced with flex box so no margin/padding required */
 	margin: 0;
 	padding: 0;
@@ -335,8 +336,7 @@ label, input, textarea, select, button {
 	background: #BFBFBF;
 }
 /* Easily make tweaks to flex containers.
-Mostly used to make mainNav more versatile.
-*/
+Mostly used to make mainNav more versatile. */
 .wrap {
 	flex-wrap: wrap !important;
 }
@@ -368,5 +368,4 @@ footer {
 	.flexForm > ul {
 		width: 100%;
 	}
-
 }

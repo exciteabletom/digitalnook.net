@@ -58,8 +58,8 @@ from nocache import nocache
 
 app = Flask(__name__)
 
-# 5 MB request limit
-app.config['MAX_CONTENT_LENGTH'] = 1000000 * 5
+# 50 MB request limit
+app.config['MAX_CONTENT_LENGTH'] = 1000000 * 75
 
 # SECURITY HEADER WRAPPER
 if config.production:
@@ -671,6 +671,7 @@ def steganography():
 
 
 @app.route("/steganography/generate/", methods=["POST"])
+@nocache
 def steganographyAction():
 
 	def badImageError(msg=None):
@@ -682,7 +683,7 @@ def steganographyAction():
 		:return: (msg, 500)
 		"""
 		if not msg:
-			return "File was corrupt ot not an image", 500
+			return f"File was corrupt, not an image, or larger than {int(app.config['MAX_CONTENT_LENGTH'] / 1000000)}MB", 500
 		else:
 			return msg, 500
 
@@ -694,7 +695,7 @@ def steganographyAction():
 
 	try:
 		# Load image into memory.
-		imageHandler = io.BytesIO(image.getvalue())
+		imageHandler = io.BytesIO(image.read())
 	except AttributeError:
 		return badImageError()
 
