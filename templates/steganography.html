@@ -24,7 +24,7 @@
 		</li>
 		<li id="messageContainer">
 			<label for="message">Message</label>
-			<textarea id="message" name="message" rows="3"></textarea>
+			<textarea id="message" name="message" rows="3" maxlength="1000"></textarea>
 		</li>
 		<li>
 			<label for="image">Image</label>
@@ -41,11 +41,7 @@
 <script>
 	const message = document.getElementById("message");
 	const messageContainer = document.getElementById("messageContainer");
-	const hideOption = document.getElementById("hide");
-	const showOption = document.getElementById("show");
 	const methodOption = document.getElementById("method");
-
-	console.log(message, messageContainer)
 
 	const showHide = () => {
 		if (methodOption.value === "show") {
@@ -56,7 +52,8 @@
 			message.disabled = false;
 		}
 	}
-
+	/* For if the page is reloaded and form options are preserved */
+	showHide()
 </script>
 </body>
 </html>
