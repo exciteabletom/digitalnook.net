@@ -17,9 +17,9 @@
 	<ul>
 		<li>
 			<label for="method">Hide a message or show a message?</label>
-			<select id="method" name="method">
-				<option id="hide" value="hide" onclick="showHide('show')">Hide a secret message</option>
-				<option id="show" value="show" onclick="showHide('hide')">Show a secret message</option>
+			<select id="method" name="method" onclick="showHide()">
+				<option id="hide" value="hide">Hide a secret message</option>
+				<option id="show" value="show">Show a secret message</option>
 			</select>
 		</li>
 		<li id="messageContainer">
@@ -39,14 +39,19 @@
 	<a href="/">Back to Home</a>
 </footer>
 <script>
-	message = document.getElementById("message");
-	messageContainer = document.getElementById("messageContainer");
+	const message = document.getElementById("message");
+	const messageContainer = document.getElementById("messageContainer");
+	const hideOption = document.getElementById("hide");
+	const showOption = document.getElementById("show");
+	const methodOption = document.getElementById("method");
 
-	showHide = mode => {
-		if (mode === "hide") {
+	console.log(message, messageContainer)
+
+	const showHide = () => {
+		if (methodOption.value === "show") {
 			messageContainer.style.display = "none";
 			message.disabled = true;
-		} else if (mode === "show") {
+		} else if (methodOption.value == "hide") {
 			messageContainer.style.display = "flex";
 			message.disabled = false;
 		}
