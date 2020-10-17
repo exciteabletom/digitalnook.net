@@ -771,7 +771,6 @@ def internalError(e):
 
 
 if __name__ == "__main__":
-	# debug=False for production
 	if config.production:
 		print("Turn off production mode to run a development server!", file=sys.stderr)
 		sys.exit(1)

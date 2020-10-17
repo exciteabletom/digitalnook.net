@@ -27,6 +27,7 @@ from loginKey import key
 
 cipher = Fernet(key)
 
+
 def getFromMain(name):
 	conn = sqlite3.connect("userdata.db")
 	cur = conn.cursor()
@@ -64,7 +65,7 @@ def checkIfLoginCorrect(name, password=None):
 	"""
 	conn = sqlite3.connect("userdata.db")
 	cur = conn.cursor()
-	cur.execute("SELECT * from main WHERE name = (?)", (name,))  # this method prevents SQL injection
+	cur.execute("SELECT * from main WHERE name = (?)", (name,))
 
 	data = cur.fetchone()
 	conn.close()
