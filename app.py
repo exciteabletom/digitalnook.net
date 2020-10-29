@@ -749,6 +749,31 @@ def steganographyAction():
 		return secretMessage
 
 
+@app.route("/tuiCSV/")
+def tuiCSV():
+	return render_template("tuicsv.html")
+
+
+@app.route("/tuiCSV/generate/", methods=["POST"])
+def tuiCSVAction():
+	csv = request.files.get("csv")
+	if not csv:
+		return "No file uploaded... Try resubmitting the form."
+
+	csvData = csv.read().decode().split("\n")
+	newCsvData = [csvData[0]]
+
+	for line in csvData[1:]:
+		newCsvData.append(f"{line} Western Australia")
+
+	finalCsv = "\n".join(newCsvData)
+
+	resp = Response(finalCsv, mimetype="text/csv")
+	resp.headers["x-suggested-filename"] = "suburbs.csv"
+
+	return resp
+
+
 @app.route("/getPostID/", methods=["POST"])
 @loginRequired
 def getPostId():

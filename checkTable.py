@@ -72,7 +72,7 @@ def checkIfLoginCorrect(name, password=None):
 
 	if data:
 
-		if password != None:
+		if password is not None:
 			tablePassword = data[2]  # select password from tuple: (id, username, password)
 
 			encryptedTablePassword = tablePassword.encode()

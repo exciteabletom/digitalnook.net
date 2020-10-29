@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Tui CSV | DigitalNook</title>
+	{% include "includes/meta.html" %}
+</head>
+<body>
+<header>
+	{% include "includes/header.html" %}
+	<h1>Tui CSV generator</h1>
+</header>
+<main>
+	<form class="flexForm" enctype="multipart/form-data" method="post" action="generate/">
+		<ul>
+			<li>
+				<label for="csv">CSV File</label>
+				<input type="file" id="csv" name="csv">
+			</li>
+			<li>
+				<button type="submit">Submit</button>
+			</li>
+		</ul>
+	</form>
+</main>
+<footer>
+	<a href="/">Back to Home</a>
+</footer>
+</body>
+</html>
