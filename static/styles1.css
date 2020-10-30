@@ -30,14 +30,14 @@
  *     <ul>
  *         <li>
  *             <label for="foo">foo</label>
- *             <input id="foo" name="foo" type="text"></input>
+ *             <input id="foo" name="foo" type="text">
  *         </li>
  *         <li>
  *             <label for="bar">bar</label>
- *             <input id="bar" name="bar" type="checkbox"></input>
+ *             <input id="bar" name="bar" type="checkbox">
  *         </li>
  *         <li>
- *             <button type="submit">Submit foo</button>
+ *             <button type="submit">Submit</button>
  *         </li>
  *     <ul>
  * </form>

@@ -251,7 +251,6 @@ def drawSomething():
 			return render_template("drawSomething/newGame.html", currentUser=currentUser)
 
 		elif request.form.get("ACTIONcontinueGame"):  # continueGame.html
-
 			activeGames = checkTable.checkForActiveDrawingGames(currentUser)
 			received = ""
 			sent = ""
@@ -427,11 +426,6 @@ def drawSomethingSubmission():
 		modifyTable.addToDraw(gameId, image=image)
 
 		return redirect("/games/drawsomethingsubmission/")
-
-
-@app.route("/whatsnew/")
-def whatsNew():
-	return render_template("whatsNew.html")
 
 
 @app.route("/servers/")
@@ -673,7 +667,6 @@ def steganography():
 @app.route("/steganography/generate/", methods=["POST"])
 @nocache
 def steganographyAction():
-
 	def badImageError(msg=None):
 		"""
 		Get an error response about how the image was invalid.
@@ -758,20 +751,33 @@ def tuiCSV():
 def tuiCSVAction():
 	csv = request.files.get("csv")
 	if not csv:
-		return "No file uploaded... Try resubmitting the form."
+		return "No file uploaded... Try resubmitting the form.", 500
 
-	csvData = csv.read().decode().split("\n")
-	newCsvData = [csvData[0]]
+	try:
+		csvData = csv.read().decode("UTF-8")
+	except UnicodeDecodeError:
+		return "File is not plain text.", 500
 
-	for line in csvData[1:]:
-		newCsvData.append(f"{line} Western Australia")
+	newLine = "\n"
+	if "\r\n" in csvData:
+		newLine = "\r\n"
 
-	finalCsv = "\n".join(newCsvData)
+	csvData = csvData.split(newLine)
 
-	resp = Response(finalCsv, mimetype="text/csv")
-	resp.headers["x-suggested-filename"] = "suburbs.csv"
+	if not csvData[0]:
+		return "File is empty.", 500
 
-	return resp
+	newCsvData = []
+
+	for line in csvData:
+		if not line or line == newLine:
+			newCsvData.append(line)
+		else:
+			newCsvData.append(f"{line} Western Australia")
+
+	finalCsv = newLine.join(newCsvData)
+
+	return Response(finalCsv, mimetype="text/csv")
 
 
 @app.route("/getPostID/", methods=["POST"])
