@@ -1,7 +1,7 @@
 wheel
 Flask==1.1.2
 flask_talisman==0.7.0
-cryptography==3.2
+cryptography>=3.2
 quote2image==0.4
 pytube3>=9.6.4
 stegano>=0.9.8
