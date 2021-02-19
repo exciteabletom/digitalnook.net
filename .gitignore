@@ -10,6 +10,7 @@ idea/
 errors.txt
 video/
 videos/
+static/mc/
 config.py
 
 *.db
