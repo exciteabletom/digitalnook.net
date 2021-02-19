@@ -83,7 +83,6 @@ def check(question: str):
 
 def create_venv():
 	"""
-	Void Function
 	Creates a new virtual environment with name .venv in the working directory.
 	:r_type: bool
 	:return: True on success, false otherwise
