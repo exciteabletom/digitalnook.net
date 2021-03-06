@@ -187,8 +187,8 @@ def main():
 		else:  # Windows
 			python_bin = str(Path(".venv/Scripts/python.exe"))
 
-		# Update pip and setuptools
-		subprocess.call([python_bin, "-m", "pip", "install", "--upgrade", "pip", "setuptools"])
+		# Update/install pip, setuptools, and wheel
+		subprocess.call([python_bin, "-m", "pip", "install", "--upgrade", "pip", "setuptools", "wheel"])
 
 		status()
 
