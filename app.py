@@ -66,6 +66,7 @@ if config.production:
 	Talisman(
 		app,
 		force_https=True,
+		strict_transport_security=True,
 		content_security_policy=None
 	)
 
