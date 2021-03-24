@@ -101,7 +101,7 @@ def create_venv():
 def download_javascript():
 	"""
 	Download javascript libraries to reduce dependency on CDNs.
-	Not included in the main repository because it inflates the size and messes with stats.
+	File aren't included in repository because it inflates the size of cloning and messes with stats.
 	"""
 	try:
 		os.mkdir(str(Path("static/js/lib/")))
@@ -120,21 +120,18 @@ def download_javascript():
 
 		# Open url
 		with urlopen(lib) as js_url:
-			# Get byte data from url
+			# Get raw data
 			js_bytes = js_url.read()
-			# bytes to unicode
+			# convert to unicode
 			js = js_bytes.decode("utf-8")
 
 			with open(str(Path(f"static/js/lib/{name}")), "w") as f:
-				# Write unicode to file
 				f.write(js)
 
 
 def main():
 	"""
-	Main entrypoint. 
-
-	Installs a new Digital Nook dev environment.
+	Installs a Digital Nook dev environment.
 	"""
 
 	# Get the version number as a float
@@ -142,20 +139,20 @@ def main():
 	py_ver = platform.python_version().split(".")
 	py_ver = float(".".join(py_ver[:2]))
 
-	# f strings not used here for compatibility with <3.6
 	if py_ver < constants.PYTHON_VERSION:
 		print("Your python version must be " + constants.PYTHON_VERSION + " or newer")
 		sys.exit(1)
 
-	# Where the python binary is
+	# Command that will run the python binary
 	python_bin = "python3"
 
 	# OS agnostic file seperator
-	# '/' on *nix '\\' on Windows
+	# '/' on UNIX systems, '\\' on Windows
 	fs_sep = str(Path("/"))
 
 	script_path = sys.argv[0]
 
+	# If the script was called from another directory
 	if fs_sep in script_path:
 		# Get the directory the script is in
 		script_dir_lst = script_path.split(fs_sep)[:-1]
@@ -165,13 +162,13 @@ def main():
 		os.chdir(script_dir)
 
 	# It is now safe to assume that the working directory
-	# is the project's root.
+	# is the project's root directory.
 
-	# Quick are you sure check
+	# Deletion warning
 	if not check("This script will delete any existing databases, configs, and login keys.\nAre you sure?"):
-		sys.exit(0)
+		sys.exit(1)
 
-	if check("Do you want to create a virtual environment?\nThis is highly recommended."):
+	if check("Do you want to create a new virtual environment?\nThis is highly recommended."):
 		status("Creating virtual environment")
 		try:
 			shutil.rmtree('.venv')
@@ -182,7 +179,7 @@ def main():
 			print("Error creating a virtual environment")
 			sys.exit(1)
 
-		if is_unix():  # MacOS, Linux
+		if is_unix():
 			python_bin = str(Path(".venv/bin/python3"))
 		else:  # Windows
 			python_bin = str(Path(".venv/Scripts/python.exe"))
