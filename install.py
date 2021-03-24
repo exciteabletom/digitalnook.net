@@ -20,7 +20,7 @@
 """
 Functions relating to the install process.
 
-main() is  the entrypoint for an interactive install.
+main() is the entrypoint for an interactive install.
 """
 
 import os
@@ -226,12 +226,12 @@ def main():
 		source_instruct = ".venv\\Scripts\\activate.bat"
 
 	print(
-		f"All tasks done! The development server is now installed.\n\n"
+		f"All tasks done! The development environment is ready.\n\n"
 		f"If you made a virtual environment activate it with '{source_instruct}'\n"
 		f"You can run the development server with 'python app.py'\n",
 	)
 
 
-# Only run if being run from command-line, not imported.
+# Run main function if started from command line
 if __name__ == "__main__":
 	main()
