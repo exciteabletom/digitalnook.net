@@ -1,5 +1,6 @@
 #tom custom
 static/js/lib/*
+static/reactionLeaderboard.json
 
 latestId.txt
 .swo/

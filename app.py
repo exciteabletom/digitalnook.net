@@ -67,6 +67,7 @@ if config.production:
 		app,
 		force_https=True,
 		strict_transport_security=True,
+		strict_transport_security_preload=True,
 		content_security_policy=None
 	)
 
