@@ -1,5 +1,0 @@
-User-agent: *
-Disallow: /logout/ /login/
-
-User-agent: AhrefsBot
-Disallow: /
