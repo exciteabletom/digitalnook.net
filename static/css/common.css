@@ -1,0 +1,75 @@
+:root {
+	font-size: 16px;
+}
+@media only screen and (max-device-width: 480px) {
+	:root {
+		font-size: 12px;
+	}
+}
+
+@font-face {
+	src: url("/static/font/ReadexPro-Regular.ttf");
+	font-family: ReadexPro;
+	font-weight: normal;
+}
+
+@font-face {
+	src: url("/static/font/ReadexPro-Bold.ttf");
+	font-family: ReadexPro;
+	font-weight: bold;
+}
+
+:root {
+	font-family: ReadexPro, sans-serif;
+}
+
+html {
+	background: #333;
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+}
+
+.index-nav {
+	text-align: center;
+	box-sizing: border-box;
+
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: space-evenly;
+	align-items: center;
+
+	min-height: 60vh;
+
+	font-size: 2rem;
+}
+
+.index-nav a, .index-nav a:visited {
+	color: #ccc;
+}
+
+.header-wrapper {
+	display: flex;
+	justify-content: center;
+}
+
+.header {
+	text-align: center;
+	min-height: 30vh;
+	max-height: 40vh;
+	width: 100%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background: #bb5a06;
+}
+
+.header > h1 {
+	font-size: 4rem;
+	font-weight: bold;
+	margin: 1rem;
+}
