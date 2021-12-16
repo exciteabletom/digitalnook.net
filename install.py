@@ -36,35 +36,35 @@ import constants
 
 
 def is_unix():
-	"""
+    """
 	Check if the OS is unix-based or not.
 
 	:r_type: bool
 	:return: True if unix-based, False otherwise
 	"""
 
-	# TODO: More operating systems covered here
-	if platform.system() in ("Linux", "Darwin"):
-		return True
-	else:
-		return False
+    # TODO: More operating systems covered here
+    if platform.system() in ("Linux", "Darwin"):
+        return True
+    else:
+        return False
 
 
 def status(message=None):
-	"""
+    """
 	Void function
 	Prints a formatted status message. 
 	If no status message prints 'done'
 	"""
 
-	if not message:
-		message = "Done\n"
+    if not message:
+        message = "Done\n"
 
-	print(f">>> {message}")
+    print(f">>> {message}")
 
 
 def check(question: str):
-	"""
+    """
 	Ask user a Yes/No question.
 
 	:param question: The question the user will be asked
@@ -72,166 +72,157 @@ def check(question: str):
 	:return: True if user said yes, false otherwise
 	"""
 
-	yes_or_no = input(f"{question} (y/n): ").lower()
+    yes_or_no = input(f"{question} (y/n): ").lower()
 
-	if yes_or_no == "y":
-		print("\n", end="")
-		return True
-	else:
-		return False
+    if yes_or_no == "y":
+        print("\n", end="")
+        return True
+    else:
+        return False
 
 
 def create_venv():
-	"""
+    """
 	Creates a new virtual environment with name .venv in the working directory.
 	:r_type: bool
 	:return: True on success, false otherwise
 	"""
 
-	try:
-		venv.create(".venv", with_pip=True, symlinks=True)
+    try:
+        venv.create(".venv", with_pip=True, symlinks=True)
 
-	except:
-		shutil.rmtree(".venv")
-		venv.create(".venv", with_pip=True)
+    except:
+        shutil.rmtree(".venv")
+        venv.create(".venv", with_pip=True)
 
-	return True
+    return True
 
 
 def download_javascript():
-	"""
+    """
 	Download javascript libraries to reduce dependency on CDNs.
 	File aren't included in repository because it inflates the size of cloning and messes with stats.
 	"""
-	try:
-		os.mkdir(str(Path("static/js/lib/")))
-	except FileExistsError:
-		pass
+    try:
+        os.mkdir(str(Path("static/js/lib/")))
+    except FileExistsError:
+        pass
 
-	libs = (
-		"https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js",
-		"https://code.jquery.com/jquery.min.js",
-	)
+    libs = (
+        "https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js",
+        "https://code.jquery.com/jquery.min.js",
+    )
 
-	for lib in libs:
-		# Get the name of the file
-		name = lib.split("/")[-1]
-		print(f"Downloading '{name}' from '{lib}'")
+    for lib in libs:
+        # Get the name of the file
+        name = lib.split("/")[-1]
+        print(f"Downloading '{name}' from '{lib}'")
 
-		# Open url
-		with urlopen(lib) as js_url:
-			# Get raw data
-			js_bytes = js_url.read()
-			# convert to unicode
-			js = js_bytes.decode("utf-8")
+        # Open url
+        with urlopen(lib) as js_url:
+            # Get raw data
+            js_bytes = js_url.read()
+            # convert to unicode
+            js = js_bytes.decode("utf-8")
 
-			with open(str(Path(f"static/js/lib/{name}")), "w") as f:
-				f.write(js)
+            with open(str(Path(f"static/js/lib/{name}")), "w") as f:
+                f.write(js)
 
 
 def main():
-	"""
+    """
 	Installs a Digital Nook dev environment.
 	"""
 
-	# Get the version number as a float
-	# E.g. '3.6.5' becomes 3.6
-	py_ver = platform.python_version().split(".")
-	py_ver = float(".".join(py_ver[:2]))
+    # Command that will run the python binary
+    python_bin = "python3"
 
-	if py_ver < constants.PYTHON_VERSION:
-		print("Your python version must be " + constants.PYTHON_VERSION + " or newer")
-		sys.exit(1)
+    # OS agnostic file seperator
+    # '/' on UNIX systems, '\\' on Windows
+    fs_sep = str(Path("/"))
 
-	# Command that will run the python binary
-	python_bin = "python3"
+    script_path = sys.argv[0]
 
-	# OS agnostic file seperator
-	# '/' on UNIX systems, '\\' on Windows
-	fs_sep = str(Path("/"))
+    # If the script was called from another directory
+    if fs_sep in script_path:
+        # Get the directory the script is in
+        script_dir_lst = script_path.split(fs_sep)[:-1]
+        script_dir = fs_sep.join(script_dir_lst)
 
-	script_path = sys.argv[0]
+        # Change to that directory
+        os.chdir(script_dir)
 
-	# If the script was called from another directory
-	if fs_sep in script_path:
-		# Get the directory the script is in
-		script_dir_lst = script_path.split(fs_sep)[:-1]
-		script_dir = fs_sep.join(script_dir_lst)
+    # It is now safe to assume that the working directory
+    # is the project's root directory.
 
-		# Change to that directory
-		os.chdir(script_dir)
+    # Deletion warning
+    if not check("This script will delete any existing databases, configs, and login keys.\nAre you sure?"):
+        sys.exit(1)
 
-	# It is now safe to assume that the working directory
-	# is the project's root directory.
+    if check("Do you want to create a new virtual environment?\nThis is highly recommended."):
+        status("Creating virtual environment")
+        try:
+            shutil.rmtree('.venv')
+        except FileNotFoundError:
+            pass
 
-	# Deletion warning
-	if not check("This script will delete any existing databases, configs, and login keys.\nAre you sure?"):
-		sys.exit(1)
+        if not create_venv():
+            print("Error creating a virtual environment")
+            sys.exit(1)
 
-	if check("Do you want to create a new virtual environment?\nThis is highly recommended."):
-		status("Creating virtual environment")
-		try:
-			shutil.rmtree('.venv')
-		except FileNotFoundError:
-			pass
+        if is_unix():
+            python_bin = str(Path(".venv/bin/python3"))
+        else:  # Windows
+            python_bin = str(Path(".venv/Scripts/python.exe"))
 
-		if not create_venv():
-			print("Error creating a virtual environment")
-			sys.exit(1)
+        # Update/install pip, setuptools, and wheel
+        subprocess.call([python_bin, "-m", "pip", "install", "--upgrade", "pip", "setuptools", "wheel"])
 
-		if is_unix():
-			python_bin = str(Path(".venv/bin/python3"))
-		else:  # Windows
-			python_bin = str(Path(".venv/Scripts/python.exe"))
+        status()
 
-		# Update/install pip, setuptools, and wheel
-		subprocess.call([python_bin, "-m", "pip", "install", "--upgrade", "pip", "setuptools", "wheel"])
+    status("Installing dependencies")
+    subprocess.call([python_bin, "-m", "pip", "install", "-r", "install/requirements.txt"])
+    status()
 
-		status()
+    status("Creating new database")
+    try:
+        os.remove("userdata.db")
+    # If fresh install
+    except FileNotFoundError:
+        pass
 
-	status("Installing dependencies")
-	subprocess.call([python_bin, "-m", "pip", "install", "-r", "install/requirements.txt"])
-	status()
+    subprocess.call([python_bin, "install/create_tables.py"])
+    status()
 
-	status("Creating new database")
-	try:
-		os.remove("userdata.db")
-	# If fresh install
-	except FileNotFoundError:
-		pass
+    status("Installing JavaScript libraries")
+    download_javascript()
+    status()
 
-	subprocess.call([python_bin, "install/create_tables.py"])
-	status()
+    status("Creating latestId flatfile")
+    with open("static/latestId.txt", "w") as f:
+        f.write("0")
+    status()
 
-	status("Installing JavaScript libraries")
-	download_javascript()
-	status()
+    status("Creating login key")
+    subprocess.call([python_bin, "generateKey.py", "-f"])
+    status()
 
-	status("Creating latestId flatfile")
-	with open("static/latestId.txt", "w") as f:
-		f.write("0")
-	status()
+    status("Copying default config file")
+    shutil.copyfile(str(Path("install/config.py.default")), "config.py")
+    status()
 
-	status("Creating login key")
-	subprocess.call([python_bin, "generateKey.py", "-f"])
-	status()
+    if is_unix():
+        source_instruct = ". .venv/bin/activate"
+    else:
+        source_instruct = ".venv\\Scripts\\activate.bat"
 
-	status("Copying default config file")
-	shutil.copyfile(str(Path("install/config.py.default")), "config.py")
-	status()
-
-	if is_unix():
-		source_instruct = ". .venv/bin/activate"
-	else:
-		source_instruct = ".venv\\Scripts\\activate.bat"
-
-	print(
-		f"All tasks done! The development environment is ready.\n\n"
-		f"If you made a virtual environment activate it with '{source_instruct}'\n"
-		f"You can run the development server with 'python app.py'\n",
-	)
+    print(
+        f"All tasks done! The development environment is ready.\n\n"
+        f"If you made a virtual environment activate it with '{source_instruct}'\n"
+        f"You can run the development server with 'python app.py'\n",
+    )
 
 
 # Run main function if started from command line
 if __name__ == "__main__":
-	main()
+    main()

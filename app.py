@@ -495,32 +495,35 @@ def reactionLeaderboard():
 
 
 @app.route("/games/doctorb/", methods=["GET", "POST"])
-@loginRequired
 def doctorB():
-	username = decryptString(request.cookies.get("USERNAME"))
-	storedData = checkTable.checkFromSpace(username)
-	storedScore = 0
-	if storedData:
-		storedScore = storedData[1]
+	username = None
+	storedScore = None
+	if request.cookies.get("USERNAME"):
+		username = decryptString(request.cookies.get("USERNAME"))
+		storedData = checkTable.checkFromSpace(username)
+		storedScore = 0
+		if storedData:
+			storedScore = storedData[1]
 
 	if request.method == "GET":
 		return render_template("doctorB.html", username=username, score=storedScore)
 
 	elif request.method == "POST":  # Handle XMLHTTPRequests
-		correctPostID = checkTable.getFromMain(username)[3] == request.form.get("postID")
-		if correctPostID:
-			# changePostID
-			modifyTable.addPostID(username)
-			newScore = int(request.form.get("score"))
-			if newScore > storedScore:
-				modifyTable.updateSpaceScore(username, newScore)
+		if username:
+			correctPostID = checkTable.getFromMain(username)[3] == request.form.get("postID")
+			if correctPostID:
+				# changePostID
+				modifyTable.addPostID(username)
+				newScore = int(request.form.get("score"))
+				if newScore > storedScore:
+					modifyTable.updateSpaceScore(username, newScore)
 
-				return str(newScore)
+					return str(newScore)
 
-			return str(storedScore)
-		else:
-			raise ValueError("Incorrect postID")
-
+				return str(storedScore)
+			else:
+				raise ValueError("Incorrect postID")
+		return "0"
 
 @app.route("/games/doctorbLevel/", methods=["POST"])
 @loginRequired
