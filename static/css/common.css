@@ -11,12 +11,14 @@
 	src: url("/static/font/ReadexPro-Regular.ttf");
 	font-family: ReadexPro;
 	font-weight: normal;
+	font-display: swap;
 }
 
 @font-face {
 	src: url("/static/font/ReadexPro-Bold.ttf");
 	font-family: ReadexPro;
 	font-weight: bold;
+	font-display: swap;
 }
 
 :root {
