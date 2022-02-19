@@ -1,3 +1,8 @@
+:root {
+	font-family: ReadexPro, sans-serif;
+	font-size: 16px;
+}
+
 @media only screen and (max-device-width: 480px) {
 	:root {
 		font-size: 12px;
@@ -16,11 +21,6 @@
 	font-family: ReadexPro;
 	font-weight: bold;
 	font-display: swap;
-}
-
-:root {
-	font-family: ReadexPro, sans-serif;
-	font-size: 16px;
 }
 
 html {
